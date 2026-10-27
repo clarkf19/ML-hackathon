@@ -2,7 +2,8 @@
 row i is bit-identical to the pipeline's lv_d2 / lv_d4 copies), plus an optional raw-domain port of qmap.py
 (monotone quantile map of the bandpass/level-removed residual in bytes, source marginal -> test marginal; levels kept).
 usage: python src/rawsim.py           -> data/raw_d2.npy, data/raw_d4.npy (GAINSD=1.9, pipeline seeds for deg2 / deg4)
-       QMAP=1 python src/rawsim.py    -> also data/raw_d2q.npy, data/raw_d4q.npy"""
+       QMAP=1 python src/rawsim.py    -> also data/raw_d2q.npy, data/raw_d4q.npy
+       COPIES=d6,d8 QMAP=1 python src/rawsim.py   -> the pipeline's 3rd / 4th fake-PKS copies"""
 import numpy as np, os
 from pathlib import Path
 from scipy.special import polygamma
@@ -10,7 +11,8 @@ from scipy.optimize import brentq
 from scipy.ndimage import median_filter
 ROOT = Path(__file__).resolve().parent.parent
 D = ROOT / 'data'; SRC = D / 'signal-hunters-round2'
-COPIES = {'d2': dict(seed=123), 'd4': dict(seed=321, grate=0.0085, glo=22, ghi=60)}   # pipeline.sh deg2 / deg4 settings
+COPIES = {'d2': dict(seed=123), 'd4': dict(seed=321, grate=0.0085, glo=22, ghi=60),                # pipeline.sh deg2 / deg4 settings
+          'd6': dict(seed=555, grate=0.007, glo=18, ghi=60, lnstd=0.43), 'd8': dict(seed=777, grate=0.0075, glo=20, ghi=55, lnstd=0.47)}
 
 def degrade(X, seed=123, gainsd=1.9, grate=0.0057, glo=18, ghi=50, lnstd=0.45, bs=2000):
     K = brentq(lambda k: polygamma(1, k) - (lnstd ** 2 - 0.343 ** 2), 1, 200)
@@ -54,7 +56,8 @@ def qmap_raw(X, qa, qb, bs=2000):
 if __name__ == '__main__':
     X = np.load(SRC / 'train_cadences.npy', mmap_mode='r')
     qt = resid_quantiles(np.load(SRC / 'test_cadences.npy', mmap_mode='r')) if os.environ.get('QMAP') else None
-    for nm, kw in COPIES.items():
+    for nm in os.environ.get('COPIES', 'd2,d4').split(','):
+        kw = COPIES[nm]
         Y = degrade(X, **kw); np.save(D / f'raw_{nm}.npy', Y); print(nm, 'done', flush=True)
         if qt is not None:
             qa = resid_quantiles(Y); np.save(D / f'raw_{nm}q.npy', qmap_raw(Y, qa, qt))
