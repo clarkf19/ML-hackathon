@@ -231,6 +231,90 @@
   "steps": "bias"
  },
  {
+  "name": "H argmax + pair overrides",
+  "group": "c",
+  "clean": 0.9282058504991636,
+  "fpks": 0.8930442031312376,
+  "d_clean": 0.00025932283007967794,
+  "d_fpks": -3.117858555590214e-05,
+  "folds_up": 4,
+  "per_class_fpks": {
+   "eti": 0.861,
+   "frb": 0.955,
+   "pulsar": 0.989,
+   "scint": 0.69,
+   "sat": 0.913,
+   "radar": 0.893,
+   "rfi_int": 0.907,
+   "rfi_pers": 0.907,
+   "noise": 0.922
+  },
+  "steps": "pairs"
+ },
+ {
+  "name": "H + bias + pair overrides",
+  "group": "c+d",
+  "clean": 0.9289119887089229,
+  "fpks": 0.8935878586860784,
+  "d_clean": 0.0009654610398389663,
+  "d_fpks": 0.000512476969284914,
+  "folds_up": 3,
+  "per_class_fpks": {
+   "eti": 0.867,
+   "frb": 0.958,
+   "pulsar": 0.991,
+   "scint": 0.686,
+   "sat": 0.911,
+   "radar": 0.898,
+   "rfi_int": 0.905,
+   "rfi_pers": 0.903,
+   "noise": 0.923
+  },
+  "steps": "bias -> pairs"
+ },
+ {
+  "name": "H + bias + cond-prob overrides + pair overrides",
+  "group": "a+c+d",
+  "clean": 0.9291763990315997,
+  "fpks": 0.8938253344505652,
+  "d_clean": 0.0012298713625157331,
+  "d_fpks": 0.0007499527337717637,
+  "folds_up": 3,
+  "per_class_fpks": {
+   "eti": 0.867,
+   "frb": 0.958,
+   "pulsar": 0.991,
+   "scint": 0.686,
+   "sat": 0.912,
+   "radar": 0.896,
+   "rfi_int": 0.907,
+   "rfi_pers": 0.905,
+   "noise": 0.923
+  },
+  "steps": "bias -> cascade[argmax] -> pairs"
+ },
+ {
+  "name": "H + bias + cond-detector overrides + pair overrides",
+  "group": "a+c+d",
+  "clean": 0.9300856231345246,
+  "fpks": 0.8949030999859401,
+  "d_clean": 0.0021390954654406658,
+  "d_fpks": 0.0018277182691466276,
+  "folds_up": 3,
+  "per_class_fpks": {
+   "eti": 0.867,
+   "frb": 0.96,
+   "pulsar": 0.99,
+   "scint": 0.691,
+   "sat": 0.916,
+   "radar": 0.897,
+   "rfi_int": 0.905,
+   "rfi_pers": 0.904,
+   "noise": 0.924
+  },
+  "steps": "bias -> cascade[argmax] -> pairs"
+ },
+ {
   "name": "meta argmax (submission2 model)",
   "group": "meta",
   "clean": 0.9291774119269041,
@@ -315,6 +399,27 @@
   "steps": "bias -> cascade[argmax]"
  },
  {
+  "name": "meta + bias + pair overrides",
+  "group": "meta+c+d",
+  "clean": 0.9315495215188226,
+  "fpks": 0.8984285249112932,
+  "d_clean": 0.0036029938497387226,
+  "d_fpks": 0.005353143194499754,
+  "folds_up": 5,
+  "per_class_fpks": {
+   "eti": 0.872,
+   "frb": 0.964,
+   "pulsar": 0.99,
+   "scint": 0.702,
+   "sat": 0.912,
+   "radar": 0.9,
+   "rfi_int": 0.913,
+   "rfi_pers": 0.909,
+   "noise": 0.925
+  },
+  "steps": "bias -> pairs"
+ },
+ {
   "name": "meta argmax + cond-detector upward overrides",
   "group": "meta+a",
   "clean": 0.9306043557461463,
@@ -355,6 +460,27 @@
    "noise": 0.924
   },
   "steps": "bias -> cascade[argmax]"
+ },
+ {
+  "name": "meta + bias + cond-detector overrides + pair overrides",
+  "group": "meta+a+c+d",
+  "clean": 0.9324905583464962,
+  "fpks": 0.8981330105374088,
+  "d_clean": 0.00454403067741227,
+  "d_fpks": 0.005057628820615334,
+  "folds_up": 5,
+  "per_class_fpks": {
+   "eti": 0.87,
+   "frb": 0.964,
+   "pulsar": 0.99,
+   "scint": 0.699,
+   "sat": 0.917,
+   "radar": 0.898,
+   "rfi_int": 0.912,
+   "rfi_pers": 0.909,
+   "noise": 0.924
+  },
+  "steps": "bias -> cascade[argmax] -> pairs"
  },
  {
   "name": "avg(meta, H) + bias",

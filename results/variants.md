@@ -11,10 +11,16 @@
 | H argmax + cond-detector upward overrides | a | 0.9300 | +0.0021 | 0.8953 | +0.0022 | 4/5 |
 | H + bias + cond-detector upward overrides | a+d | 0.9303 | +0.0024 | 0.8954 | +0.0024 | 4/5 |
 | avg(H, cond joint) + bias | a+d | 0.9305 | +0.0025 | 0.8946 | +0.0015 | 3/5 |
+| H argmax + pair overrides | c | 0.9282 | +0.0003 | 0.8930 | -0.0000 | 4/5 |
+| H + bias + pair overrides | c+d | 0.9289 | +0.0010 | 0.8936 | +0.0005 | 3/5 |
+| H + bias + cond-prob overrides + pair overrides | a+c+d | 0.9292 | +0.0012 | 0.8938 | +0.0007 | 3/5 |
+| H + bias + cond-detector overrides + pair overrides | a+c+d | 0.9301 | +0.0021 | 0.8949 | +0.0018 | 3/5 |
 | meta argmax (submission2 model) | meta | 0.9292 | +0.0012 | 0.8972 | +0.0041 | 4/5 |
 | meta + bias | meta+d | 0.9313 | +0.0033 | 0.8980 | +0.0050 | 5/5 |
 | meta cond-prob cascade (pure) | meta+a | 0.9305 | +0.0026 | 0.8999 | +0.0068 | 5/5 |
 | meta + bias -> cond-prob upward overrides | meta+a+d | 0.9310 | +0.0031 | 0.8990 | +0.0059 | 5/5 |
+| meta + bias + pair overrides | meta+c+d | 0.9315 | +0.0036 | 0.8984 | +0.0054 | 5/5 |
 | meta argmax + cond-detector upward overrides | meta+a | 0.9306 | +0.0027 | 0.8983 | +0.0052 | 5/5 |
 | meta + bias + cond-detector upward overrides | meta+a+d | 0.9322 | +0.0043 | 0.8981 | +0.0050 | 5/5 |
+| meta + bias + cond-detector overrides + pair overrides | meta+a+c+d | 0.9325 | +0.0045 | 0.8981 | +0.0051 | 5/5 |
 | avg(meta, H) + bias | meta+e+d | 0.9292 | +0.0013 | 0.8966 | +0.0036 | 5/5 |

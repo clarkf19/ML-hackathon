@@ -1,0 +1,5 @@
+scint   vs noise    n= 5642 | c: base 0.9708 spec 0.9723 avg 0.9726 | d: base 0.9476 spec 0.9463 avg 0.9473
+scint   vs rfi_pers n= 4323 | c: base 0.9922 spec 0.9907 avg 0.9921 | d: base 0.9857 spec 0.9844 avg 0.9857
+scint   vs sat      n= 3236 | c: base 0.9907 spec 0.9902 avg 0.9910 | d: base 0.9807 spec 0.9795 avg 0.9809
+rfi_int vs rfi_pers n= 5554 | c: base 0.9900 spec 0.9898 avg 0.9902 | d: base 0.9860 spec 0.9862 avg 0.9865
+radar   vs noise    n= 6060 | c: base 0.9993 spec 0.9991 avg 0.9993 | d: base 0.9938 spec 0.9938 avg 0.9940
