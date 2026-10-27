@@ -19,12 +19,14 @@ For EACH new account:
 4. Runtime → Change runtime type → **T4 GPU** → Save.
 5. In the LAST cell change only the `CFGS` line:
 
-| Account | `CFGS = ...` | what it trains |
+| Account | `CFGS = ...` | what it trains (all pretrained, fp16, ~4-6 h for 5 folds) |
 |---|---|---|
-| Clark #1 | `CFGS = ['P4', 'E2']` | ResNet-34 pretrained + round-4 labels, then EfficientNet-B2 |
-| Clark #2 | `CFGS = ['C1', 'P6']` | ConvNeXt-Tiny, then ResNet-34 + mixup |
-| Teammate #1 | `CFGS = ['E3', 'R50']` | EfficientNet-B0 + round-4 labels, then ResNet-50 |
-| Teammate #2 | `CFGS = ['P5']` | ResNet-34 at 384 px (slow, high resolution) |
+| Clark #1 | `CFGS = ['P4']` | ResNet-34 + round-4 labels (the proven P1 recipe) |
+| Clark #2 | `CFGS = ['E3']` | EfficientNet-B0 + round-4 labels |
+| Teammate #1 | `CFGS = ['P6']` | ResNet-34 + mixup |
+| Teammate #2 | `CFGS = ['E2']` | EfficientNet-B2 (bigger, slowest of the four) |
+
+   ONE config per account: only runs that finish all 5 folds can be used in the final blend.
 
    If you have fewer accounts, use them in this order: Clark #1, Teammate #1, Clark #2, Teammate #2.
 6. Runtime → **Run all** → choose the NEW account for Drive → tick all boxes → Continue.
