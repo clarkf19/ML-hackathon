@@ -18,7 +18,7 @@ number should predict the leaderboard better; adversarial AUC fake-PKS-vs-test 0
 | C4 features, clean + 4 fake-PKS copies | 0.9168 | 0.8866 | submissions/cand_A_d2468.csv | superseded |
 | C4 + trk2 features, clean + 4 fake-PKS copies | 0.9195 | 0.8873 | submissions/submission1.csv | **uploaded: public 0.8779** |
 | **submission4 = lvl GBDT + CNN B3 (5 folds) 50/50, averaged with a stacked LGBM meta-model** | **0.9463** | **0.9172** (every fold +0.005…+0.017 over blend50) | submissions/submission4.csv | **uploaded: public 0.9118** (src/final_blend.py) |
-| submission5 = submission4 + CNN B3pl (real-test pseudo-labels) as 2nd meta input | 0.9481 | 0.9196 (all 5 folds up) | submissions/submission5.csv | upload |
+| submission5 = submission4 + CNN B3pl (real-test pseudo-labels) as 2nd meta input | 0.9481 | 0.9196 (all 5 folds up) | submissions/submission5.csv | **uploaded: public 0.9170** (pseudo-label gain bigger on real test than on proxy) |
 | submission3 = lvl GBDT + CNN B3 (4 folds) 50/50 | 0.9381 (4 folds) | 0.9089 (4 folds) | submissions/submission3.csv | **uploaded: public 0.8991** |
 | **+ panel-level features from RAW data (lvl)** | **0.9292** | **0.8972** | **submissions/submission2.csv** | **uploaded: public 0.8910** (pipeline.sh reproduces it) |
 | (fold-0 only) best GBDT + CNN B2 blend | 0.9253 (fold0) | 0.8950 (fold0) | needs 5-fold CNN B2 (Colab) | upload #2 after Colab |
