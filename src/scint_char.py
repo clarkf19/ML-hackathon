@@ -86,3 +86,15 @@ for c in ['lvl_lv_on_off', 'lvl_lv_onmin_offmax']:
     for th in (2, 3, 4):
         P(f'  frac {c} > {th}: clean {np.mean(col("clean", c) > th):.3f}  deg2 {np.mean(col("deg2", c) > th):.3f}  deg4 {np.mean(col("deg4", c) > th):.3f}  test {np.mean(col("test", c) > th):.3f}')
 P('  scint share: train', np.round(sc.mean(), 3), ' test predicted (harness)', np.round(np.mean(pp['pte'].argmax(1) == S), 3))
+od = pp['oofd'].argmax(1); rec, prec = np.mean(od[sc] == S), np.mean(y[od == S] == S)
+P(f'  expected predicted share if test prevalence = train 8%: {sc.mean() * rec / prec:.3f} (fPKS recall {rec:.3f} / precision {prec:.3f})')
+
+P('\n==== 5. SNR budget: brightening vs level noise (noise class spread), texture evidence for faint stars')
+for w in ['clean', 'deg2']:
+    a = col(w, 'lvl_lv_on_off'); nz = a[y == N]; sd = np.subtract(*np.percentile(nz, [84, 16])) / 2
+    P(f'  {w}: level noise sd (noise class) {sd:.2f} bytes; scint median {np.median(a[sc]):.2f} -> median SNR {np.median(a[sc]) / sd:.2f};'
+      f' frac scint below noise p90 ({np.percentile(nz, 90):.2f}) {np.mean(a[sc] < np.percentile(nz, 90)):.3f}')
+    t = col(w, 'tex_v8x16_d'); faint = sc & (a < np.percentile(nz, 90))
+    P(f'  {w}: corr(level, texture 8x16) within scint {np.corrcoef(a[sc], t[sc])[0, 1]:.3f};'
+      f' texture AUC faint-scint vs noise {roc_auc_score(np.r_[np.ones(faint.sum()), np.zeros((y == N).sum())], np.r_[t[faint], t[y == N]]):.3f}'
+      f' (all scint {roc_auc_score(sc[(y == S) | (y == N)], t[(y == S) | (y == N)]):.3f})')
