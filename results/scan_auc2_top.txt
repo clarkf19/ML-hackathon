@@ -1,0 +1,130 @@
+
+== scint|noise (n ambiguous 763)  bundle dev p50/p90/max 0.022/0.066/0.109 top bundle [(np.str_('rep_rep_on_k3'), 0.391), (np.str_('phys_d0_2ndmin'), 0.392), (np.str_('lvl_lv_band_max'), 0.604)]
+          feat   auc
+       vmax_on 0.612
+    chP_max_on 0.611
+    px_rsd_off 0.611
+lin_logmean_on 0.610
+      fup24_on 0.606
+      px_q50_d 0.604
+    lin_std_on 0.602
+   blk8x8_dmax 0.601
+     px_q75_on 0.601
+     px_q50_on 0.600
+
+== rfi_int|rfi_pers (n ambiguous 572)  bundle dev p50/p90/max 0.023/0.054/0.126 top bundle [(np.str_('trk_t_off1'), 0.626), (np.str_('lvl_lv_off_spread'), 0.594), (np.str_('tex_v4x8_onmin'), 0.424)]
+             feat   auc
+       pac_t1_off 0.407
+        chP_std_d 0.592
+        cchp_onon 0.419
+       cchp_onoff 0.424
+cclp_onon_m_onoff 0.573
+        cclp_onon 0.573
+         pac_t1_d 0.573
+   blk8x8_std_off 0.433
+       chP_ac4_mm 0.434
+       chL_ac4_mm 0.435
+
+== scint|rfi_pers (n ambiguous 360)  bundle dev p50/p90/max 0.032/0.071/0.153 top bundle [(np.str_('phys_bb0_p4'), 0.653), (np.str_('phys_on_fit_resid'), 0.632), (np.str_('tex_v8x32_onmin'), 0.624)]
+         feat   auc
+rowP_slope_on 0.656
+  rowL_ac1_on 0.639
+ rowP_slope_d 0.622
+ blk8x8_std_d 0.619
+  rowP_exc_on 0.613
+blk4x16_std_d 0.611
+   rowP_ac1_d 0.610
+q_entropy_off 0.390
+  rowP_ac1_on 0.606
+  rowP_rng_on 0.604
+
+== scint|sat (n ambiguous 303)  bundle dev p50/p90/max 0.037/0.085/0.144 top bundle [(np.str_('phys_dsteep_2ndmin'), 0.356), (np.str_('rep2_b_p4'), 0.358), (np.str_('tex_v2x8_p5'), 0.366)]
+        feat   auc
+    pac_t1_d 0.630
+  chL_std_mm 0.618
+  chL_ac4_mm 0.618
+   cchp_onon 0.618
+     cc_onon 0.616
+   fdn36_off 0.614
+rowP_slope_d 0.390
+   pac_t1_on 0.610
+  skr_max_on 0.394
+     fdn36_d 0.397
+
+== eti|rfi_int (n ambiguous 156)  bundle dev p50/p90/max nan/nan/nan top bundle [(np.str_('phys_d0_p0'), nan), (np.str_('phys_d0_p1'), nan), (np.str_('phys_d0_p2'), nan)]
+       feat  auc
+ px_mean_on  NaN
+px_mean_off  NaN
+  px_mean_d  NaN
+ px_mean_mm  NaN
+  px_std_on  NaN
+ px_std_off  NaN
+   px_std_d  NaN
+  px_std_mm  NaN
+ px_skew_on  NaN
+px_skew_off  NaN
+
+== scint|radar (n ambiguous 275)  bundle dev p50/p90/max 0.045/0.096/0.153 top bundle [(np.str_('tex_v4x8_p0'), 0.653), (np.str_('tex_v8x32_d'), 0.646), (np.str_('phys_dmid_offmax'), 0.359)]
+           feat   auc
+ lin_logq99_off 0.310
+lin_logmean_off 0.310
+     px_q95_off 0.310
+     px_q99_off 0.311
+      fup24_off 0.319
+    px_mean_off 0.328
+   lin_skew_off 0.329
+    lin_std_off 0.334
+      pac_f1_on 0.335
+    px_skew_off 0.337
+
+== sat|radar (n ambiguous 154)  bundle dev p50/p90/max nan/nan/nan top bundle [(np.str_('phys_d0_p0'), nan), (np.str_('phys_d0_p1'), nan), (np.str_('phys_d0_p2'), nan)]
+       feat  auc
+ px_mean_on  NaN
+px_mean_off  NaN
+  px_mean_d  NaN
+ px_mean_mm  NaN
+  px_std_on  NaN
+ px_std_off  NaN
+   px_std_d  NaN
+  px_std_mm  NaN
+ px_skew_on  NaN
+px_skew_off  NaN
+
+== radar|rfi_pers (n ambiguous 108)  bundle dev p50/p90/max nan/nan/nan top bundle [(np.str_('phys_d0_p0'), nan), (np.str_('phys_d0_p1'), nan), (np.str_('phys_d0_p2'), nan)]
+       feat  auc
+ px_mean_on  NaN
+px_mean_off  NaN
+  px_mean_d  NaN
+ px_mean_mm  NaN
+  px_std_on  NaN
+ px_std_off  NaN
+   px_std_d  NaN
+  px_std_mm  NaN
+ px_skew_on  NaN
+px_skew_off  NaN
+
+== sat|rfi_pers (n ambiguous 103)  bundle dev p50/p90/max nan/nan/nan top bundle [(np.str_('phys_d0_p0'), nan), (np.str_('phys_d0_p1'), nan), (np.str_('phys_d0_p2'), nan)]
+       feat  auc
+ px_mean_on  NaN
+px_mean_off  NaN
+  px_mean_d  NaN
+ px_mean_mm  NaN
+  px_std_on  NaN
+ px_std_off  NaN
+   px_std_d  NaN
+  px_std_mm  NaN
+ px_skew_on  NaN
+px_skew_off  NaN
+
+== radar|noise (n ambiguous 198)  bundle dev p50/p90/max nan/nan/nan top bundle [(np.str_('phys_d0_p0'), nan), (np.str_('phys_d0_p1'), nan), (np.str_('phys_d0_p2'), nan)]
+       feat  auc
+ px_mean_on  NaN
+px_mean_off  NaN
+  px_mean_d  NaN
+ px_mean_mm  NaN
+  px_std_on  NaN
+ px_std_off  NaN
+   px_std_d  NaN
+  px_std_mm  NaN
+ px_skew_on  NaN
+px_skew_off  NaN

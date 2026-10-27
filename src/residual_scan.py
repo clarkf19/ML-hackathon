@@ -34,7 +34,8 @@ def cond_auc(x, a, b, sel):
 
 rows = []
 half = fo < 2
-for a, b in pairs:
+import os
+for a, b in ([] if os.environ.get('SKIPAUC') else pairs):
     corr = (pred == y) & ((y == a) | (y == b))
     for src, M, cn in [('raw', F, cols), ('bundle', Bx, bcols)]:
         for j, c in enumerate(cn):
@@ -42,15 +43,16 @@ for a, b in pairs:
             ca = cond_auc(x, a, b, np.ones(len(y), bool))
             rows.append(dict(pair=f'{S[a]}|{S[b]}', n_err=cm[a, b] + cm[b, a], src=src, feat=c, cond=ca, cond_dev=abs(ca - 0.5),
                              c_h1=cond_auc(x, a, b, half), c_h2=cond_auc(x, a, b, ~half), corr_auc=auc(x[corr], y[corr] == a)))
-R = pd.DataFrame(rows); R['stable'] = ((R.c_h1 - 0.5) * (R.c_h2 - 0.5) > 0) & (np.minimum(abs(R.c_h1 - 0.5), abs(R.c_h2 - 0.5)) > 0.03)
-R.to_csv(out / 'scan_auc.csv', index=False)
-with open(out / 'scan_auc_top.txt', 'w') as fh:
+if rows:
+  R = pd.DataFrame(rows); R['stable'] = ((R.c_h1 - 0.5) * (R.c_h2 - 0.5) > 0) & (np.minimum(abs(R.c_h1 - 0.5), abs(R.c_h2 - 0.5)) > 0.03)
+  R.to_csv(out / 'scan_auc.csv', index=False)
+  with open(out / 'scan_auc_top.txt', 'w') as fh:
     for p, g in R.groupby('pair', sort=False):
         ref = g[g.src == 'bundle'].cond_dev; q = np.nanpercentile(ref, [50, 90, 99])
         top = g[g.src == 'raw'].sort_values('cond_dev', ascending=False).head(12)
         fh.write(f'\n== {p}  (errors {g.n_err.iloc[0]})  bundle-feature cond|AUC-0.5| p50/p90/p99 = {q.round(3)}  max {ref.max():.3f}\n')
         fh.write(top[['feat', 'cond', 'c_h1', 'c_h2', 'stable', 'corr_auc']].round(3).to_string(index=False) + '\n')
-print(open(out / 'scan_auc_top.txt').read())
+  print(open(out / 'scan_auc_top.txt').read())
 
 # B) residual stacking
 lo = np.log(np.clip(oofc, 1e-6, 1))
