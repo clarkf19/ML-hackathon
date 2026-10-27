@@ -47,11 +47,11 @@ TEL = {
 SRC = dict(
     eti=dict(amp=(0.25, 2.5), drift=(0.04, 0.8), width=(0.5, 1.4)),
     line=dict(amp=(0.6, 5.0), width=(0.5, 1.6)),
-    pers=dict(p_zero_drift=0.65, drift=(0.01, 0.35), p_fade=0.30),
+    pers=dict(amp=(1.0, 8.0), width=(0.7, 2.0), p_zero_drift=0.65, drift=(0.01, 0.35), p_fade=0.30),
     inter=dict(mix=[0.20, 0.13, 0.10, 0.30, 0.27], drift_p_zero=0.4, drift=(0.02, 0.6)),
-    sat=dict(amp=(0.6, 6.0), width=(0.6, 1.6), p_one=0.8, height=(20.0, 80.0), tau=(2.0, 12.0)),
-    radar=dict(amp=(0.4, 3.0), width=(0.6, 1.5), slope=(5.0, 20.0), span=(40.0, 128.0)),
-    pulsar=dict(amp=(0.3, 2.5), period=(3.0, 16.0), width=(0.4, 1.5), sweep=(0.0, 9.0), lvl=(0.0, 0.0)),
+    sat=dict(amp=(1.0, 8.0), width=(0.6, 1.6), p_one=0.8, height=(30.0, 100.0), tau=(1.5, 8.0)),
+    radar=dict(amp=(0.4, 3.0), width=(0.6, 1.5), period=(4.0, 16.0), span=(10.0, 90.0)),   # slope span/period 0.6-20 ch/row
+    pulsar=dict(amp=(0.25, 1.8), period=(3.0, 16.0), width=(0.4, 1.5), sweep=(0.0, 9.0), lvl=(0.0, 0.0)),
     frb=dict(amp=(0.4, 3.0), width=(0.5, 1.5), sweep=(2.0, 14.0), tail=(0.0, 3.0)),
     scint=dict(flux=(0.03, 0.3), depth=(0.15, 0.5), tscale=(1.0, 3.0), fscale=(2.0, 10.0)),   # tex v2x4..v16x64 -> scintle area ~100 px
 )
@@ -100,10 +100,10 @@ def src_eti(S, rng, gap, P, primary=True):
 def src_rfi_persistent(S, rng, gap, P, primary=True):
     q = P['pers']; ql = P['line']
     d = 0.0 if rng.random() < q['p_zero_drift'] else logu(rng, *q['drift']) * rng.choice([-1, 1])
-    c0 = rng.uniform(3, 124); A = logu(rng, *ql['amp'])
+    c0 = rng.uniform(3, 124); A = logu(rng, *q['amp'])
     pamp = {p: rng.uniform(0.6, 1.0) for p in range(6)}
     if rng.random() < q['p_fade']: pamp[int(rng.integers(6))] = rng.uniform(0.0, 0.4)   # one faded panel
-    add_track(S, rng, gap, range(6), c0, d, A, rng.uniform(*ql['width']), pamp=pamp)
+    add_track(S, rng, gap, range(6), c0, d, A, rng.uniform(*q['width']), pamp=pamp)
     return dict(drift=d, c0=c0)
 
 
@@ -141,13 +141,13 @@ def src_satellite(S, rng, gap, P, primary=True):
 
 
 def src_radar(S, rng, gap, P, primary=True):
-    """sawtooth chirp: frequency ramps with slope then wraps, period T rows; transmitter on through all panels."""
-    q = P['radar']; slope = logu(rng, *q['slope']) * rng.choice([-1, 1]); span = rng.uniform(*q['span'])
-    per = span / abs(slope)                                         # rows per ramp (real acf: streak slope 5-20 ch/row)
-    A = logu(rng, *q['amp']); w = rng.uniform(*q['width']); T = tgrid(gap); ph = rng.uniform(0, per)
-    lo = rng.uniform(0, 128 - span); hi = lo + span
+    """sawtooth chirp: frequency ramps over `span` channels in `per` rows, then wraps; same pattern in every panel
+    (panel-relative time: real rep_k3/k6 of radar are raised = same streaks at the same place in several panels)."""
+    q = P['radar']; per = rng.uniform(*q['period']); span = rng.uniform(*q['span']); slope = rng.choice([-1, 1])
+    A = logu(rng, *q['amp']); w = rng.uniform(*q['width']); ph = rng.uniform(0, per)
+    lo = rng.uniform(0, 128 - span); hi = lo + span; r = np.arange(16, dtype=np.float32)
     for p in range(6):
-        frac = ((T[p] + ph) % per) / per                          # (16,)
+        frac = ((r + ph) % per) / per                              # (16,)
         c = (lo + frac * span) if slope > 0 else (hi - frac * span)
         S[p] += A * np.exp(-0.5 * ((CH[None, :] - c[:, None]) / w) ** 2)
     return dict(period=per)
@@ -244,7 +244,9 @@ def render_one(rng, label, tel='GBT', gap=None, P=SRC, secondary=SECONDARY):
             RENDER[s](S, rng, gap, P, primary=False); sec.append(s)
     info['secondary'] = '+'.join(sec)
     k = t['dof']; noise = rng.chisquare(k, (6, 16, 128)).astype(np.float32) / k
-    v = 96.0 + 24.0 * np.log2(noise + S)
+    # radiometer model: signal and noise fluctuate together, P = (1+S)*chi2_k/k (an additive S compresses the
+    # log-variance of brightened pixels: scint ON panels then show LESS small-scale texture than OFF, opposite to real)
+    v = 96.0 + 24.0 * np.log2((1.0 + S) * noise)
     v += bandpass(rng, t)[None, None, :] - 96.0
     v += rng.normal(0, t['gain_sd'], (6, 1, 1)).astype(np.float32)
     G, ng = glitch_rows(rng, t); v += G; info['n_glitch'] = ng
@@ -260,7 +262,7 @@ def scaled_params(P, ds):
     import copy
     Q = copy.deepcopy(P)
     if ds != 1.0:
-        for k, f in [('eti', 'drift'), ('pers', 'drift'), ('inter', 'drift'), ('radar', 'slope'), ('sat', 'height')]:
+        for k, f in [('eti', 'drift'), ('pers', 'drift'), ('inter', 'drift'), ('radar', 'span'), ('sat', 'height')]:
             Q[k][f] = tuple(v * ds for v in Q[k][f])
     return Q
 
