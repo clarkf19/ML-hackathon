@@ -21,7 +21,7 @@ y = y_train(); fo = folds()
 extra = {}
 if 'inj1' in AUGS:
     info = pd.read_csv(D + r'\inj1_info.csv'); extra['inj1'] = (load('inj1'), info.y.values, fo[info.base.values])
-prm = dict(n_estimators=int(os.environ.get('NEST', 900)), learning_rate=0.05, num_leaves=31, min_child_samples=20, colsample_bytree=0.5,
+prm = dict(n_estimators=int(os.environ.get('NEST', 900)), learning_rate=float(os.environ.get('GLR', 0.05)), num_leaves=int(os.environ.get('LEAVES', 31)), min_child_samples=20, colsample_bytree=0.5,
            subsample=0.8, subsample_freq=1, class_weight='balanced', verbose=-1, num_threads=int(os.environ.get('NT', 8)))
 oc = np.zeros((len(y), 9)); od = np.zeros((len(y), 9)); o4 = np.zeros((len(y), 9)); pt = np.zeros((len(Xt), 9))
 for k in range(5):
