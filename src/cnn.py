@@ -110,8 +110,25 @@ class ResNetTV(nn.Module):
         x = s.layer4(s.layer3(s.layer2(s.layer1(s.maxpool(s.relu(s.bn1(s.conv1(x))))))))
         return s.fc(x.mean((2, 3)))
 
+class TVNet(nn.Module):
+    """Any torchvision classifier (e.g. efficientnet_b0, resnet50, convnext_tiny) on the canvas, upsampled; last Linear -> 9 classes."""
+    def __init__(s, name):
+        super().__init__(); s.nf = 0
+        import torchvision
+        m = getattr(torchvision.models, name)(weights='DEFAULT' if os.environ.get('PRETRAIN') else None)
+        path, lin = [(n, mod) for n, mod in m.named_modules() if isinstance(mod, nn.Linear)][-1]
+        parent = m; parts = path.split('.')
+        for q in parts[:-1]: parent = parent[int(q)] if q.isdigit() else getattr(parent, q)
+        new = nn.Linear(lin.in_features, 9)
+        if parts[-1].isdigit(): parent[int(parts[-1])] = new
+        else: setattr(parent, parts[-1], new)
+        s.m = m; print('torchvision', name, 'pretrained' if os.environ.get('PRETRAIN') else 'random', '| head', path, lin.in_features, '-> 9', flush=True)
+    def forward(s, x, f=None):
+        return s.m(F.interpolate(x, scale_factor=float(os.environ.get('UPS', 2)), mode='bilinear', align_corners=False))
+
 def make_net(USEF, Fall):
     a = os.environ.get('ARCH', '')
+    if a.startswith('tv_'): return TVNet(a[3:])
     if a: return ResNetTV(a)
     return Net(w=int(os.environ.get('WIDTH', 32)), nf=Fall.shape[1] if USEF else 0)
 
