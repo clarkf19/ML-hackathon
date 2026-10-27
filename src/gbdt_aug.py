@@ -9,10 +9,14 @@ FN = {'clean': lambda s: f'fe_{s}_train.csv', 'test': lambda s: f'fe_{s}_test.cs
       'deg4': lambda s: {'tex': 'fe_texd_deg4.csv', 'trk': 'fe_trkd_deg4.csv', 'trk2': 'fe_trk2_train_deg4.csv', 'tex2': 'fe_tex2_train_deg4.csv'}.get(s, f'fe_{s}_train_deg4.csv'),
       'deg6': lambda s: {'tex': 'fe_texd_deg6.csv', 'trk': 'fe_trkd_deg6.csv', 'trk2': 'fe_trk2_train_deg6.csv'}.get(s, f'fe_{s}_train_deg6.csv'),
       'deg8': lambda s: {'tex': 'fe_texd_deg8.csv', 'trk': 'fe_trkd_deg8.csv', 'trk2': 'fe_trk2_train_deg8.csv'}.get(s, f'fe_{s}_train_deg8.csv'),
+      'deg10': lambda s: {'tex': 'fe_texd_deg10.csv', 'trk': 'fe_trkd_deg10.csv', 'trk2': 'fe_trk2_train_deg10.csv'}.get(s, f'fe_{s}_train_deg10.csv'),
+      'deg12': lambda s: {'tex': 'fe_texd_deg12.csv', 'trk': 'fe_trkd_deg12.csv', 'trk2': 'fe_trk2_train_deg12.csv'}.get(s, f'fe_{s}_train_deg12.csv'),
+      'deg14': lambda s: {'tex': 'fe_texd_deg14.csv', 'trk': 'fe_trkd_deg14.csv', 'trk2': 'fe_trk2_train_deg14.csv'}.get(s, f'fe_{s}_train_deg14.csv'),
+      'deg16': lambda s: {'tex': 'fe_texd_deg16.csv', 'trk': 'fe_trkd_deg16.csv', 'trk2': 'fe_trk2_train_deg16.csv'}.get(s, f'fe_{s}_train_deg16.csv'),
       'inj1': lambda s: f'fe_{s}_inj1.csv'}
 def load(which): return pd.concat([pd.read_csv(D + '\\' + FN[which](s)).add_prefix(s + '_') for s in SETS], axis=1)
 TAG = sys.argv[1]; AUGS = [a for a in sys.argv[2].split(',') if a != 'none']
-Xc, Xt, Xd = load('clean'), load('test'), load('deg2'); X4 = load('deg4'); XX = {a: load(a) for a in AUGS if a in ('deg6', 'deg8')}
+Xc, Xt, Xd = load('clean'), load('test'), load('deg2'); X4 = load('deg4'); XX = {a: load(a) for a in AUGS if a in ('deg6', 'deg8', 'deg10', 'deg12', 'deg14', 'deg16')}
 y = y_train(); fo = folds()
 extra = {}
 if 'inj1' in AUGS:
@@ -26,7 +30,7 @@ for k in range(5):
     if 'deg2' in AUGS: XS.append(Xd[tri]); YS.append(y[tri])
     if 'deg4' in AUGS: XS.append(X4[tri]); YS.append(y[tri])
     for a in AUGS:
-        if a in ('deg6', 'deg8'): XS.append(XX[a][tri]); YS.append(y[tri])
+        if a in ('deg6', 'deg8', 'deg10', 'deg12', 'deg14', 'deg16'): XS.append(XX[a][tri]); YS.append(y[tri])
     for nm, (Xe, ye, fe) in extra.items(): XS.append(Xe[fe != k]); YS.append(ye[fe != k])
     if os.environ.get('PL'):
         pp = np.load(D + rf"\pte_{os.environ['PL']}.npy"); cf = pp.max(1) > float(os.environ.get('PLTH', 0.9))

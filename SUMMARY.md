@@ -17,7 +17,7 @@ number should predict the leaderboard better; adversarial AUC fake-PKS-vs-test 0
 | C4 features, clean + fake-PKS v3 + v4 | 0.9168 | 0.8814 | submissions/cand_A_deg2_deg4.csv | superseded |
 | C4 features, clean + 4 fake-PKS copies | 0.9168 | 0.8866 | submissions/cand_A_d2468.csv | superseded |
 | C4 + trk2 features, clean + 4 fake-PKS copies | 0.9195 | 0.8873 | submissions/submission1.csv | **uploaded: public 0.8779** |
-| **+ panel-level features from RAW data (lvl)** | **0.9292** | **0.8972** | **submissions/submission2.csv** | **upload next** (pipeline.sh reproduces it) |
+| **+ panel-level features from RAW data (lvl)** | **0.9292** | **0.8972** | **submissions/submission2.csv** | **uploaded: public 0.8910** (pipeline.sh reproduces it) |
 | (fold-0 only) best GBDT + CNN B2 blend | 0.9253 (fold0) | 0.8950 (fold0) | needs 5-fold CNN B2 (Colab) | upload #2 after Colab |
 
 ## (b) Every idea / experiment (all numbers = macro-F1, 5-fold unless "fold0")

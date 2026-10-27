@@ -34,5 +34,5 @@ def feats(Z, bs=2000):
 if __name__ == '__main__':
     for nm in sys.argv[1:]:
         F = feats(np.load(D + rf'\z_{nm}.npy', mmap_mode='r'))
-        o = {'train': 'tex_train', 'test': 'tex_test', 'train_deg': 'texd_train', 'train_deg2': 'texd_deg2', 'train_deg4': 'texd_deg4', 'train_deg6': 'texd_deg6', 'train_deg8': 'texd_deg8'}.get(nm, f'tex_{nm}')
+        o = {'train': 'tex_train', 'test': 'tex_test', 'train_deg': 'texd_train', 'train_deg2': 'texd_deg2', 'train_deg4': 'texd_deg4', 'train_deg6': 'texd_deg6', 'train_deg8': 'texd_deg8', 'train_deg10': 'texd_deg10', 'train_deg12': 'texd_deg12', 'train_deg14': 'texd_deg14', 'train_deg16': 'texd_deg16'}.get(nm, f'tex_{nm}')
         F.to_csv(D + rf'\fe_{o}.csv', index=False); print(nm, F.shape)

@@ -81,5 +81,5 @@ if __name__ == '__main__':
     for nm in sys.argv[1:]:
         md = te if nm.startswith('test') else (pd.read_csv(D + rf'\{nm}_info.csv') if nm.startswith('inj') else tr)
         Fd = feats(np.load(D + rf'\z_{nm}.npy', mmap_mode='r'), md)
-        o = {'train': 'trk_train', 'test': 'trk_test', 'train_deg': 'trkd_train', 'train_deg2': 'trkd_deg2', 'train_deg4': 'trkd_deg4', 'train_deg6': 'trkd_deg6', 'train_deg8': 'trkd_deg8'}.get(nm, f'trk_{nm}')
+        o = {'train': 'trk_train', 'test': 'trk_test', 'train_deg': 'trkd_train', 'train_deg2': 'trkd_deg2', 'train_deg4': 'trkd_deg4', 'train_deg6': 'trkd_deg6', 'train_deg8': 'trkd_deg8', 'train_deg10': 'trkd_deg10', 'train_deg12': 'trkd_deg12', 'train_deg14': 'trkd_deg14', 'train_deg16': 'trkd_deg16'}.get(nm, f'trk_{nm}')
         Fd.to_csv(D + rf'\fe_{o}.csv', index=False); print(nm, Fd.shape, flush=True)
