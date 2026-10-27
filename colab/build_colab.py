@@ -19,7 +19,7 @@ md("""# Signal Hunters - GPU CNN (Hack4Hack R2)
 3. Checkpoints and outputs are written to `MyDrive/h4h_r2/out/`; after a disconnect just re-run all cells, training resumes from the last finished epoch.
 4. Copy `out/oofpart_*`, `out/oofdpart_*`, `out/ptepart_*` back into the local `data/` folder for blending.
 
-CFG: `B2` = canvas CNN + ETI/trap injection + 50% fake-PKS mixing; `H` = hybrid (B2 + physics features in the head).""")
+CFG: **`B3` (use this)** = B2 on level-preserving input (panel brightness kept); `B2` = canvas CNN + ETI/trap injection + 50% fake-PKS mixing.""")
 code("from google.colab import drive; drive.mount('/content/drive')\n!nvidia-smi -L\nimport torch; print('cuda', torch.cuda.is_available())")
 code("import os\nDRV = '/content/drive/MyDrive/h4h_r2'; os.makedirs(DRV + '/out', exist_ok=True)\n"
      "for d in ['src', 'data', 'logs']: os.makedirs('/content/work/' + d, exist_ok=True)\n"
