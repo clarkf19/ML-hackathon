@@ -71,6 +71,7 @@ number should predict the leaderboard better; adversarial AUC fake-PKS-vs-test 0
 | base8_4 = base8_3 + A_rsswp_PL4 in the feature average | FINAL 0.9242 (vs 0.9234); mixed with 6 pretrained 0.9297 (vs 0.9293) | tiny + |
 | A_rsswp_PL5 (round-5 pseudo-labels from submission10, p>0.8) | **0.9054** (PL4 0.9036), clean 0.9367 | best feature model so far |
 | A_rs_PL5 (same, without sweep features) | 0.9020 (PL4 0.9024), clean 0.9365 | neutral on proxy |
+| A_trk3_PL5 (ETI slope set + round-5 pseudo-labels) | 0.9002 (A_trk3 no PL 0.8982), clean 0.9308 | +0.002 |
 | **Pretrained CNNs as meta inputs vs mixing** (folds 0-1, meta trained on 1 fold) | **0.9298 vs 0.9269** | **+0.003 → morning: complete folds go into the meta** |
 
 ## Error analysis (best GBDT A_deg2_deg4)
