@@ -80,6 +80,41 @@ class Net(nn.Module):
         if s.nf: h = torch.cat([h, s.m(f)], 1)
         return s.h(h)
 
+class BasicBlock(nn.Module):          # parameter names identical to torchvision's -> ImageNet weights load directly
+    def __init__(s, i, o, st):
+        super().__init__()
+        s.conv1 = nn.Conv2d(i, o, 3, st, 1, bias=False); s.bn1 = nn.BatchNorm2d(o); s.relu = nn.ReLU(inplace=True)
+        s.conv2 = nn.Conv2d(o, o, 3, 1, 1, bias=False); s.bn2 = nn.BatchNorm2d(o)
+        s.downsample = nn.Sequential(nn.Conv2d(i, o, 1, st, bias=False), nn.BatchNorm2d(o)) if (st != 1 or i != o) else None
+    def forward(s, x):
+        idt = x if s.downsample is None else s.downsample(x)
+        return s.relu(s.bn2(s.conv2(s.relu(s.bn1(s.conv1(x))))) + idt)
+
+class ResNetTV(nn.Module):
+    """torchvision-compatible ResNet18/34 on the canvas, upsampled 2x; optional ImageNet init (PRETRAIN=1, needs torchvision)."""
+    def __init__(s, arch='rn34'):
+        super().__init__(); s.nf = 0
+        layers = {'rn18': (2, 2, 2, 2), 'rn34': (3, 4, 6, 3)}[arch]
+        s.conv1 = nn.Conv2d(3, 64, 7, 2, 3, bias=False); s.bn1 = nn.BatchNorm2d(64); s.relu = nn.ReLU(inplace=True); s.maxpool = nn.MaxPool2d(3, 2, 1)
+        inp = 64
+        for li, (n, c) in enumerate(zip(layers, [64, 128, 256, 512])):
+            setattr(s, f'layer{li + 1}', nn.Sequential(*([BasicBlock(inp, c, 1 if li == 0 else 2)] + [BasicBlock(c, c, 1) for _ in range(n - 1)]))); inp = c
+        s.fc = nn.Linear(512, 9)
+        if os.environ.get('PRETRAIN'):
+            import torchvision
+            sd = getattr(torchvision.models, {'rn18': 'resnet18', 'rn34': 'resnet34'}[arch])(weights='IMAGENET1K_V1').state_dict()
+            miss, unexp = s.load_state_dict({k: v for k, v in sd.items() if not k.startswith('fc.')}, strict=False)
+            print('ImageNet weights loaded; missing', miss, 'unexpected', unexp, flush=True)
+    def forward(s, x, f=None):
+        x = F.interpolate(x, scale_factor=2, mode='bilinear', align_corners=False)
+        x = s.layer4(s.layer3(s.layer2(s.layer1(s.maxpool(s.relu(s.bn1(s.conv1(x))))))))
+        return s.fc(x.mean((2, 3)))
+
+def make_net(USEF, Fall):
+    a = os.environ.get('ARCH', '')
+    if a: return ResNetTV(a)
+    return Net(w=int(os.environ.get('WIDTH', 32)), nf=Fall.shape[1] if USEF else 0)
+
 SETS = ['phys', 'tex', 'trk', 'rep', 'rep2']
 def featmat(which):
     fn = {'clean': lambda q: f'fe_{q}_train.csv', 'test': lambda q: f'fe_{q}_test.csv', 'inj1': lambda q: f'fe_{q}_inj1.csv',
@@ -122,8 +157,8 @@ if __name__ == '__main__':
         nrm = lambda a: torch.from_numpy(np.clip(np.nan_to_num((a - med) / iqr), -10, 10).astype(np.float32))
         Fall = nrm(Fc); Fdall = nrm(featmat('deg2')); Ft = nrm(featmat('test')); Fv, Fdv = Fall, Fdall
         if EXTRA: Fi = nrm(featmat(EXTRA)); Fall = torch.cat([Fall, Fi]); Fdall = torch.cat([Fdall, Fi])
-    net = Net(w=int(os.environ.get('WIDTH', 32)), nf=Fall.shape[1] if USEF else 0); opt = torch.optim.AdamW(net.parameters(), 2e-3, weight_decay=1e-4)
-    BS = 64; steps = EP * (len(tri) // BS); sched = torch.optim.lr_scheduler.OneCycleLR(opt, 3e-3, total_steps=steps)
+    net = make_net(USEF, Fall); opt = torch.optim.AdamW(net.parameters(), 2e-3, weight_decay=1e-4)
+    BS = 64; steps = EP * (len(tri) // BS); sched = torch.optim.lr_scheduler.OneCycleLR(opt, float(os.environ.get('LR', 3e-3)), total_steps=steps)
     cw = torch.tensor(len(y) / (9 * np.bincount(y[fo != FOLD] if FOLD >= 0 else y, minlength=9)), dtype=torch.float32) ** 0.5
     ck = D + rf'\ck_{TAG}_f{FOLD}.pt'; ep0 = 0
     if os.path.exists(ck):

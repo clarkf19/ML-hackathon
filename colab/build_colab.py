@@ -30,8 +30,8 @@ for n in ['common.py', 'cnn.py']:
     code(f"%%writefile /content/work/src/{n}\n" + colabify(src(n)))
 code("# patch cnn.py for GPU + checkpoints in Drive\n"
      "s = open('/content/work/src/cnn.py').read()\n"
-     "s = s.replace('    net = Net(', '    dev = \"cuda\"; net = Net(').replace('if USEF else 0); opt', 'if USEF else 0).to(dev); opt')\n"
-     "assert 'dev = \"cuda\"; net = Net(' in s, 'GPU patch failed: dev not defined'\n"
+     "s = s.replace('    net = make_net(USEF, Fall); opt', '    dev = \"cuda\"; net = make_net(USEF, Fall).to(dev); opt')\n"
+     "assert 'dev = \"cuda\"; net = make_net(USEF, Fall).to(dev); opt' in s, 'GPU patch failed: dev not defined'\n"
      "s = s.replace('net(xb, fb)', 'net(xb.to(dev), fb.to(dev) if fb is not None else None)').replace('torch.from_numpy(ylab[b])', 'torch.from_numpy(ylab[b]).to(dev)')\n"
      "s = s.replace('weight=cw,', 'weight=cw.to(dev),')\n"
      "s = s.replace('F.softmax(net(canvas(zb, gaps[b]), fb), 1)', 'F.softmax(net(canvas(zb, gaps[b]).to(dev), fb.to(dev) if fb is not None else None), 1).cpu()')\n"
@@ -48,9 +48,11 @@ code("CFG = 'B3'      # 'B3' first run | 'B3w' second run (other seed, wider) | 
      "ENV = {'B2': 'EXTRA=inj1 DEGMIX=0.5', 'B3': 'ZPFX=zr EXTRA=inj1 DEGMIX=0.5', 'B3w': 'ZPFX=zr EXTRA=inj1 DEGMIX=0.5 SEED=1 WIDTH=48',\n"
      "       'B3pl': 'ZPFX=zr EXTRA=inj1 DEGMIX=0.5 SEED=2 PL=pl_test.npy', 'B4': 'ZPFX=zr EXTRA=inj1 DEGMIX=0.5 ONLINE=1 SEED=3',\n"
      "       'B3plw': 'ZPFX=zr EXTRA=inj1 DEGMIX=0.5 SEED=4 WIDTH=48 PL=pl_test.npy',\n"
-     "       'B3pl2': 'ZPFX=zr EXTRA=inj1 DEGMIX=0.5 SEED=5 PL=pl_test2.npy'}[CFG]; TAG = CFG + 'g'\n"
+     "       'B3pl2': 'ZPFX=zr EXTRA=inj1 DEGMIX=0.5 SEED=5 PL=pl_test2.npy',\n"
+     "       'P1': 'ZPFX=zr EXTRA=inj1 DEGMIX=0.5 SEED=6 PL=pl_test2.npy ARCH=rn34 PRETRAIN=1 LR=5e-4'}[CFG]; TAG = CFG + 'g'\n"
+     "EP = {'P1': 20}.get(CFG, EPOCHS)   # pretrained ImageNet ResNet-34 converges faster\n"
      "for fold in FOLDS:\n"
-     "    !cd /content/work && {ENV} NT=4 python src/cnn.py {fold} {EPOCHS} {TAG}\n"
+     "    !cd /content/work && {ENV} NT=4 python src/cnn.py {fold} {EP} {TAG}\n"
      "    !cp /content/work/data/*part_{TAG}_f{fold}.npy $DRV/out/ ; tail -2 /content/work/logs/cnn_{TAG}_f{fold}.log")
 nb = dict(cells=cells, metadata=dict(accelerator='GPU', kernelspec=dict(name='python3', display_name='Python 3')), nbformat=4, nbformat_minor=5)
 json.dump(nb, open(os.path.join(ROOT, 'colab', 'signal_hunters_gpu.ipynb'), 'w'), indent=1)
