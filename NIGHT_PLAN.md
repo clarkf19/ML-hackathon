@@ -14,6 +14,7 @@ Best public: **submission10 = 0.9236** (base8_3 mixed 0.5 with 6 pretrained CNNs
 2. run_night2.sh → logs/night2.out (NIGHT2DONE): round-5 pseudo-labels from submission10:
    A_rsswp_PL5, A_rs_PL5, A_trk3_PL5, A_rsswp_PL5t6 (PLTH 0.6)
 3. run_night3.sh → logs/night3.out (NIGHT3DONE): A_rsswp_PL5w3 (test rows ×3), A_rsswp_PL5soft (soft PL over all test)
+4. run_night4.sh → logs/night4.out (NIGHT4DONE): A_rsswp_PL5_s11, _s22 (seed averaging)
 Results land in logs/aug_results.txt.
 
 ## After queues: build candidates
