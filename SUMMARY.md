@@ -73,6 +73,7 @@ number should predict the leaderboard better; adversarial AUC fake-PKS-vs-test 0
 | A_rs_PL5 (same, without sweep features) | 0.9020 (PL4 0.9024), clean 0.9365 | neutral on proxy |
 | A_trk3_PL5 (ETI slope set + round-5 pseudo-labels) | 0.9002 (A_trk3 no PL 0.8982), clean 0.9308 | +0.002 |
 | A_rsswp_PL5t6 (round-5 pseudo-labels, lower threshold p>0.6 → ~9.6k test rows) | **0.9056**, clean **0.9374** | best feature model (by a hair) |
+| A_rsswp_PL5w3 (real-test rows weighted ×3) | 0.9046 (v4 0.9035), clean 0.9374 | same as unweighted on proxy; LB-only question |
 | base_b9a / base_b9b = round-5 feature models in the base, + 6 pretrained mix (cand_b9amix / cand_b9bmix.csv) | FINAL 0.9241; mixed 0.9293 / 0.9294 (sub10 recipe 0.9293) | flat on proxy (expected for pseudo-labels); LB test candidate |
 | **Pretrained CNNs as meta inputs vs mixing** (folds 0-1, meta trained on 1 fold) | **0.9298 vs 0.9269** | **+0.003 → morning: complete folds go into the meta** |
 
