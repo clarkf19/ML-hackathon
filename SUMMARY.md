@@ -59,6 +59,18 @@ number should predict the leaderboard better; adversarial AUC fake-PKS-vs-test 0
 | D | Noise-shape matching | – | – | – | done inside P4 (quantile map) | |
 | E | Drift-scale shift check | – | – | – | small (strong-line drift p90 0.60 vs 0.70) | covered by CNN zoom aug |
 
+## Night 27→28 Oct (autonomous; see NIGHT_PLAN.md)
+| Experiment | fake-PKS | Verdict |
+|---|---|---|
+| Per-class bias tuning for macro-F1 (tuned on 2 folds, scored on the other 2) | +0.0006 / +0.0016 | negligible |
+| Mixing variants (geometric, log-avg, E-family ×1.5/×2, w 0.4–0.6) | 0.9286–0.9293 (ref 0.9293) | saturated |
+| Scintillation F1 per model: GBDT 0.68–0.72, every CNN 0.69–0.72, blend 0.735 | — | same ceiling for all model families → SNR-limited on the proxy |
+| Test cadences predicted noise: brightening (lv_on_off) quantiles = fake-PKS noise | — | no sign of extra hidden scintillation in test |
+| HIP target repeats (1,230 in train): pair same-label rate 0.140 vs chance 0.142; centre freq: flat | — | no signal |
+| A_rs_PL4_big (63 leaves, 1600 trees) | 0.9019 (vs 0.9024) | no gain |
+| base8_4 = base8_3 + A_rsswp_PL4 in the feature average | FINAL 0.9242 (vs 0.9234); mixed with 6 pretrained 0.9297 (vs 0.9293) | tiny + |
+| **Pretrained CNNs as meta inputs vs mixing** (folds 0-1, meta trained on 1 fold) | **0.9298 vs 0.9269** | **+0.003 → morning: complete folds go into the meta** |
+
 ## Error analysis (best GBDT A_deg2_deg4)
 - **macro-F1 lost per class** (clean / fake-PKS): scint **0.034 / 0.043**, ETI 0.012 / 0.015, rfi_pers 0.009 / 0.011, rfi_int 0.009 / 0.011, radar 0.007 / 0.013, satellite 0.007 / 0.010, noise 0.005 / 0.009.
 - Top confusions: scint→noise 265 (fPKS 366), rfi_int→rfi_pers 183, scint→rfi_pers 151, scint→satellite 82, radar→noise (fPKS 126).

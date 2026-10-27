@@ -32,10 +32,16 @@ for k in range(5):
     for a in AUGS:
         if a in ('deg6', 'deg8', 'deg10', 'deg12', 'deg14', 'deg16'): XS.append(XX[a][tri]); YS.append(y[tri])
     for nm, (Xe, ye, fe) in extra.items(): XS.append(Xe[fe != k]); YS.append(ye[fe != k])
-    if os.environ.get('PL'):
-        pp = np.load(D + rf"\pte_{os.environ['PL']}.npy"); cf = pp.max(1) > float(os.environ.get('PLTH', 0.9))
-        XS.append(Xt[cf]); YS.append(pp.argmax(1)[cf])
-    m = lgb.LGBMClassifier(**prm).fit(pd.concat(XS), np.concatenate(YS))
+    WS = [np.ones(len(a)) for a in YS]
+    if os.environ.get('PL'):   # PLW = weight of real-test rows; PLSOFT = every test cadence once per class with weight p (p > PLSOFT)
+        pp = np.load(D + rf"\pte_{os.environ['PL']}.npy"); plw = float(os.environ.get('PLW', 1))
+        if os.environ.get('PLSOFT'):
+            ii, cc = np.where(pp > float(os.environ['PLSOFT']))
+            XS.append(Xt.iloc[ii]); YS.append(cc); WS.append(plw * pp[ii, cc])
+        else:
+            cf = pp.max(1) > float(os.environ.get('PLTH', 0.9))
+            XS.append(Xt[cf]); YS.append(pp.argmax(1)[cf]); WS.append(np.full(cf.sum(), plw))
+    m = lgb.LGBMClassifier(**prm).fit(pd.concat(XS), np.concatenate(YS), sample_weight=np.concatenate(WS))
     oc[vai] = m.predict_proba(Xc[vai]); od[vai] = m.predict_proba(Xd[vai]); o4[vai] = m.predict_proba(X4[vai]); pt += m.predict_proba(Xt) / 5
 for nm, a in [('oofc', oc), ('oofd', od), ('oof4', o4), ('pte', pt)]: np.save(D + rf'\{nm}_{TAG}.npy', a)
 msg = f'{TAG} sets={SETS} augs={AUGS}  clean-val {mf1(y, oc.argmax(1)):.4f}  fakePKS-val {mf1(y, od.argmax(1)):.4f}  fPKS-v4-val {mf1(y, o4.argmax(1)):.4f}\n  clean {per_class(y, oc.argmax(1))}\n  fPKS  {per_class(y, od.argmax(1))}\n  test mix {dict(zip(LABELS, np.round(np.bincount(pt.argmax(1), minlength=9) / len(pt), 3)))}'
