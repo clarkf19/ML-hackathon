@@ -24,7 +24,7 @@ if SEP and len(CS) > 1:
     X = np.hstack([L(G)] + [L(c[0]) for c in CS]); Xc = np.hstack([L(Gc)] + [L(c[1]) for c in CS]); Xt = np.hstack([L(Gt)] + [L(c[2]) for c in CS])
 else:
     X, Xc, Xt = np.hstack([L(G), L(C)]), np.hstack([L(Gc), L(Cc)]), np.hstack([L(Gt), L(Ct)])
-mk = lambda: lgb.LGBMClassifier(n_estimators=300, learning_rate=0.03, num_leaves=15, min_child_samples=40, class_weight='balanced', verbose=-1, num_threads=8)
+mk = lambda: lgb.LGBMClassifier(n_estimators=300, learning_rate=0.03, num_leaves=int(os.environ.get('META_LEAVES', 31)), min_child_samples=30, colsample_bytree=0.6, class_weight='balanced', verbose=-1, num_threads=8)
 pm, pmc = np.zeros((len(y), 9)), np.zeros((len(y), 9))
 for k in range(5):
     t, v = fo != k, fo == k
