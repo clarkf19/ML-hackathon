@@ -176,6 +176,8 @@ if __name__ == '__main__':
         if EXTRA: Fi = nrm(featmat(EXTRA)); Fall = torch.cat([Fall, Fi]); Fdall = torch.cat([Fdall, Fi])
     net = make_net(USEF, Fall); opt = torch.optim.AdamW(net.parameters(), 2e-3, weight_decay=1e-4)
     BS = 64; steps = EP * (len(tri) // BS); sched = torch.optim.lr_scheduler.OneCycleLR(opt, float(os.environ.get('LR', 3e-3)), total_steps=steps)
+    AMPON = bool(os.environ.get('AMP')) and torch.cuda.is_available()          # fp16 mixed precision on GPU (~2x on T4)
+    scaler = torch.amp.GradScaler('cuda', enabled=AMPON)
     cw = torch.tensor(len(y) / (9 * np.bincount(y[fo != FOLD] if FOLD >= 0 else y, minlength=9)), dtype=torch.float32) ** 0.5
     ck = D + rf'\ck_{TAG}_f{FOLD}.pt'; ep0 = 0
     if os.path.exists(ck):
@@ -185,7 +187,9 @@ if __name__ == '__main__':
         with torch.no_grad():
             for s in range(0, len(idx), 256):
                 b = idx[s:s + 256]; zb = torch.from_numpy(np.asarray(Zs[b], dtype=np.float32)); fb = Fs[b] if Fs is not None else None
-                p = F.softmax(net(canvas(zb, gaps[b]), fb), 1) + F.softmax(net(canvas(zb.flip(-1), gaps[b]), fb), 1)
+                with torch.autocast('cuda', dtype=torch.float16, enabled=AMPON):
+                    p = F.softmax(net(canvas(zb, gaps[b]), fb), 1) + F.softmax(net(canvas(zb.flip(-1), gaps[b]), fb), 1)
+                p = p.float()
                 out.append(p.numpy() / 2)
         return np.concatenate(out)
     log = open(ROOT + rf'\logs\cnn_{TAG}_f{FOLD}.log', 'a')
@@ -206,9 +210,10 @@ if __name__ == '__main__':
                 lam = float(np.random.beta(MIX, MIX)); pm = torch.randperm(len(b)); xb = lam * xb + (1 - lam) * xb[pm]
             else:
                 lam, pm = 1.0, torch.arange(len(b))
-            out = net(xb, fb); yt = torch.from_numpy(ylab[b])
-            loss = lam * F.cross_entropy(out, yt, weight=cw, label_smoothing=0.05) + (1 - lam) * F.cross_entropy(out, yt[pm], weight=cw, label_smoothing=0.05)
-            opt.zero_grad(); loss.backward(); opt.step(); sched.step(); tl += loss.item()
+            with torch.autocast('cuda', dtype=torch.float16, enabled=AMPON):
+                out = net(xb, fb); yt = torch.from_numpy(ylab[b])
+                loss = lam * F.cross_entropy(out, yt, weight=cw, label_smoothing=0.05) + (1 - lam) * F.cross_entropy(out, yt[pm], weight=cw, label_smoothing=0.05)
+            opt.zero_grad(); scaler.scale(loss).backward(); scaler.step(opt); scaler.update(); sched.step(); tl += loss.item()
         msg = f'ep {ep} loss {tl / (len(perm) // BS):.4f} {time.time() - t:.0f}s'
         if vai is not None and (ep % 4 == 3 or ep == EP - 1):
             pv = predict(vai, Z, gtr, Fv); msg += f' val mF1 {mf1(y[vai], pv.argmax(1)):.4f}'
