@@ -39,9 +39,12 @@ code("# patch cnn.py for GPU + checkpoints in Drive\n"
      "s = s.replace(\"ck = D + rf'/ck_{TAG}_f{FOLD}.pt'\", \"ck = '/content/drive/MyDrive/h4h_r2/out/' + f'ck_{TAG}_f{FOLD}.pt'\")\n"
      "assert s.count('.to(dev)') >= 6, 'GPU patch failed'\n"
      "open('/content/work/src/cnn.py', 'w').write(s); print('patched')")
-code("CFG = 'B3'      # 'B3' (recommended: keeps panel brightness) or 'B2'\nEPOCHS = 30\n"
+code("# copy the pseudo-label file if it is in Drive (needed only for CFG='B3pl')\nimport os, shutil\n"
+     "if os.path.exists(DRV + '/pl_test.npy'): shutil.copy(DRV + '/pl_test.npy', '/content/work/data/pl_test.npy'); print('pl_test.npy copied')")
+code("CFG = 'B3'      # 'B3' first run | 'B3w' second run (other seed, wider) | 'B3pl' (+ test pseudo-labels, needs pl_test.npy in h4h_r2)\nEPOCHS = 30\n"
      "FOLDS = [0, 1, 2, 3, 4]   # split between two people, e.g. [0, 1, 2] and [3, 4]\n"
-     "ENV = {'B2': 'EXTRA=inj1 DEGMIX=0.5', 'B3': 'ZPFX=zr EXTRA=inj1 DEGMIX=0.5'}[CFG]; TAG = CFG + 'g'\n"
+     "ENV = {'B2': 'EXTRA=inj1 DEGMIX=0.5', 'B3': 'ZPFX=zr EXTRA=inj1 DEGMIX=0.5', 'B3w': 'ZPFX=zr EXTRA=inj1 DEGMIX=0.5 SEED=1 WIDTH=48',\n"
+     "       'B3pl': 'ZPFX=zr EXTRA=inj1 DEGMIX=0.5 SEED=2 PL=pl_test.npy'}[CFG]; TAG = CFG + 'g'\n"
      "for fold in FOLDS:\n"
      "    !cd /content/work && {ENV} NT=4 python src/cnn.py {fold} {EPOCHS} {TAG}\n"
      "    !cp /content/work/data/*part_{TAG}_f{fold}.npy $DRV/out/ ; tail -2 /content/work/logs/cnn_{TAG}_f{fold}.log")
