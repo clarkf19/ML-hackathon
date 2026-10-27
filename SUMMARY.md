@@ -14,7 +14,9 @@ number should predict the leaderboard better; adversarial AUC fake-PKS-vs-test 0
 | A0 starter-style baseline | 0.631 | – | submissions/submission1.csv | no (fallback only) |
 | C3 features, clean train | 0.9035 | – | submissions/submission3.csv | superseded |
 | C4 features, clean + fake-PKS v3 | 0.9145 | 0.874 | submissions/submission4.csv | ok |
-| **C4 features, clean + fake-PKS v3 + v4** | **0.9168** | **0.8814** | **submissions/cand_A_deg2_deg4.csv** | **recommended FIRST upload** |
+| C4 features, clean + fake-PKS v3 + v4 | 0.9168 | 0.8814 | submissions/cand_A_deg2_deg4.csv | superseded |
+| C4 features, clean + 4 fake-PKS copies | 0.9168 | 0.8866 | submissions/cand_A_d2468.csv | superseded |
+| **C4 + trk2 features, clean + 4 fake-PKS copies** | **0.9195** | **0.8873** | **submissions/cand_A_d2468_trk2.csv** | **recommended FIRST upload** (reproduced by pipeline.sh) |
 | (fold-0 only) GBDT + CNN B2 blend | 0.9205 (fold0) | 0.8895 (fold0) | needs 5-fold CNN (Colab) | after Colab |
 
 ## (b) Every idea / experiment (all numbers = macro-F1, 5-fold unless "fold0")
@@ -29,7 +31,9 @@ number should predict the leaderboard better; adversarial AUC fake-PKS-vs-test 0
 | P1–P4 | Fake-PKS simulator: log-gamma noise to PKS σ, extra dropped rows, glitch rows at PKS rate, quantile-map to test pixel marginal | validation | – | – | **proxy works** | adv AUC vs test 0.995 (v1/v2) → **0.78** (v3/v4) |
 | A_deg2 | train on clean + fake-PKS v3 | high | 0.9145 | 0.874 | **+0.005 / +0.032** | |
 | A_deg2_deg4 | + 2nd fake-PKS copy (v4: stronger glitches) | med | **0.9168** | **0.8814** | +0.002 / +0.007 | more noise realisations help |
-| A_d2468 | 4 fake-PKS copies | med | running | | | |
+| A_d2468 | 4 fake-PKS copies (varied noise 0.43–0.47, glitch rate/amp) | med | 0.9168 | **0.8866** | +0.000 / +0.005 | scint fPKS 0.609→0.624 |
+| trk2 | In-band-aware global tracks through all 6 panels (persistent line drifting out of band ≠ intermittent) | med | **0.9195** | **0.8873** (v4-val 0.8851) | **win +0.003 / +0.001 (+0.004 v4)** | rfi_int 0.923→0.929, fPKS 0.905→0.914 |
+| tex3 | Source-aware scint texture (mask all detected lines + glitch rows) | med | – | – | weaker single-feature AUC (0.673 vs 0.74) | over-masks scint patches; not trained |
 | B | CNN on global-time canvas (6 panels placed at real time → ETI = one straight line), SNR/zoom/flip aug | high | 0.875 fold0 | 0.826 fold0 | **complementary** | radar 0.966, rfi_pers 0.943 (> GBDT), ETI 0.52 |
 | B2 | B + 2000 injected ETI/trap cadences + 50% fake-PKS mixing | high | **0.886 fold0** | **0.854 fold0** | +0.011 / +0.028 over B | ETI 0.52→0.64 |
 | blend | GBDT(A_deg2_deg4) + CNN 50/50, fold0 | – | 0.9205–0.9233 | 0.887–0.890 | +0.008–0.010 | oracle "either right" acc 0.9575 vs GBDT 0.925 → lots of complementarity left |
@@ -56,8 +60,8 @@ number should predict the leaderboard better; adversarial AUC fake-PKS-vs-test 0
 - EM-estimated test mix ≈ train mix except scintillation (~4% vs 8%).
 
 ## Recommendation
-1. **Direction to commit to:** physics-feature GBDT trained on clean + simulated-PKS copies (the backbone, 0.917 / 0.881) **plus** a CNN trained with injection + fake-PKS mixing (B2, or H if it wins), blended. The two are strongly complementary (oracle 0.958 acc vs 0.925).
-2. **First upload now:** `cand_A_deg2_deg4.csv` — calibrates the public LB against our fake-PKS proxy (expect public ≈ 0.86–0.89 if the proxy is right).
+1. **Direction to commit to:** physics-feature GBDT trained on clean + simulated-PKS copies (the backbone, 0.9195 / 0.887) **plus** a CNN trained with injection + fake-PKS mixing (B2, or H if it wins), blended. The two are strongly complementary (oracle 0.958 acc vs 0.925).
+2. **First upload now:** `cand_A_d2468_trk2.csv` — calibrates the public LB against our fake-PKS proxy (expect public ≈ 0.86–0.89 if the proxy is right).
 3. **Colab (Clark):** upload `colab/h4h_bundle.zip` (858 MB) to `MyDrive/h4h_r2/`, run `colab/signal_hunters_gpu.ipynb` with CFG='B2' (and 'H' if fold-0 H beats B2) → 5-fold CNN probs → blend with GBDT → second upload.
 4. Keep ~70% on new information: scintillation under contamination, int-vs-pers multi-source decomposition, simulator realism.
 
@@ -65,6 +69,12 @@ number should predict the leaderboard better; adversarial AUC fake-PKS-vs-test 0
 1. 5-fold CNN B2/H on Colab → GBDT+CNN blend (expected +0.008–0.010).
 2. Source-aware scintillation: mask ALL detected lines/sweeps/glitches (not just zero-drift lines) before texture; scint-specialist model.
 3. More/varied fake-PKS copies + pseudo-labels on real test in the final model.
+
+## When Clark is back (needs you)
+1. **Upload #1:** `submissions/cand_A_d2468_trk2.csv` (format verified: 10,000 rows, sample-submission ID order, valid labels).
+2. **Colab:** upload `colab/h4h_bundle.zip` (858 MB) to `MyDrive/h4h_r2/`, open `colab/signal_hunters_gpu.ipynb`, T4 runtime, run all (CFG='B2' first; 'H' if fold-0 H wins locally). ~5 folds × 30 epochs. Copy `out/*part_*.npy` into `data/`.
+3. **GitHub:** code is committed locally (2 commits, no AI attribution); `git push` to clarkf19/ML-hackathon when you're ready (data excluded by .gitignore). That repo link is also the code submission.
+4. **Cloud sessions ($100):** the raw data can't go into GitHub (npy files > 100 MB), so each session would have to download the dataset from the organisers' Drive link and run `pipeline.sh` (~30 min CPU) first. Best uses: (a) scintillation specialist, (b) curved-sweep satellite features, (c) stacking/blending once Colab CNN outputs exist.
 
 ## Reproducibility
 `pipeline.sh` rebuilds the features and the GBDT submission from raw data (seeded). All scripts in `src/`.

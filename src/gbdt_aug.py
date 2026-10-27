@@ -5,10 +5,10 @@ sys.path.insert(0, r'C:\Users\clark\hack4hack-r2\src')
 from common import *
 SETS = os.environ.get('SETS', 'phys,tex,trk,rep,rep2').split(',')
 FN = {'clean': lambda s: f'fe_{s}_train.csv', 'test': lambda s: f'fe_{s}_test.csv',
-      'deg2': lambda s: {'tex': 'fe_texd_deg2.csv', 'trk': 'fe_trkd_deg2.csv', 'tex2': 'fe_tex2_train_deg2.csv'}.get(s, f'fe_{s}_train_deg2.csv'),
-      'deg4': lambda s: {'tex': 'fe_texd_deg4.csv', 'trk': 'fe_trkd_deg4.csv', 'tex2': 'fe_tex2_train_deg4.csv'}.get(s, f'fe_{s}_train_deg4.csv'),
-      'deg6': lambda s: {'tex': 'fe_texd_deg6.csv', 'trk': 'fe_trkd_deg6.csv'}.get(s, f'fe_{s}_train_deg6.csv'),
-      'deg8': lambda s: {'tex': 'fe_texd_deg8.csv', 'trk': 'fe_trkd_deg8.csv'}.get(s, f'fe_{s}_train_deg8.csv'),
+      'deg2': lambda s: {'tex': 'fe_texd_deg2.csv', 'trk': 'fe_trkd_deg2.csv', 'trk2': 'fe_trk2_train_deg2.csv', 'tex2': 'fe_tex2_train_deg2.csv'}.get(s, f'fe_{s}_train_deg2.csv'),
+      'deg4': lambda s: {'tex': 'fe_texd_deg4.csv', 'trk': 'fe_trkd_deg4.csv', 'trk2': 'fe_trk2_train_deg4.csv', 'tex2': 'fe_tex2_train_deg4.csv'}.get(s, f'fe_{s}_train_deg4.csv'),
+      'deg6': lambda s: {'tex': 'fe_texd_deg6.csv', 'trk': 'fe_trkd_deg6.csv', 'trk2': 'fe_trk2_train_deg6.csv'}.get(s, f'fe_{s}_train_deg6.csv'),
+      'deg8': lambda s: {'tex': 'fe_texd_deg8.csv', 'trk': 'fe_trkd_deg8.csv', 'trk2': 'fe_trk2_train_deg8.csv'}.get(s, f'fe_{s}_train_deg8.csv'),
       'inj1': lambda s: f'fe_{s}_inj1.csv'}
 def load(which): return pd.concat([pd.read_csv(D + '\\' + FN[which](s)).add_prefix(s + '_') for s in SETS], axis=1)
 TAG = sys.argv[1]; AUGS = [a for a in sys.argv[2].split(',') if a != 'none']
