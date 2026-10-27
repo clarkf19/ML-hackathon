@@ -13,7 +13,7 @@ W = ['c', 'd', 't']  # clean-val OOF, fakePKS-val OOF, test
 
 def models():
     out = {}
-    for n in ['baseline', 'cond', 'ovr', 'pairs', 'xgb', 'cat', 'mlp']:
+    for n in ['baseline', 'cond', 'ovr', 'pairs', 'xgb', 'cat', 'mlp', 'lgbx']:
         try:
             z = load_probs(n); out[n] = dict(zip(W, [z['oofc'], z['oofd'], z['pte']]))
         except FileNotFoundError:
@@ -143,7 +143,7 @@ def variants(M):
     add('H + bias + cond-prob overrides + pair overrides', 'a+c+d', ['baseline', 'pairs'],
         lambda w: {'p': H(w), 's': cond_s(H(w)), 'q': Q(w)}, [Bias(), Cascade('argmax'), Pairs()])
     # --- (e) other learners and averages
-    for n in ['xgb', 'cat', 'mlp']:
+    for n in ['xgb', 'cat', 'mlp', 'lgbx']:
         add(f'{n} argmax', 'e', [n], lambda w, n=n: {'p': M[n][w]}, [])
         add(f'avg(H, {n})', 'e', ['baseline', n], lambda w, n=n: {'p': avg(H(w), M[n][w])}, [])
         add(f'avg(H, {n}) + bias', 'e+d', ['baseline', n], lambda w, n=n: {'p': avg(H(w), M[n][w])}, [Bias()])
@@ -154,6 +154,9 @@ def variants(M):
     add('avg(H, xgb, cat, mlp)', 'e', GB, lambda w: {'p': avg(*[M[n][w] for n in GB])}, [])
     add('avg(H, xgb, cat, mlp) + bias', 'e+d', GB, lambda w: {'p': avg(*[M[n][w] for n in GB])}, [Bias()])
     add('geo-avg(H, xgb, cat, mlp) + bias', 'e+d', GB, lambda w: {'p': gavg(*[M[n][w] for n in GB])}, [Bias()])
+    G5 = GB + ['lgbx']
+    add('avg(H, xgb, cat, mlp, lgbx)', 'e', G5, lambda w: {'p': avg(*[M[n][w] for n in G5])}, [])
+    add('avg(H, xgb, cat, mlp, lgbx) + bias', 'e+d', G5, lambda w: {'p': avg(*[M[n][w] for n in G5])}, [Bias()])
     add('avg(H, xgb, cat, mlp) + bias + cond-prob overrides + pairs', 'all', GB + ['pairs'],
         lambda w: {'p': avg(*[M[n][w] for n in GB]), 's': cond_s(avg(*[M[n][w] for n in GB])), 'q': Q(w)},
         [Bias(), Cascade('argmax'), Pairs()])

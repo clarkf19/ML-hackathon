@@ -2,6 +2,7 @@
 scored on the clean val fold (oofc) and its fake-PKS deg2 rendering (oofd); test (pte) = mean of the 5 fold models.
 Saves results/probs_<name>.npz.  usage: python src/cascade/train_base.py <name> [<name> ...]
   lgb    multiclass LightGBM, harness params (a re-run of the harness baseline that also keeps the models' raw scores)
+  lgbx   multiclass LightGBM with extra-trees splits, 63 leaves, 30% columns, other seed (diversity for averaging)
   ovr    9 one-vs-rest binary LightGBMs (p_k = P(class k present as label | x)), unweighted
   cond   8 conditional binary LightGBMs for the priority cascade: stage k is trained only on rows whose label is k or
          lower priority (the rows a top-down cascade still sees), target = (label == k); column 8 (noise) = 1
@@ -27,6 +28,11 @@ def fit_predict(name, Xtr, ytr, Xs):
     if name == 'lgb':
         import lightgbm as lgb
         m = lgb.LGBMClassifier(**LGB, class_weight='balanced').fit(Xtr, ytr)
+        return [m.predict_proba(X) for X in Xs]
+    if name == 'lgbx':  # a more randomised LightGBM (extra-trees splits, other seed / column sampling) for blend diversity
+        import lightgbm as lgb
+        m = lgb.LGBMClassifier(**{**LGB, 'colsample_bytree': 0.3, 'num_leaves': 63, 'n_estimators': 1200},
+                               extra_trees=True, random_state=1, class_weight='balanced').fit(Xtr, ytr)
         return [m.predict_proba(X) for X in Xs]
     if name == 'ovr':
         out = [np.zeros((len(X), K)) for X in Xs]
