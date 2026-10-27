@@ -1,0 +1,190 @@
+phys_n_missing_rows
+   eti_candidate        real 0.00/0.00/1.00           gen 0.00/0.00/1.00
+   frb                  real 0.00/0.00/1.00           gen 0.00/0.00/0.10
+   pulsar               real 0.00/0.00/1.00           gen 0.00/0.00/1.00
+   scintillating_star   real 0.00/0.00/1.00           gen 0.00/0.00/1.00
+   satellite_pass       real 0.00/0.00/1.00           gen 0.00/0.00/1.00
+   radar_chirp          real 0.00/0.00/1.00           gen 0.00/0.00/1.00
+   rfi_intermittent     real 0.00/0.00/1.00           gen 0.00/0.00/1.00
+   rfi_persistent       real 0.00/0.00/1.00           gen 0.00/0.00/0.10
+   noise                real 0.00/0.00/1.00           gen 0.00/0.00/1.00
+phys_bb0_max
+   eti_candidate        real 1.61/3.03/38.50          gen 1.59/2.96/34.83
+   frb                  real 3.01/13.27/38.96         gen 3.34/15.09/35.73
+   pulsar               real 2.27/10.48/38.13         gen 2.21/13.02/35.76
+   scintillating_star   real 1.61/3.16/38.78          gen 1.62/2.88/36.96
+   satellite_pass       real 1.61/3.06/39.14          gen 1.55/2.86/33.51
+   radar_chirp          real 1.72/2.82/38.25          gen 1.70/10.71/33.94
+   rfi_intermittent     real 1.58/3.01/39.38          gen 1.63/2.67/30.77
+   rfi_persistent       real 1.65/2.91/38.42          gen 1.48/2.40/33.06
+   noise                real 1.46/2.42/40.81          gen 1.55/2.23/34.25
+lvl_lv_off_spread
+   eti_candidate        real 0.77/2.06/3.67           gen 0.70/2.07/3.66
+   frb                  real 0.82/2.02/3.57           gen 0.90/2.01/3.90
+   pulsar               real 0.77/2.07/3.77           gen 0.94/2.08/3.90
+   scintillating_star   real 0.83/2.16/3.84           gen 0.93/2.03/3.60
+   satellite_pass       real 0.88/2.09/3.80           gen 0.59/2.21/3.53
+   radar_chirp          real 0.82/2.07/3.89           gen 0.84/2.34/3.81
+   rfi_intermittent     real 0.76/2.07/3.82           gen 1.00/2.22/4.07
+   rfi_persistent       real 0.81/2.10/3.77           gen 0.70/2.11/3.83
+   noise                real 0.77/2.06/3.78           gen 0.85/2.38/4.57
+lvl_lv_on_off
+   eti_candidate        real -1.63/0.26/2.27          gen -0.88/0.32/1.84
+   frb                  real -1.07/1.10/3.28          gen -0.15/1.36/3.09
+   pulsar               real 1.37/5.17/14.20          gen 0.74/3.47/7.62
+   scintillating_star   real 0.74/3.80/7.92           gen 0.64/3.69/7.66
+   satellite_pass       real -2.08/-0.02/2.08         gen -1.73/0.04/1.53
+   radar_chirp          real -2.02/0.05/1.99          gen -1.45/0.08/1.39
+   rfi_intermittent     real -1.81/0.28/2.37          gen -1.14/0.08/1.49
+   rfi_persistent       real -2.04/0.06/2.05          gen -1.43/-0.17/1.79
+   noise                real -2.06/0.01/2.05          gen -1.74/-0.14/1.24
+phys_spec_max
+   eti_candidate        real 3.37/7.62/14.36          gen 2.44/6.43/10.69
+   frb                  real 1.57/2.22/7.19           gen 1.56/1.97/8.04
+   pulsar               real 1.45/1.94/7.21           gen 1.43/1.73/6.88
+   scintillating_star   real 1.62/2.19/7.49           gen 1.56/1.95/8.05
+   satellite_pass       real 1.69/2.98/8.16           gen 1.80/4.51/11.18
+   radar_chirp          real 1.69/2.45/8.10           gen 1.55/1.90/4.67
+   rfi_intermittent     real 3.07/6.76/12.05          gen 4.88/8.40/14.61
+   rfi_persistent       real 5.23/9.05/16.10          gen 2.99/6.70/13.68
+   noise                real 1.49/1.75/2.16           gen 1.40/1.69/1.95
+rep_rep_on_k1
+   eti_candidate        real 4.27/8.71/15.23          gen 3.06/6.79/10.74
+   frb                  real 2.11/3.84/9.18           gen 2.14/3.78/8.53
+   pulsar               real 1.69/2.24/7.49           gen 1.91/2.21/6.65
+   scintillating_star   real 2.05/2.63/8.17           gen 1.95/2.29/8.63
+   satellite_pass       real 2.04/5.94/12.62          gen 2.05/6.68/13.42
+   radar_chirp          real 2.22/3.66/8.94           gen 2.25/3.74/6.39
+   rfi_intermittent     real 4.49/8.86/14.06          gen 4.68/8.90/14.99
+   rfi_persistent       real 5.42/9.68/17.77          gen 2.71/6.10/13.30
+   noise                real 1.87/2.08/2.38           gen 1.91/2.10/2.35
+rep_rep_off_k1
+   eti_candidate        real 2.00/6.95/14.91          gen 1.97/4.38/10.08
+   frb                  real 1.90/2.46/8.93           gen 1.90/2.10/7.64
+   pulsar               real 1.83/2.39/8.53           gen 1.86/2.08/6.76
+   scintillating_star   real 1.93/2.37/8.98           gen 1.86/2.12/7.13
+   satellite_pass       real 2.07/6.00/12.86          gen 1.96/5.40/13.15
+   radar_chirp          real 2.22/3.73/9.06           gen 2.23/3.58/5.92
+   rfi_intermittent     real 1.95/4.54/11.72          gen 1.92/3.14/12.05
+   rfi_persistent       real 5.34/9.56/17.49          gen 2.66/6.62/13.68
+   noise                real 1.86/2.08/2.39           gen 1.86/2.06/2.43
+rep_rep_k6
+   eti_candidate        real 0.62/1.32/10.01          gen 0.60/0.80/4.42
+   frb                  real 0.59/0.74/4.41           gen 0.57/0.70/1.32
+   pulsar               real 0.55/0.71/3.46           gen 0.57/0.68/0.84
+   scintillating_star   real 0.59/0.72/4.30           gen 0.56/0.69/0.94
+   satellite_pass       real 0.62/0.76/4.46           gen 0.59/0.69/1.09
+   radar_chirp          real 0.69/1.01/3.60           gen 0.68/1.25/3.00
+   rfi_intermittent     real 0.60/0.76/6.19           gen 0.59/0.72/2.07
+   rfi_persistent       real 0.73/4.04/10.75          gen 0.65/1.34/5.26
+   noise                real 0.59/0.69/0.87           gen 0.60/0.69/0.82
+phys_dsteep_onmax
+   eti_candidate        real 1.78/2.13/2.87           gen 1.81/2.09/2.50
+   frb                  real 1.86/2.54/5.72           gen 1.96/2.95/5.52
+   pulsar               real 1.50/1.84/2.59           gen 1.75/2.01/2.36
+   scintillating_star   real 1.77/2.03/2.55           gen 1.75/1.99/2.31
+   satellite_pass       real 1.78/3.08/11.16          gen 1.74/2.11/3.78
+   radar_chirp          real 1.94/2.56/4.41           gen 1.95/2.69/5.30
+   rfi_intermittent     real 1.79/2.06/2.47           gen 1.87/2.18/2.56
+   rfi_persistent       real 1.79/2.08/2.61           gen 1.74/2.03/2.46
+   noise                real 1.68/1.89/2.16           gen 1.73/1.94/2.16
+phys_bbD_onmax
+   eti_candidate        real 2.19/2.90/16.09          gen 2.20/2.90/15.89
+   frb                  real 9.84/19.14/36.19         gen 10.33/17.85/29.93
+   pulsar               real 7.12/13.83/22.16         gen 4.49/9.51/16.73
+   scintillating_star   real 2.16/2.95/15.75          gen 2.08/2.73/14.42
+   satellite_pass       real 2.13/3.17/16.85          gen 2.19/2.82/14.41
+   radar_chirp          real 2.58/4.27/16.69          gen 2.43/3.45/13.51
+   rfi_intermittent     real 2.11/2.76/16.58          gen 2.19/2.89/14.47
+   rfi_persistent       real 2.13/2.84/16.08          gen 2.04/2.84/13.91
+   noise                real 1.98/2.51/17.17          gen 1.99/2.43/10.83
+phys_npulse_on6
+   eti_candidate        real 0.00/0.00/1.00           gen 0.00/0.00/1.00
+   frb                  real 1.00/1.00/1.00           gen 1.00/1.00/2.00
+   pulsar               real 1.00/3.00/8.00           gen 0.00/1.50/6.10
+   scintillating_star   real 0.00/0.00/1.00           gen 0.00/0.00/1.00
+   satellite_pass       real 0.00/0.00/1.00           gen 0.00/0.00/1.00
+   radar_chirp          real 0.00/0.00/2.00           gen 0.00/0.00/2.00
+   rfi_intermittent     real 0.00/0.00/1.00           gen 0.00/0.00/1.00
+   rfi_persistent       real 0.00/0.00/1.00           gen 0.00/0.00/1.00
+   noise                real 0.00/0.00/1.00           gen 0.00/0.00/1.00
+phys_best_s
+   eti_candidate        real 0.00/4.00/13.00          gen 0.00/2.50/11.00
+   frb                  real 0.00/7.00/12.00          gen 0.00/5.00/11.00
+   pulsar               real 0.00/4.00/9.00           gen 0.00/2.50/8.00
+   scintillating_star   real 0.00/3.00/12.00          gen 0.00/4.50/12.00
+   satellite_pass       real 0.00/5.00/14.00          gen 0.00/3.00/11.10
+   radar_chirp          real 0.00/6.00/13.00          gen 0.00/7.00/14.00
+   rfi_intermittent     real 0.00/4.00/12.00          gen 0.00/3.00/11.10
+   rfi_persistent       real 0.00/4.00/12.00          gen 0.00/4.00/12.00
+   noise                real 0.00/4.00/12.00          gen 0.00/5.00/12.10
+tex_v8x32_d
+   eti_candidate        real -0.67/0.05/1.02          gen -0.72/0.09/1.15
+   frb                  real 1.50/6.37/21.06          gen 1.42/6.03/20.56
+   pulsar               real -0.06/1.17/5.00          gen -0.22/0.62/3.06
+   scintillating_star   real -0.16/0.97/4.17          gen -0.43/0.43/1.82
+   satellite_pass       real -2.23/-0.04/2.10         gen -1.29/0.15/1.01
+   radar_chirp          real -0.66/0.01/0.65          gen -0.75/-0.07/0.71
+   rfi_intermittent     real -0.64/0.08/1.01          gen -0.74/-0.09/0.68
+   rfi_persistent       real -0.57/-0.01/0.56         gen -0.64/-0.04/0.67
+   noise                real -0.50/-0.01/0.49         gen -0.57/-0.01/0.49
+rep_acf_on_t0_c1
+   eti_candidate        real 0.03/0.14/0.31           gen 0.01/0.09/0.23
+   frb                  real 0.06/0.17/0.30           gen 0.04/0.14/0.26
+   pulsar               real 0.10/0.31/0.59           gen 0.04/0.14/0.35
+   scintillating_star   real 0.00/0.05/0.17           gen -0.00/0.02/0.15
+   satellite_pass       real 0.00/0.09/0.22           gen -0.00/0.06/0.15
+   radar_chirp          real 0.05/0.17/0.34           gen 0.03/0.10/0.23
+   rfi_intermittent     real 0.02/0.11/0.25           gen 0.02/0.08/0.19
+   rfi_persistent       real 0.04/0.15/0.32           gen 0.01/0.06/0.21
+   noise                real -0.01/0.01/0.14          gen -0.01/0.00/0.06
+rep_acf_on_t2_wide
+   eti_candidate        real 0.01/0.02/0.03           gen 0.01/0.02/0.03
+   frb                  real 0.03/0.07/0.14           gen 0.03/0.07/0.13
+   pulsar               real -0.02/0.05/0.22          gen -0.03/0.02/0.10
+   scintillating_star   real 0.01/0.02/0.04           gen 0.01/0.02/0.03
+   satellite_pass       real 0.01/0.03/0.09           gen 0.01/0.02/0.05
+   radar_chirp          real 0.01/0.03/0.11           gen 0.02/0.05/0.12
+   rfi_intermittent     real 0.01/0.02/0.03           gen 0.01/0.02/0.03
+   rfi_persistent       real 0.01/0.02/0.03           gen 0.01/0.02/0.04
+   noise                real 0.01/0.02/0.03           gen 0.02/0.02/0.03
+lvl_lv_tblk_std_on
+   eti_candidate        real 0.63/1.27/3.09           gen 0.62/1.24/2.46
+   frb                  real 1.59/3.23/6.08           gen 1.68/2.94/5.76
+   pulsar               real 1.14/2.20/3.93           gen 0.89/1.65/3.11
+   scintillating_star   real 0.83/1.54/3.01           gen 0.74/1.28/2.57
+   satellite_pass       real 0.66/1.37/3.02           gen 0.68/1.41/2.38
+   radar_chirp          real 0.67/1.35/3.12           gen 0.69/1.22/2.47
+   rfi_intermittent     real 0.65/1.34/3.02           gen 0.73/1.28/2.48
+   rfi_persistent       real 0.67/1.30/3.00           gen 0.73/1.38/2.47
+   noise                real 0.67/1.31/3.00           gen 0.63/1.18/2.20
+
+mean KS over 383 computed features per class, and worst features:
+  eti_candidate        meanKS 0.143  worst {np.str_('phys_gt_all'): np.float32(0.33), np.str_('phys_d0_allmin'): np.float32(0.32), np.str_('phys_dslow_onmin'): np.float32(0.3), np.str_('phys_gt_min'): np.float32(0.3), np.str_('phys_gtm_p4'): np.float32(0.29), np.str_('phys_dslow_allmin'): np.float32(0.29)}
+  frb                  meanKS 0.115  worst {np.str_('phys_pers_min5'): np.float32(0.26), np.str_('phys_pers_min4'): np.float32(0.26), np.str_('rep_acf_off_t0_c1'): np.float32(0.25), np.str_('rep2_c_p1'): np.float32(0.25), np.str_('phys_gt_all'): np.float32(0.25), np.str_('phys_d0_allmin'): np.float32(0.24)}
+  pulsar               meanKS 0.181  worst {np.str_('tex_pos_d'): np.float32(0.41), np.str_('phys_dmid_onmin'): np.float32(0.39), np.str_('rep_acf_on_t0_c1'): np.float32(0.38), np.str_('rep_acf_on_t1_wide'): np.float32(0.37), np.str_('phys_dsteep_onmin'): np.float32(0.36), np.str_('phys_dmid_allmin'): np.float32(0.36)}
+  scintillating_star   meanKS 0.137  worst {np.str_('tex_v8x16_on'): np.float32(0.3), np.str_('tex_v8x32_on'): np.float32(0.29), np.str_('phys_pers_min5'): np.float32(0.27), np.str_('tex_v8x32_d'): np.float32(0.27), np.str_('rep_slow_sum6'): np.float32(0.26), np.str_('phys_dslow_p4'): np.float32(0.26)}
+  satellite_pass       meanKS 0.141  worst {np.str_('rep_steep_sum6'): np.float32(0.54), np.str_('phys_dsteep_offmax'): np.float32(0.43), np.str_('phys_dsteep_noff3'): np.float32(0.4), np.str_('rep_acf_off_t1_wide'): np.float32(0.38), np.str_('rep_acf_on_t1_wide'): np.float32(0.37), np.str_('phys_dsteep_onmax'): np.float32(0.35)}
+  radar_chirp          meanKS 0.171  worst {np.str_('phys_d0_onmax'): np.float32(0.42), np.str_('rep_acf_off_t1_near'): np.float32(0.41), np.str_('phys_d0_2ndmin'): np.float32(0.4), np.str_('rep_acf_on_t1_near'): np.float32(0.4), np.str_('phys_d0_offmax'): np.float32(0.4), np.str_('phys_d0_p2'): np.float32(0.4)}
+  rfi_intermittent     meanKS 0.119  worst {np.str_('phys_gtd_drift'): np.float32(0.31), np.str_('tex_v16x32_on'): np.float32(0.29), np.str_('tex_v8x16_on'): np.float32(0.28), np.str_('tex_v2x4_on'): np.float32(0.27), np.str_('tex_v4x8_on'): np.float32(0.26), np.str_('phys_on_drift_mean'): np.float32(0.26)}
+  rfi_persistent       meanKS 0.210  worst {np.str_('phys_gt_min'): np.float32(0.52), np.str_('phys_d0_onmin'): np.float32(0.51), np.str_('phys_d0_2ndmin'): np.float32(0.5), np.str_('phys_on_drift_spread'): np.float32(0.5), np.str_('phys_d0_non5'): np.float32(0.49), np.str_('phys_dslow_onmin'): np.float32(0.47)}
+  noise                meanKS 0.092  worst {np.str_('phys_pers_min5'): np.float32(0.27), np.str_('phys_pers_min4'): np.float32(0.26), np.str_('tex_v2x4_p4'): np.float32(0.24), np.str_('tex_mean_onmin'): np.float32(0.23), np.str_('rep_rep_k3'): np.float32(0.2), np.str_('rep_acf_on_t1_wide'): np.float32(0.19)}
+===== data/gen/calib_r4.npz
+eti_candidate        n_on/off mean 1.84/1.09  |drift| of detected q10/50/90 [0.0, 0.0, 0.38]  frac|d|>1 0.00
+      {'......': np.float64(0.27), 'xxxxxx': np.float64(0.19), 'x.x.x.': np.float64(0.18), 'xxx.xx': np.float64(0.05), 'x.xxx.': np.float64(0.04), '....x.': np.float64(0.03), 'xxxx.x': np.float64(0.03), 'x.....': np.float64(0.02)}
+frb                  n_on/off mean 0.43/0.30  |drift| of detected q10/50/90 [0.0, 0.12, 6.5]  frac|d|>1 0.15
+      {'......': np.float64(0.71), '..x...': np.float64(0.06), 'x.....': np.float64(0.05), 'xxxxxx': np.float64(0.03), '....x.': np.float64(0.02), 'xx....': np.float64(0.02), '.xx.xx': np.float64(0.02), 'xxx..x': np.float64(0.02)}
+pulsar               n_on/off mean 0.23/0.26  |drift| of detected q10/50/90 [0.0, 0.0, 0.25]  frac|d|>1 0.00
+      {'......': np.float64(0.85), 'x.....': np.float64(0.02), '.xxx..': np.float64(0.02), 'xxxxxx': np.float64(0.02), 'xx.xx.': np.float64(0.02), '.xx..x': np.float64(0.01), '..xx.x': np.float64(0.01), '....xx': np.float64(0.01)}
+scintillating_star   n_on/off mean 0.27/0.27  |drift| of detected q10/50/90 [0.0, 0.0, 0.25]  frac|d|>1 0.04
+      {'......': np.float64(0.8), '.x....': np.float64(0.03), 'xxxxxx': np.float64(0.03), '..x...': np.float64(0.02), 'x.....': np.float64(0.02), '...x..': np.float64(0.01), '.x...x': np.float64(0.01), '.....x': np.float64(0.01)}
+satellite_pass       n_on/off mean 0.87/0.73  |drift| of detected q10/50/90 [0.0, 0.25, 2.0]  frac|d|>1 0.24
+      {'..x...': np.float64(0.16), 'x.....': np.float64(0.15), '....x.': np.float64(0.11), '.x....': np.float64(0.1), '.....x': np.float64(0.08), '...x..': np.float64(0.08), '......': np.float64(0.05), 'xxxxxx': np.float64(0.03)}
+radar_chirp          n_on/off mean 0.46/0.40  |drift| of detected q10/50/90 [0.0, 4.0, 5.5]  frac|d|>1 0.78
+      {'......': np.float64(0.78), 'xxxxxx': np.float64(0.06), 'xxxx.x': np.float64(0.03), 'x.x.x.': np.float64(0.02), '.....x': np.float64(0.02), 'x.x...': np.float64(0.02), 'xx.xxx': np.float64(0.02), '..x.x.': np.float64(0.01)}
+rfi_intermittent     n_on/off mean 1.86/0.81  |drift| of detected q10/50/90 [0.0, 0.0, 0.25]  frac|d|>1 0.00
+      {'x.x.x.': np.float64(0.22), 'xxxxxx': np.float64(0.11), '......': np.float64(0.1), 'x.....': np.float64(0.07), '..x...': np.float64(0.06), 'x.x...': np.float64(0.04), 'x.x.xx': np.float64(0.04), 'xx....': np.float64(0.03)}
+rfi_persistent       n_on/off mean 1.38/1.41  |drift| of detected q10/50/90 [0.0, 0.0, 0.25]  frac|d|>1 0.00
+      {'......': np.float64(0.34), 'xxxxxx': np.float64(0.23), '.....x': np.float64(0.04), 'xxxxx.': np.float64(0.03), 'xxx.xx': np.float64(0.03), 'x..x.x': np.float64(0.03), 'x.....': np.float64(0.03), 'x..xxx': np.float64(0.02)}
+noise                n_on/off mean 0.00/0.00  |drift| of detected q10/50/90 -  frac|d|>1 0.00
+      {'......': np.float64(1.0)}

@@ -47,11 +47,11 @@ TEL = {
 SRC = dict(
     eti=dict(amp=(0.25, 2.5), drift=(0.04, 0.8), width=(0.5, 1.4)),
     line=dict(amp=(0.6, 5.0), width=(0.5, 1.6)),
-    pers=dict(amp=(1.0, 8.0), width=(0.7, 2.0), p_zero_drift=0.65, drift=(0.01, 0.35), p_fade=0.30),
+    pers=dict(amp=(1.0, 8.0), width=(1.0, 2.8), p_zero_drift=0.65, drift=(0.01, 0.35), p_fade=0.30),
     inter=dict(mix=[0.20, 0.13, 0.10, 0.30, 0.27], drift_p_zero=0.4, drift=(0.02, 0.6)),
-    sat=dict(amp=(1.0, 8.0), width=(0.6, 1.6), p_one=0.8, height=(30.0, 100.0), tau=(1.5, 8.0)),
-    radar=dict(amp=(0.4, 3.0), width=(0.6, 1.5), period=(4.0, 16.0), span=(10.0, 90.0)),   # slope span/period 0.6-20 ch/row
-    pulsar=dict(amp=(0.25, 1.8), period=(3.0, 16.0), width=(0.4, 1.5), sweep=(0.0, 9.0), lvl=(0.0, 0.0)),
+    sat=dict(amp=(0.8, 6.0), width=(0.6, 1.8), p_one=0.8, drift=(0.1, 8.0), curv=(0.0, 0.5)),
+    radar=dict(amp=(0.3, 2.0), width=(1.5, 4.0), period=(4.0, 16.0), span=(10.0, 90.0), p_panelrel=0.5),   # slope 0.6-20 ch/row
+    pulsar=dict(amp=(0.15, 1.2), period=(2.5, 10.0), width=(0.3, 1.0), sweep=(0.0, 9.0), lvl=(0.0, 0.0)),
     frb=dict(amp=(0.4, 3.0), width=(0.5, 1.5), sweep=(2.0, 14.0), tail=(0.0, 3.0)),
     scint=dict(flux=(0.03, 0.3), depth=(0.15, 0.5), tscale=(1.0, 3.0), fscale=(2.0, 10.0)),   # tex v2x4..v16x64 -> scintle area ~100 px
 )
@@ -128,26 +128,30 @@ def src_rfi_intermittent(S, rng, gap, P, primary=True):
 
 
 def src_satellite(S, rng, gap, P, primary=True):
-    """Doppler S-curve c(t) = c0 + H*tanh((t-tc)/tau): steep in the middle, curved/flat at the ends; visible in one
-    panel (real patterns: single panels ~8% each, ON and OFF alike) or a few consecutive panels."""
+    """Fast-drifting, slightly curved Doppler track c(t) = c0 + d*t + k*d*t*|t| (t from the pass centre) visible in one
+    panel (real patterns: single panels ~8% each, ON and OFF alike) or 2-3 consecutive panels. Real detected drifts:
+    median 0.38 ch/row, 38% |d|>1, steep (|d|>3) line score p90 11 -> |d| log-uniform 0.1-8 ch/row.
+    (A tanh S-curve with steep centre was tried: mostly undetectable by the line searches, 48% of cadences blank vs 17%.)"""
     q = P['sat']; n = 1 if rng.random() < q['p_one'] else int(rng.integers(2, 4)); p0 = int(rng.integers(0, 7 - n))
     T = tgrid(gap); A = logu(rng, *q['amp']); w = rng.uniform(*q['width'])
-    H = rng.uniform(*q['height']) * rng.choice([-1, 1]); tau = logu(rng, *q['tau'])
-    tc = T[p0, 0] + rng.uniform(-4, 16 * n + gap * (n - 1) + 4); c0 = rng.uniform(20, 108)
+    d = logu(rng, *q['drift']) * rng.choice([-1, 1]); k = rng.uniform(*q['curv']) * rng.choice([-1, 1])
+    tc = T[p0, 0] + rng.uniform(0, 16 * n + gap * (n - 1)); c0 = rng.uniform(10, 118)
     for p in range(p0, p0 + n):
-        c = c0 + H * np.tanh((T[p] - tc) / tau)
+        t = T[p] - tc; c = c0 + d * t + k * d * t * np.abs(t) / 16.0
         S[p] += A * rng.uniform(0.7, 1.0) * np.exp(-0.5 * ((CH[None, :] - c[:, None]) / w) ** 2)
-    return dict(H=H, tau=tau, npanel=n)
+    return dict(drift=d, npanel=n)
 
 
 def src_radar(S, rng, gap, P, primary=True):
-    """sawtooth chirp: frequency ramps over `span` channels in `per` rows, then wraps; same pattern in every panel
-    (panel-relative time: real rep_k3/k6 of radar are raised = same streaks at the same place in several panels)."""
+    """sawtooth chirp: frequency ramps over `span` channels in `per` rows, then wraps, through all panels; half of them
+    in panel-relative time (same streaks at the same place in every panel: real rep_k3/k6 of radar are raised, but
+    all-panel-relative overshoots rep_k3 2.85 vs 2.06), half continuous in global time."""
     q = P['radar']; per = rng.uniform(*q['period']); span = rng.uniform(*q['span']); slope = rng.choice([-1, 1])
     A = logu(rng, *q['amp']); w = rng.uniform(*q['width']); ph = rng.uniform(0, per)
-    lo = rng.uniform(0, 128 - span); hi = lo + span; r = np.arange(16, dtype=np.float32)
+    lo = rng.uniform(0, 128 - span); hi = lo + span
+    T = np.tile(np.arange(16, dtype=np.float32), (6, 1)) if rng.random() < q['p_panelrel'] else tgrid(gap)
     for p in range(6):
-        frac = ((r + ph) % per) / per                              # (16,)
+        frac = ((T[p] + ph) % per) / per                           # (16,)
         c = (lo + frac * span) if slope > 0 else (hi - frac * span)
         S[p] += A * np.exp(-0.5 * ((CH[None, :] - c[:, None]) / w) ** 2)
     return dict(period=per)
@@ -249,6 +253,8 @@ def render_one(rng, label, tel='GBT', gap=None, P=SRC, secondary=SECONDARY):
     v = 96.0 + 24.0 * np.log2((1.0 + S) * noise)
     v += bandpass(rng, t)[None, None, :] - 96.0
     v += rng.normal(0, t['gain_sd'], (6, 1, 1)).astype(np.float32)
+    if t.get('gain_slope', 0):                                       # slow gain drift within a panel (bytes over 16 rows)
+        v += (rng.normal(0, t['gain_slope'], (6, 1, 1)) * (np.arange(16) - 7.5)[None, :, None] / 16).astype(np.float32)
     G, ng = glitch_rows(rng, t); v += G; info['n_glitch'] = ng
     v = np.clip(np.round(v), 1, 255).astype(np.uint8)
     nd = rng.poisson(t['drop_rate'])
@@ -262,7 +268,7 @@ def scaled_params(P, ds):
     import copy
     Q = copy.deepcopy(P)
     if ds != 1.0:
-        for k, f in [('eti', 'drift'), ('pers', 'drift'), ('inter', 'drift'), ('radar', 'span'), ('sat', 'height')]:
+        for k, f in [('eti', 'drift'), ('pers', 'drift'), ('inter', 'drift'), ('radar', 'span'), ('sat', 'drift')]:
             Q[k][f] = tuple(v * ds for v in Q[k][f])
     return Q
 

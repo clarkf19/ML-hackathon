@@ -23,8 +23,10 @@ if __name__ == '__main__':
             pte = m['pte']; sel = (pte.argmax(1) == 8) & (pte.max(1) > 0.9); Xr = Xr[sel]; Xd = Xd[y == 8]
             print(f'noise-only: real = {sel.sum()} test cadences predicted noise (p>0.9); deg2 = fake-PKS of real noise class')
         for c in cols: print(f'{c:28s} test {q(Xr[c]):24s} deg2 {q(Xd[c]):24s} gen {q(Xg[c])}')
-        ks = pd.Series({c: ks_2samp(Xr[c], Xg[c]).statistic for c in COLS}).sort_values(ascending=False)
-        kd = pd.Series({c: ks_2samp(Xr[c], Xd[c]).statistic for c in COLS})
+        have = [c for c in COLS if Xg[c].notna().all()]
+        ks = pd.Series({c: ks_2samp(Xr[c], Xg[c]).statistic for c in have}).sort_values(ascending=False)
+        kd = pd.Series({c: ks_2samp(Xr[c], Xd[c]).statistic for c in have})
+        print(f'meanKS over {len(have)} features: gen-vs-test {ks.mean():.3f}   deg2-vs-test {kd.mean():.3f}')
         print('worst KS gen-vs-test (deg2-vs-test in brackets):', {c: f'{ks[c]:.2f} ({kd[c]:.2f})' for c in ks.index[:nw]})
         sys.exit()
     Xr = pd.DataFrame(np.load(B / 'feats_clean.npz')['X'], columns=COLS)
