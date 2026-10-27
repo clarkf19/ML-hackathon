@@ -28,6 +28,7 @@ for k in range(5):
     t, v = fo != k, fo == k
     m = mk().fit(np.vstack([X[t], Xc[t]]), np.r_[y[t], y[t]]); pm[v] = m.predict_proba(X[v]); pmc[v] = m.predict_proba(Xc[v])
 F, Fc = (pm + B) / 2, (pmc + Bc) / 2
+np.save(os.path.join(D, f'oofd_final_{OUT[:-4]}.npy'), F); np.save(os.path.join(D, f'oofc_final_{OUT[:-4]}.npy'), Fc)
 for t, c in zip(TAGS, CS): print(f'  CNN {t}: fPKS {mf1(y, c[0].argmax(1)):.4f} clean {mf1(y, c[1].argmax(1)):.4f} | blend50 with GBDT fPKS {mf1(y, ((G + c[0]) / 2).argmax(1)):.4f}')
 print(f'GBDT={GT} (test: {GTEST}) SEP={SEP} CNN {TAGS}: GBDT fPKS {mf1(y, G.argmax(1)):.4f} | CNN {mf1(y, C.argmax(1)):.4f} | blend50 {mf1(y, B.argmax(1)):.4f} | meta {mf1(y, pm.argmax(1)):.4f} | FINAL avg(meta,blend) fPKS {mf1(y, F.argmax(1)):.4f}  clean {mf1(y, Fc.argmax(1)):.4f}')
 print('per-class final fPKS', per_class(y, F.argmax(1)))
