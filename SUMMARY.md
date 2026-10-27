@@ -77,6 +77,7 @@ number should predict the leaderboard better; adversarial AUC fake-PKS-vs-test 0
 | A_rsswp_PL5soft (soft pseudo-labels: every test cadence once per class with p>0.05, weight 2p) | **0.8351**, clean 0.8716 | **rejected** (low-p rows act as label noise, amplified by balanced class weights); files deleted |
 | A_rsswp_PL5_s11 / _s22 (seeds 11, 22) | 0.9053 / 0.9051 (seed 0: 0.9054) | stable across seeds; average them in the base |
 | A_trk3_PL5t6 (ETI slope set, p>0.6) | 0.9011 (p>0.8: 0.9002) | small + |
+| A_rs_PL5t6 (no sweep set, p>0.6) | 0.9032, clean 0.9374 | +0.001 over p>0.8 |
 | base_b9a / base_b9b = round-5 feature models in the base, + 6 pretrained mix (cand_b9amix / cand_b9bmix.csv) | FINAL 0.9241; mixed 0.9293 / 0.9294 (sub10 recipe 0.9293) | flat on proxy (expected for pseudo-labels); LB test candidate |
 | **Pretrained CNNs as meta inputs vs mixing** (folds 0-1, meta trained on 1 fold) | **0.9298 vs 0.9269** | **+0.003 → morning: complete folds go into the meta** |
 
