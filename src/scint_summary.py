@@ -11,10 +11,14 @@ def stats(fn):
         p = z[nm].argmax(1)
         o[nm] = (f1_score(y, p, average='macro'), f1_score(y == S, p == S), recall_score(y == S, p == S), precision_score(y == S, p == S))
     return o
-base = stats(R / 'results/probs_baseline.npz')
-print('| run | clean-val | Δ | fakePKS-val | Δ | scint F1 clean | scint F1 fPKS | Δ | scint rec / prec fPKS |')
+base = stats(R / 'results/probs_baseline.npz'); pb = np.load(R / 'results/probs_baseline.npz')['oofd'].argmax(1)
+rng = np.random.default_rng(0); BOOT = [rng.integers(0, len(y), len(y)) for _ in range(200)]
+def ci(p):  # paired bootstrap 95% interval of the fakePKS macro-F1 difference vs baseline
+    d = [f1_score(y[i], p[i], average='macro') - f1_score(y[i], pb[i], average='macro') for i in BOOT]
+    return np.percentile(d, [2.5, 97.5])
+print('| run | clean-val | Δ | fakePKS-val | Δ (95% paired bootstrap) | scint F1 clean | scint F1 fPKS | Δ | scint rec / prec fPKS |')
 print('|---|---|---|---|---|---|---|---|---|')
 for fn in sorted(R.glob('results/probs_*.npz'), key=lambda f: (f.stem != 'probs_baseline', f.stat().st_mtime)):
-    s = stats(fn); c, d = s['oofc'], s['oofd']
-    print(f'| {fn.stem[6:]} | {c[0]:.4f} | {c[0] - base["oofc"][0]:+.4f} | {d[0]:.4f} | {d[0] - base["oofd"][0]:+.4f} | {c[1]:.3f} | {d[1]:.3f} '
-          f'| {d[1] - base["oofd"][1]:+.3f} | {d[2]:.3f} / {d[3]:.3f} |')
+    s = stats(fn); c, d = s['oofc'], s['oofd']; lo, hi = ci(np.load(fn)['oofd'].argmax(1))
+    print(f'| {fn.stem[6:]} | {c[0]:.4f} | {c[0] - base["oofc"][0]:+.4f} | {d[0]:.4f} | {d[0] - base["oofd"][0]:+.4f} ({lo:+.4f}…{hi:+.4f}) '
+          f'| {c[1]:.3f} | {d[1]:.3f} | {d[1] - base["oofd"][1]:+.3f} | {d[2]:.3f} / {d[3]:.3f} |', flush=True)
