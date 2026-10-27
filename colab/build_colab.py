@@ -30,7 +30,8 @@ for n in ['common.py', 'cnn.py']:
     code(f"%%writefile /content/work/src/{n}\n" + colabify(src(n)))
 code("# patch cnn.py for GPU + checkpoints in Drive\n"
      "s = open('/content/work/src/cnn.py').read()\n"
-     "s = s.replace('net = Net(nf=', 'dev = \"cuda\"; net = Net(nf=').replace('if USEF else 0); opt', 'if USEF else 0).to(dev); opt')\n"
+     "s = s.replace('    net = Net(', '    dev = \"cuda\"; net = Net(').replace('if USEF else 0); opt', 'if USEF else 0).to(dev); opt')\n"
+     "assert 'dev = \"cuda\"; net = Net(' in s, 'GPU patch failed: dev not defined'\n"
      "s = s.replace('net(xb, fb)', 'net(xb.to(dev), fb.to(dev) if fb is not None else None)').replace('torch.from_numpy(ylab[b])', 'torch.from_numpy(ylab[b]).to(dev)')\n"
      "s = s.replace('weight=cw,', 'weight=cw.to(dev),')\n"
      "s = s.replace('F.softmax(net(canvas(zb, gaps[b]), fb), 1)', 'F.softmax(net(canvas(zb, gaps[b]).to(dev), fb.to(dev) if fb is not None else None), 1).cpu()')\n"
