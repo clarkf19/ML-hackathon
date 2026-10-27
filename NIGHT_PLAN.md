@@ -16,6 +16,7 @@ Best public: **submission10 = 0.9236** (base8_3 mixed 0.5 with 6 pretrained CNNs
 3. run_night3.sh → logs/night3.out (NIGHT3DONE): A_rsswp_PL5w3 (test rows ×3), A_rsswp_PL5soft (soft PL over all test)
 4. run_night4.sh → logs/night4.out (NIGHT4DONE): A_rsswp_PL5_s11, _s22 (seed averaging)
 5. run_night5.sh → logs/night5.out (NIGHT5DONE): A_trk3_PL5t6, A_rs_PL5t6
+6. run_night6.sh → logs/night6.out (NIGHT6DONE): round-6 pseudo-labels from submission11: A_rsswp_PL6t6, A_rs_PL6t6, A_trk3_PL6t6 (~06:35)
 Results land in logs/aug_results.txt.
 
 ## After queues: build candidates
@@ -23,6 +24,12 @@ Results land in logs/aug_results.txt.
   `GBDT=... python src/final_blend.py base10.csv B3pl2g B3wg B3plwg` (writes oofd_final_base10 / pte_base10)
 - then `PTAGS=P1g,E1g,E2g,E3g,E4g,P3g ANYFOLD=1 python src/mix_partial.py base10 cand_*.csv`
 - Compare pooled fold scores vs base8_3 (0.9248 → 0.9293).
+
+## Night result
+- **submissions/submission11.csv** = GSEP meta over 6 feature models (4 round-5 + A_rsswp_PL4 + A_rs_PL3) + 6 pretrained CNNs mixed (w 0.45):
+  pooled folds 0-3 **0.9310** vs 0.9293 for the submission10 recipe, every fold up. Upload first in the morning.
+- Morning build once new CNN folds are in data/:
+  `GSEP=1 GBDT=A_rsswp_PL5,A_rsswp_PL5t6,A_rs_PL5t6,A_trk3_PL5t6,A_rsswp_PL4,A_rs_PL3 python -X utf8 src/morning.py submission12`
 
 ## Morning (Clark): biggest expected gains
 1. Copy all new Colab out/ files into data/; any run with 5 folds goes INTO the meta (final_blend SEP=1), the rest via mix_partial.
