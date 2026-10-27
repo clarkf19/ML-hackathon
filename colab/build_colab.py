@@ -51,8 +51,10 @@ code("CFG = 'B3'      # 'B3' first run | 'B3w' second run (other seed, wider) | 
      "       'B3pl2': 'ZPFX=zr EXTRA=inj1 DEGMIX=0.5 SEED=5 PL=pl_test2.npy',\n"
      "       'P1': 'ZPFX=zr EXTRA=inj1 DEGMIX=0.5 SEED=6 PL=pl_test2.npy ARCH=rn34 PRETRAIN=1 LR=5e-4',\n"
      "       'P2': 'ZPFX=zr EXTRA=inj1 DEGMIX=0.5 SEED=7 PL=pl_test2.npy ARCH=rn34 PRETRAIN=1 LR=5e-4 MIXUP=0.4',\n"
-     "       'B3pl3w': 'ZPFX=zr EXTRA=inj1 DEGMIX=0.5 SEED=8 WIDTH=48 PL=pl_test3.npy'}[CFG]; TAG = CFG + 'g'\n"
-     "EP = {'P1': 20, 'P2': 24}.get(CFG, EPOCHS)   # pretrained ImageNet ResNet-34 converges faster\n"
+     "       'B3pl3w': 'ZPFX=zr EXTRA=inj1 DEGMIX=0.5 SEED=8 WIDTH=48 PL=pl_test3.npy',\n"
+     "       'P3': 'ZPFX=zr EXTRA=inj1 DEGMIX=0.5 SEED=9 PL=pl_test3.npy ARCH=rn34 PRETRAIN=1 LR=5e-4',\n"
+     "       'E1': 'ZPFX=zr EXTRA=inj1 DEGMIX=0.5 SEED=10 PL=pl_test3.npy ARCH=tv_efficientnet_b0 PRETRAIN=1 LR=1e-3'}[CFG]; TAG = CFG + 'g'\n"
+     "EP = {'P1': 20, 'P2': 24, 'P3': 20, 'E1': 20}.get(CFG, EPOCHS)   # pretrained ImageNet ResNet-34 converges faster\n"
      "for fold in FOLDS:\n"
      "    !cd /content/work && {ENV} NT=4 python src/cnn.py {fold} {EP} {TAG}\n"
      "    !cp /content/work/data/*part_{TAG}_f{fold}.npy $DRV/out/ ; tail -2 /content/work/logs/cnn_{TAG}_f{fold}.log")
