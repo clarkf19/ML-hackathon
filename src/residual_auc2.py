@@ -1,5 +1,5 @@
 """Probability-matched residual AUC: for each confused pair (a,b), cadences with true in {a,b} are binned by the current
-model's pairwise log-odds log(p_a/p_b) (8 quantile bins of the ambiguous range |log-odds| < 4); within each bin, AUC of the
+model's pairwise log-odds log(p_a/p_b) (8 quantile bins of the ambiguous range |log-odds| < 4; 4 bins if < 400 cadences); within each bin, AUC of the
 statistic for true a vs true b; weighted mean over bins. If the statistic adds nothing beyond the model's belief the
 expected value is 0.5. Bundle features scored the same way as reference. -> results/scan_auc2.csv, scan_auc2_top.txt"""
 import numpy as np, pandas as pd
@@ -15,13 +15,14 @@ rows = []
 for a, b in pairs:
     k = np.where(((y == a) | (y == b)))[0]; lo = np.log(oofc[k, a] + 1e-6) - np.log(oofc[k, b] + 1e-6)
     k, lo = k[np.abs(lo) < 4], lo[np.abs(lo) < 4]
-    bins = np.digitize(lo, np.quantile(lo, np.linspace(0, 1, 9)[1:-1])); t = y[k] == a
+    nb = 8 if len(k) >= 400 else 4                                       # fewer bins for the small pairs
+    bins = np.digitize(lo, np.quantile(lo, np.linspace(0, 1, nb + 1)[1:-1])); t = y[k] == a
     for src, M, cn in [('raw', F, cols), ('bundle', Bx, bcols)]:
         for j, c in enumerate(cn):
             num = den = 0.
-            for q in range(8):
+            for q in range(nb):
                 s = bins == q; tq = t[s]; w = min(tq.sum(), (~tq).sum())
-                if w >= 10 and M[k[s], j].std() > 0: num += w * (roc_auc_score(tq, M[k[s], j]) - 0.5); den += w
+                if w >= 5 and M[k[s], j].std() > 0: num += w * (roc_auc_score(tq, M[k[s], j]) - 0.5); den += w
             rows.append(dict(pair=f'{S[a]}|{S[b]}', n=len(k), src=src, feat=c, auc=num / den + 0.5 if den else np.nan))
 R = pd.DataFrame(rows); R['dev'] = (R.auc - 0.5).abs(); R.to_csv(ROOT / 'results/scan_auc2.csv', index=False)
 with open(ROOT / 'results/scan_auc2_top.txt', 'w') as fh:

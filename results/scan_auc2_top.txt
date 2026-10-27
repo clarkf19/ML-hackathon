@@ -1,130 +1,130 @@
 
-== scint|noise (n ambiguous 763)  bundle dev p50/p90/max 0.022/0.066/0.109 top bundle [(np.str_('rep_rep_on_k3'), 0.391), (np.str_('phys_d0_2ndmin'), 0.392), (np.str_('lvl_lv_band_max'), 0.604)]
+== scint|noise (n ambiguous 763)  bundle dev p50/p90/max 0.022/0.064/0.108 top bundle [(np.str_('lvl_lv_band_max'), 0.608), (np.str_('lvl_lv_on_off'), 0.6), (np.str_('rep_rep_on_k3'), 0.402)]
           feat   auc
-       vmax_on 0.612
-    chP_max_on 0.611
-    px_rsd_off 0.611
-lin_logmean_on 0.610
-      fup24_on 0.606
-      px_q50_d 0.604
-    lin_std_on 0.602
-   blk8x8_dmax 0.601
-     px_q75_on 0.601
-     px_q50_on 0.600
+    chP_max_on 0.616
+lin_logmean_on 0.615
+      px_q50_d 0.610
+      fup24_on 0.609
+     px_q75_on 0.608
+       vmax_on 0.607
+    px_mean_on 0.607
+     px_q50_on 0.606
+   blk8x8_dmax 0.606
+     px_q50_mm 0.604
 
-== rfi_int|rfi_pers (n ambiguous 572)  bundle dev p50/p90/max 0.023/0.054/0.126 top bundle [(np.str_('trk_t_off1'), 0.626), (np.str_('lvl_lv_off_spread'), 0.594), (np.str_('tex_v4x8_onmin'), 0.424)]
+== rfi_int|rfi_pers (n ambiguous 572)  bundle dev p50/p90/max 0.025/0.056/0.126 top bundle [(np.str_('trk_t_off1'), 0.626), (np.str_('lvl_lv_off_spread'), 0.595), (np.str_('tex_v4x8_onmin'), 0.418)]
              feat   auc
-       pac_t1_off 0.407
-        chP_std_d 0.592
-        cchp_onon 0.419
-       cchp_onoff 0.424
-cclp_onon_m_onoff 0.573
-        cclp_onon 0.573
-         pac_t1_d 0.573
-   blk8x8_std_off 0.433
-       chP_ac4_mm 0.434
+       pac_t1_off 0.410
+        cchp_onon 0.417
+        chP_std_d 0.583
+       chP_ac4_mm 0.428
+       cchp_onoff 0.430
+         pac_t1_d 0.568
+        cclp_onon 0.567
+cclp_onon_m_onoff 0.566
+   blk8x8_std_off 0.435
        chL_ac4_mm 0.435
 
-== scint|rfi_pers (n ambiguous 360)  bundle dev p50/p90/max 0.032/0.071/0.153 top bundle [(np.str_('phys_bb0_p4'), 0.653), (np.str_('phys_on_fit_resid'), 0.632), (np.str_('tex_v8x32_onmin'), 0.624)]
+== scint|rfi_pers (n ambiguous 360)  bundle dev p50/p90/max 0.023/0.059/0.121 top bundle [(np.str_('phys_bb0_p4'), 0.621), (np.str_('phys_on_fit_resid'), 0.621), (np.str_('tex_v8x32_onmin'), 0.617)]
+          feat   auc
+ rowP_slope_on 0.654
+  rowP_slope_d 0.647
+ rowL_slope_on 0.603
+ q_entropy_off 0.397
+  blk8x8_std_d 0.602
+ blk4x16_std_d 0.594
+   rowP_rng_on 0.592
+ q_distinct_on 0.411
+   rowP_std_on 0.586
+q_distinct_off 0.414
+
+== scint|sat (n ambiguous 303)  bundle dev p50/p90/max 0.026/0.078/0.146 top bundle [(np.str_('lvl_lv_p0'), 0.646), (np.str_('tex_v2x8_p5'), 0.358), (np.str_('lvl_lv_band5'), 0.636)]
+     feat   auc
+ px_q01_d 0.636
+ pac_t1_d 0.628
+pac_t1_on 0.623
+ px_q50_d 0.623
+ px_q05_d 0.623
+dchL_fpos 0.622
+  fdn36_d 0.379
+px_q50_on 0.618
+ px_q25_d 0.617
+ px_q75_d 0.616
+
+== eti|rfi_int (n ambiguous 156)  bundle dev p50/p90/max 0.026/0.060/0.117 top bundle [(np.str_('trk_t_off_near_max'), 0.617), (np.str_('phys_gtd_p5'), 0.604), (np.str_('rep_acf_on_t3_wide'), 0.597)]
          feat   auc
-rowP_slope_on 0.656
-  rowL_ac1_on 0.639
- rowP_slope_d 0.622
- blk8x8_std_d 0.619
-  rowP_exc_on 0.613
-blk4x16_std_d 0.611
-   rowP_ac1_d 0.610
-q_entropy_off 0.390
-  rowP_ac1_on 0.606
-  rowP_rng_on 0.604
+      edge_lo 0.387
+   chL_ac4_mm 0.389
+rowL_slope_on 0.392
+   chP_ac4_mm 0.402
+   skc_max_mm 0.407
+   chP_kurt_d 0.592
+    skc_max_d 0.412
+       q_even 0.586
+  skc_max_off 0.586
+    pac_f1_on 0.584
 
-== scint|sat (n ambiguous 303)  bundle dev p50/p90/max 0.037/0.085/0.144 top bundle [(np.str_('phys_dsteep_2ndmin'), 0.356), (np.str_('rep2_b_p4'), 0.358), (np.str_('tex_v2x8_p5'), 0.366)]
-        feat   auc
-    pac_t1_d 0.630
-  chL_std_mm 0.618
-  chL_ac4_mm 0.618
-   cchp_onon 0.618
-     cc_onon 0.616
-   fdn36_off 0.614
-rowP_slope_d 0.390
-   pac_t1_on 0.610
-  skr_max_on 0.394
-     fdn36_d 0.397
-
-== eti|rfi_int (n ambiguous 156)  bundle dev p50/p90/max nan/nan/nan top bundle [(np.str_('phys_d0_p0'), nan), (np.str_('phys_d0_p1'), nan), (np.str_('phys_d0_p2'), nan)]
-       feat  auc
- px_mean_on  NaN
-px_mean_off  NaN
-  px_mean_d  NaN
- px_mean_mm  NaN
-  px_std_on  NaN
- px_std_off  NaN
-   px_std_d  NaN
-  px_std_mm  NaN
- px_skew_on  NaN
-px_skew_off  NaN
-
-== scint|radar (n ambiguous 275)  bundle dev p50/p90/max 0.045/0.096/0.153 top bundle [(np.str_('tex_v4x8_p0'), 0.653), (np.str_('tex_v8x32_d'), 0.646), (np.str_('phys_dmid_offmax'), 0.359)]
+== scint|radar (n ambiguous 275)  bundle dev p50/p90/max 0.040/0.079/0.121 top bundle [(np.str_('tex_v16x64_d'), 0.621), (np.str_('phys_dslow_p2'), 0.382), (np.str_('phys_dmid_offmax'), 0.389)]
            feat   auc
- lin_logq99_off 0.310
-lin_logmean_off 0.310
-     px_q95_off 0.310
-     px_q99_off 0.311
-      fup24_off 0.319
-    px_mean_off 0.328
-   lin_skew_off 0.329
-    lin_std_off 0.334
-      pac_f1_on 0.335
-    px_skew_off 0.337
+     px_q95_off 0.332
+       edgeD_mm 0.662
+lin_logmean_off 0.341
+     skr_max_on 0.344
+ lin_logq99_off 0.344
+    skr_med_off 0.345
+     px_q99_off 0.346
+      skr_max_d 0.349
+      pac_f1_on 0.350
+      fup24_off 0.354
 
-== sat|radar (n ambiguous 154)  bundle dev p50/p90/max nan/nan/nan top bundle [(np.str_('phys_d0_p0'), nan), (np.str_('phys_d0_p1'), nan), (np.str_('phys_d0_p2'), nan)]
-       feat  auc
- px_mean_on  NaN
-px_mean_off  NaN
-  px_mean_d  NaN
- px_mean_mm  NaN
-  px_std_on  NaN
- px_std_off  NaN
-   px_std_d  NaN
-  px_std_mm  NaN
- px_skew_on  NaN
-px_skew_off  NaN
+== sat|radar (n ambiguous 154)  bundle dev p50/p90/max 0.054/0.130/0.248 top bundle [(np.str_('tex_v8x16_onmin'), 0.252), (np.str_('tex_v8x32_onmin'), 0.302), (np.str_('phys_dsteep_allmin'), 0.691)]
+          feat   auc
+ blk8x8_std_on 0.309
+   lin_kurt_mm 0.689
+   chP_std_off 0.311
+   chL_ac1_off 0.313
+blk4x16_std_on 0.314
+   lin_skew_mm 0.684
+   chP_max_off 0.317
+blk8x8_std_off 0.319
+    chP_std_on 0.326
+      fup24_mm 0.671
 
-== radar|rfi_pers (n ambiguous 108)  bundle dev p50/p90/max nan/nan/nan top bundle [(np.str_('phys_d0_p0'), nan), (np.str_('phys_d0_p1'), nan), (np.str_('phys_d0_p2'), nan)]
-       feat  auc
- px_mean_on  NaN
-px_mean_off  NaN
-  px_mean_d  NaN
- px_mean_mm  NaN
-  px_std_on  NaN
- px_std_off  NaN
-   px_std_d  NaN
-  px_std_mm  NaN
- px_skew_on  NaN
-px_skew_off  NaN
+== radar|rfi_pers (n ambiguous 108)  bundle dev p50/p90/max 0.066/0.151/0.319 top bundle [(np.str_('trk_t_on_offset_absmax'), 0.181), (np.str_('trk_t_p0'), 0.776), (np.str_('tex_v2x4_dmin'), 0.77)]
+         feat   auc
+   skr_max_mm 0.158
+rowq75_max_mm 0.266
+    cc_adjmin 0.724
+     dchP_ac4 0.283
+   cclp_onoff 0.711
+   px_qmax_mm 0.293
+       vmax_d 0.293
+      edge_lo 0.697
+   lin_kurt_d 0.303
+   skc_med_on 0.691
 
-== sat|rfi_pers (n ambiguous 103)  bundle dev p50/p90/max nan/nan/nan top bundle [(np.str_('phys_d0_p0'), nan), (np.str_('phys_d0_p1'), nan), (np.str_('phys_d0_p2'), nan)]
-       feat  auc
- px_mean_on  NaN
-px_mean_off  NaN
-  px_mean_d  NaN
- px_mean_mm  NaN
-  px_std_on  NaN
- px_std_off  NaN
-   px_std_d  NaN
-  px_std_mm  NaN
- px_skew_on  NaN
-px_skew_off  NaN
+== sat|rfi_pers (n ambiguous 103)  bundle dev p50/p90/max 0.052/0.137/0.233 top bundle [(np.str_('rep2_b_p5'), 0.733), (np.str_('trk_t_best4'), 0.275), (np.str_('phys_best_p5'), 0.718)]
+      feat   auc
+  pac_t1_d 0.252
+   edge_hi 0.276
+ chP_ac4_d 0.282
+ chP_ac1_d 0.288
+ chL_ac4_d 0.307
+chL_max_mm 0.689
+ cc_adjmin 0.687
+  pac_f1_d 0.327
+chP_max_mm 0.668
+px_q50_off 0.336
 
-== radar|noise (n ambiguous 198)  bundle dev p50/p90/max nan/nan/nan top bundle [(np.str_('phys_d0_p0'), nan), (np.str_('phys_d0_p1'), nan), (np.str_('phys_d0_p2'), nan)]
-       feat  auc
- px_mean_on  NaN
-px_mean_off  NaN
-  px_mean_d  NaN
- px_mean_mm  NaN
-  px_std_on  NaN
- px_std_off  NaN
-   px_std_d  NaN
-  px_std_mm  NaN
- px_skew_on  NaN
-px_skew_off  NaN
+== radar|noise (n ambiguous 198)  bundle dev p50/p90/max 0.041/0.104/0.179 top bundle [(np.str_('tex_v8x16_p0'), 0.679), (np.str_('rep_acf_off_t1_c0'), 0.335), (np.str_('rep2_b_on_k3'), 0.66)]
+       feat   auc
+ skr_med_on 0.873
+  pac_f1_on 0.830
+ skr_max_on 0.828
+ pac_f1_off 0.748
+skr_med_off 0.746
+    edge_hi 0.740
+  px_std_on 0.689
+ skc_med_on 0.676
+   dchL_ac1 0.671
+ px_q95_off 0.669
