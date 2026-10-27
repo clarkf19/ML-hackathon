@@ -24,6 +24,7 @@ number should predict the leaderboard better; adversarial AUC fake-PKS-vs-test 0
 | submission8 = base (5 feature models + B3pl2, B3w, B3plw, meta) mixed 0.7/0.3 with pretrained CNNs P1 (3 folds) + E1 (2 folds); weight chosen on folds 0-1, fold 2 independent check +0.004 | — | 0.9218→0.9257 (folds 0-1) | submissions/submission8.csv | **uploaded: public 0.9216** (within noise of 0.9219) |
 | submission9 = same base mixed 0.5/0.5 with 6 pretrained CNNs (P1 f0-2, E1 f0-2, E3 f0-1, E2/E4/P3 f0) | — | pooled folds 0-2: 0.9249→0.9291 | submissions/submission9.csv | **uploaded: public 0.9226 (best so far)** |
 | submission10 = same base mixed 0.5/0.5 with 6 pretrained CNNs, now P1 f0-3 + E2 f0-1 (P1 f3, E2 f1 new) | — | pooled folds 0-3: 0.9248→0.9293; fold 3 (P1 only, independent) 0.9244→0.9290 | submissions/submission10.csv | **uploaded: public 0.9236 (best so far)** — 76 cadences differ from sub9 |
+| submission11 = round-5 pseudo-label feature models, each a separate meta input (GSEP) + 6 pretrained CNNs mixed (w 0.45) | — | pooled folds 0-3: 0.9310 (sub10 recipe 0.9293), all 4 folds up | submissions/submission11.csv | ready (night build) |
 | submission3 = lvl GBDT + CNN B3 (4 folds) 50/50 | 0.9381 (4 folds) | 0.9089 (4 folds) | submissions/submission3.csv | **uploaded: public 0.8991** |
 | **+ panel-level features from RAW data (lvl)** | **0.9292** | **0.8972** | **submissions/submission2.csv** | **uploaded: public 0.8910** (pipeline.sh reproduces it) |
 | (fold-0 only) best GBDT + CNN B2 blend | 0.9253 (fold0) | 0.8950 (fold0) | needs 5-fold CNN B2 (Colab) | upload #2 after Colab |
@@ -82,6 +83,8 @@ number should predict the leaderboard better; adversarial AUC fake-PKS-vs-test 0
 | base_n1 = 7 round-5 feature models (3 seeds, t6, w3, rs_t6, trk3_t6) | FINAL 0.9241; + pretrained mix 0.9294 (cand_n1mix.csv, 62 test labels differ from sub10) | = sub10 recipe |
 | base_n2 = n1 + A_rsswp_PL4, A_rs_PL4, A_rs_PL3 | FINAL 0.9247; + pretrained mix **0.9302** (cand_n2mix.csv, 57 differ) | +0.0009 vs sub10 recipe |
 | GSEP=1 (each feature model its own meta input), 4 round-5 models | FINAL **0.9255** (vs 0.9241 averaged) | +0.0014 → use GSEP |
+| **base_g2 = GSEP meta over A_rsswp_PL5, A_rsswp_PL5t6, A_rs_PL5t6, A_trk3_PL5t6, A_rsswp_PL4, A_rs_PL3 + 6 pretrained mix (w 0.45)** | **pooled folds 0-3 0.9310** (sub10 recipe 0.9293; every fold ≥ sub10: 0.9278/0.9306/0.9344/0.9311 vs 0.9270/0.9269/0.9341/0.9290) | **→ submissions/submission11.csv** (47 test labels differ from sub10) |
+| base_g1 = GSEP over the 4 round-5 models only + mix | 0.9302 (76 differ) | second choice |
 | **Pretrained CNNs as meta inputs vs mixing** (folds 0-1, meta trained on 1 fold) | **0.9298 vs 0.9269** | **+0.003 → morning: complete folds go into the meta** |
 
 ## Error analysis (best GBDT A_deg2_deg4)
