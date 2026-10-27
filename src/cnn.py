@@ -7,7 +7,7 @@ sys.path.insert(0, r'C:\Users\clark\hack4hack-r2\src')
 from common import *
 torch.set_num_threads(int(os.environ.get('NT', 8))); torch.manual_seed(0); np.random.seed(0)
 FOLD = int(sys.argv[1]); EP = int(sys.argv[2]) if len(sys.argv) > 2 else 24; TAG = sys.argv[3] if len(sys.argv) > 3 else 'B'
-AUG = os.environ.get('AUG', 'full')
+AUG = os.environ.get('AUG', 'full'); ZP = os.environ.get('ZPFX', 'z')
 
 def canvas(z, gaps):
     b = len(z); C = torch.zeros(b, 3, 128, 128)
@@ -62,16 +62,16 @@ def featmat(which):
 
 if __name__ == '__main__':
     tr, te = meta(); y = y_train(); fo = folds()
-    Z = np.load(D + r'\z_train.npy', mmap_mode='r'); gtr = tr.slew_gap_rows.values
+    Z = np.load(D + rf'\{ZP}_train.npy', mmap_mode='r'); gtr = tr.slew_gap_rows.values
     if FOLD >= 0: tri, vai = np.where(fo != FOLD)[0], np.where(fo == FOLD)[0]
     else: tri, vai = np.arange(len(y)), None
     Zall = torch.from_numpy(np.asarray(Z, dtype=np.float32))
     EXTRA = os.environ.get('EXTRA', ''); DEGMIX = float(os.environ.get('DEGMIX', 0))
-    Zd = np.load(D + r'\z_train_deg2.npy', mmap_mode='r') if (DEGMIX > 0 or EXTRA) else None
+    Zd = np.load(D + rf'\{ZP}_train_deg2.npy', mmap_mode='r') if (DEGMIX > 0 or EXTRA) else None
     Zdall = torch.from_numpy(np.asarray(Zd, dtype=np.float32)) if DEGMIX > 0 else None
     ylab = y.copy()
     if EXTRA:
-        info = pd.read_csv(D + rf'\{EXTRA}_info.csv'); Zi = torch.from_numpy(np.load(D + rf'\z_{EXTRA}.npy').astype(np.float32))
+        info = pd.read_csv(D + rf'\{EXTRA}_info.csv'); Zi = torch.from_numpy(np.load(D + rf'\{ZP}_{EXTRA}.npy').astype(np.float32))
         keep = np.where(fo[info.base.values] != FOLD)[0] if FOLD >= 0 else np.arange(len(info))
         Zall = torch.cat([Zall, Zi]); gtr = np.r_[gtr, info.slew_gap_rows.values]; ylab = np.r_[y, info.y.values]
         tri = np.r_[tri, len(y) + keep]
@@ -114,11 +114,11 @@ if __name__ == '__main__':
             pv = predict(vai, Z, gtr, Fv); msg += f' val mF1 {mf1(y[vai], pv.argmax(1)):.4f}'
             np.save(D + rf'\oofpart_{TAG}_f{FOLD}.npy', pv)
             if Zd is not None or os.environ.get('EVALDEG'):
-                Zd_ = Zd if Zd is not None else np.load(D + r'\z_train_deg2.npy', mmap_mode='r')
+                Zd_ = Zd if Zd is not None else np.load(D + rf'\{ZP}_train_deg2.npy', mmap_mode='r')
                 pvd = predict(vai, Zd_, gtr, Fdv); msg += f' fPKS {mf1(y[vai], pvd.argmax(1)):.4f}'; np.save(D + rf'\oofdpart_{TAG}_f{FOLD}.npy', pvd)
             if ep == EP - 1: msg += ' ' + str(per_class(y[vai], pv.argmax(1)))
         print(msg, file=log, flush=True)
         torch.save(dict(net=net.state_dict(), opt=opt.state_dict(), sch=sched.state_dict(), ep=ep), ck)
-    Zt = np.load(D + r'\z_test.npy', mmap_mode='r')
+    Zt = np.load(D + rf'\{ZP}_test.npy', mmap_mode='r')
     np.save(D + rf'\ptepart_{TAG}_f{FOLD}.npy', predict(np.arange(len(te)), Zt, te.slew_gap_rows.values, Ft))
     print('done', file=log, flush=True)

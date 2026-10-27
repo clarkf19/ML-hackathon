@@ -5,3 +5,4 @@ __pycache__/
 data/
 colab/h4h_bundle.zip
 run_*.sh
+results/probs_*.npz
