@@ -1,0 +1,2 @@
+n_features 547  clean-val 0.9332  fakePKS-val 0.8950
+per-class fakePKS {np.str_('eti_candidate'): np.float64(0.86), np.str_('frb'): np.float64(0.957), np.str_('pulsar'): np.float64(0.992), np.str_('scintillating_star'): np.float64(0.69), np.str_('satellite_pass'): np.float64(0.91), np.str_('radar_chirp'): np.float64(0.908), np.str_('rfi_intermittent'): np.float64(0.904), np.str_('rfi_persistent'): np.float64(0.907), np.str_('noise'): np.float64(0.927)}

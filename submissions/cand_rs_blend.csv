@@ -109,7 +109,7 @@ SX10b6732b,rfi_persistent
 SX1605c5c6,noise
 SX27bf63f3,noise
 SXd0160c72,noise
-SX9f287d5f,satellite_pass
+SX9f287d5f,noise
 SX442a15f8,pulsar
 SXd571f012,rfi_intermittent
 SX2d5eaad6,frb
@@ -201,7 +201,7 @@ SX6e7887f9,rfi_intermittent
 SXe59c8628,rfi_persistent
 SX2fe48f93,frb
 SX669812bf,rfi_intermittent
-SX35a9b5fe,noise
+SX35a9b5fe,rfi_intermittent
 SX3964607a,eti_candidate
 SXcef0c5a7,radar_chirp
 SX30c32454,rfi_persistent
@@ -665,7 +665,7 @@ SXdf1bcbbb,rfi_persistent
 SX613fb8e9,eti_candidate
 SX8914c067,pulsar
 SXb6d86986,pulsar
-SX5776c8ea,scintillating_star
+SX5776c8ea,rfi_persistent
 SX4300a214,scintillating_star
 SX6e2bc4a5,rfi_persistent
 SX758b07ee,rfi_intermittent
@@ -701,7 +701,7 @@ SXaa83ce01,rfi_intermittent
 SX4307dbf7,pulsar
 SXe804e93d,noise
 SXc4b95010,noise
-SXb7443b97,rfi_persistent
+SXb7443b97,rfi_intermittent
 SXba5d8bfa,eti_candidate
 SX6fa5d77c,rfi_intermittent
 SXc7f52673,rfi_intermittent
@@ -749,7 +749,7 @@ SX1115a0e6,eti_candidate
 SXd4d3ce83,scintillating_star
 SX2e19973c,frb
 SX344c81e4,noise
-SX484c5925,noise
+SX484c5925,scintillating_star
 SX4303de1c,rfi_intermittent
 SX5d9d4285,rfi_intermittent
 SX330fd42c,rfi_intermittent
@@ -1286,7 +1286,7 @@ SXec0aeccd,frb
 SX910acb06,noise
 SX53156d08,rfi_intermittent
 SX78b97ecb,pulsar
-SX8618ece0,rfi_persistent
+SX8618ece0,scintillating_star
 SXd2c82867,pulsar
 SX60b8432c,noise
 SX60d385e7,noise
@@ -1738,9 +1738,9 @@ SXf39d5e7c,rfi_persistent
 SXa3e2be43,rfi_persistent
 SX1955d0ff,rfi_intermittent
 SX733f186e,rfi_intermittent
-SX75d88955,rfi_persistent
+SX75d88955,rfi_intermittent
 SX54093307,radar_chirp
-SXb74e4d63,scintillating_star
+SXb74e4d63,radar_chirp
 SXb5d5ba72,frb
 SX629d1306,eti_candidate
 SX1202cb35,noise
@@ -1971,7 +1971,7 @@ SXf28edb4b,satellite_pass
 SX4f4304f6,satellite_pass
 SX76764112,rfi_persistent
 SX2ffbb62d,satellite_pass
-SXe50a7f0d,rfi_intermittent
+SXe50a7f0d,eti_candidate
 SXe6bd75c7,radar_chirp
 SX32a65b51,noise
 SX43e5f72a,noise
@@ -2008,7 +2008,7 @@ SX45a02abf,noise
 SXee78bd54,rfi_persistent
 SX21996a20,radar_chirp
 SX71435876,pulsar
-SX9b8fce14,scintillating_star
+SX9b8fce14,noise
 SX14e4ccba,rfi_persistent
 SX117228a6,eti_candidate
 SXa9b87acc,satellite_pass
@@ -3170,7 +3170,7 @@ SXf7ee3a9c,satellite_pass
 SX41e8b728,rfi_persistent
 SX7b3372a4,noise
 SX17722d33,noise
-SXe23f5c08,rfi_intermittent
+SXe23f5c08,radar_chirp
 SX826d7c79,noise
 SXbef609cd,rfi_persistent
 SX6491219a,frb
@@ -3700,7 +3700,7 @@ SX62a3e00c,rfi_intermittent
 SX53b556d8,rfi_intermittent
 SXf3a5b277,rfi_intermittent
 SXa6d05be0,rfi_intermittent
-SX1182a856,rfi_persistent
+SX1182a856,scintillating_star
 SX834b0ff9,rfi_persistent
 SX2afe5fb8,noise
 SX3a11aa33,radar_chirp
@@ -4439,7 +4439,7 @@ SX1988994f,satellite_pass
 SX899c2f07,radar_chirp
 SXb719ee11,rfi_intermittent
 SX19c7287c,noise
-SX31f90b11,rfi_intermittent
+SX31f90b11,rfi_persistent
 SX88923c7c,radar_chirp
 SXad949a81,pulsar
 SX715164c9,satellite_pass
@@ -4500,7 +4500,7 @@ SXbc7293a9,rfi_intermittent
 SXf24566de,noise
 SX8855ca79,rfi_persistent
 SX8033608e,frb
-SX43a89ad8,rfi_persistent
+SX43a89ad8,radar_chirp
 SX56c56076,rfi_intermittent
 SX75539969,rfi_intermittent
 SXa06a7ef1,noise
@@ -4816,7 +4816,7 @@ SXb0a97a6b,rfi_intermittent
 SX10f065ba,satellite_pass
 SX7798036a,satellite_pass
 SXebc772ff,pulsar
-SX89d102e7,scintillating_star
+SX89d102e7,rfi_intermittent
 SXbf62a498,rfi_intermittent
 SXd00f6410,radar_chirp
 SXc247355a,radar_chirp
@@ -4948,7 +4948,7 @@ SX69811f5b,scintillating_star
 SX1ac5fc9e,scintillating_star
 SXa9352b84,noise
 SX6dec575a,noise
-SX8dc50c80,satellite_pass
+SX8dc50c80,rfi_persistent
 SX43c7d103,rfi_intermittent
 SXcb073c02,noise
 SXeefb6d51,eti_candidate
@@ -5187,7 +5187,7 @@ SX8ef9e144,rfi_intermittent
 SX2a01fe29,rfi_intermittent
 SX9bdc9048,radar_chirp
 SX6b7ee4d4,frb
-SX68df8461,scintillating_star
+SX68df8461,noise
 SXe440e7e1,satellite_pass
 SX22e87a46,satellite_pass
 SXa781f58b,rfi_persistent
@@ -5214,7 +5214,7 @@ SX168e0e89,rfi_intermittent
 SX84ddb3e4,rfi_intermittent
 SXb5fa2daa,pulsar
 SXbbdd4a84,satellite_pass
-SXb3d8101b,radar_chirp
+SXb3d8101b,noise
 SX898681ab,noise
 SXaeb998bb,pulsar
 SX4b089648,radar_chirp
@@ -5756,7 +5756,7 @@ SX71acd60a,rfi_intermittent
 SX817c5fc2,rfi_intermittent
 SX39966463,rfi_persistent
 SXfe012733,rfi_persistent
-SXbaad08dd,radar_chirp
+SXbaad08dd,satellite_pass
 SX4687eb9c,rfi_persistent
 SX755a0561,eti_candidate
 SXa6363d62,frb
@@ -5904,7 +5904,7 @@ SXbc485834,noise
 SX80800405,rfi_persistent
 SX530ad613,rfi_intermittent
 SX9901330d,noise
-SX5b4b1fe4,radar_chirp
+SX5b4b1fe4,satellite_pass
 SX1f43a169,satellite_pass
 SX9bf96532,rfi_persistent
 SX495ed95a,satellite_pass
@@ -6194,7 +6194,7 @@ SXaf89508c,pulsar
 SX5d445cfe,noise
 SXf68ebaef,noise
 SXd57e3323,radar_chirp
-SXc601fe9c,rfi_intermittent
+SXc601fe9c,eti_candidate
 SXcb3ac849,frb
 SXd1030364,rfi_persistent
 SXecb4f538,radar_chirp
@@ -6669,7 +6669,7 @@ SX2cd1d761,noise
 SX56ee56a1,rfi_persistent
 SX948ab61c,noise
 SXb21519c2,radar_chirp
-SXbcdf8c83,rfi_persistent
+SXbcdf8c83,rfi_intermittent
 SXda76c536,scintillating_star
 SXcf8e0cbc,radar_chirp
 SXd5f264b8,noise
@@ -6792,7 +6792,7 @@ SXfd6568a1,rfi_intermittent
 SXbe9a66ac,rfi_intermittent
 SX713643f5,pulsar
 SX97b72807,rfi_intermittent
-SX9a20b8a5,rfi_persistent
+SX9a20b8a5,rfi_intermittent
 SXbc611ba8,satellite_pass
 SX3e44e240,radar_chirp
 SX2e8a6ab3,rfi_persistent
@@ -6846,7 +6846,7 @@ SX99fc75d8,frb
 SX82818e8b,satellite_pass
 SX28735870,scintillating_star
 SX579d50fe,rfi_intermittent
-SX9ccb2a4a,rfi_intermittent
+SX9ccb2a4a,scintillating_star
 SXbb04613c,rfi_persistent
 SX6d51b04a,rfi_persistent
 SX34a4048a,rfi_persistent
@@ -6925,7 +6925,7 @@ SX9954c6df,rfi_intermittent
 SX79d3717f,pulsar
 SXabf7ed63,noise
 SXcac3756a,noise
-SXe1dab5cd,eti_candidate
+SXe1dab5cd,rfi_intermittent
 SXd85bd139,eti_candidate
 SX3390b4d1,satellite_pass
 SX6be72faa,noise
@@ -7031,7 +7031,7 @@ SX5f083205,radar_chirp
 SX7d43f7fc,rfi_persistent
 SXc334dcaa,pulsar
 SX5117ebf0,pulsar
-SXc73d86de,rfi_persistent
+SXc73d86de,scintillating_star
 SX8b4a96ef,satellite_pass
 SX3d2c42d8,noise
 SX81f687b5,pulsar
@@ -7158,7 +7158,7 @@ SXf9b85755,frb
 SX4e46458e,rfi_intermittent
 SXcf269c5d,radar_chirp
 SX42acee4e,noise
-SX3d775e29,noise
+SX3d775e29,scintillating_star
 SXf9f2a78e,scintillating_star
 SX83aabb04,rfi_intermittent
 SX37fe649f,noise
@@ -7217,7 +7217,7 @@ SX2120dfa8,pulsar
 SX50664503,rfi_intermittent
 SXe8a95458,rfi_intermittent
 SX4478764a,noise
-SX2fb08df1,rfi_persistent
+SX2fb08df1,rfi_intermittent
 SXf73a7a74,rfi_intermittent
 SXeb634275,pulsar
 SX9467fa31,rfi_intermittent
@@ -7292,7 +7292,7 @@ SX61fa4820,noise
 SXdd388b24,rfi_persistent
 SX17fce4f9,rfi_intermittent
 SX338eb938,rfi_intermittent
-SX3f31628c,rfi_persistent
+SX3f31628c,scintillating_star
 SX1ba377e2,rfi_intermittent
 SXd66b4991,rfi_intermittent
 SX43b3ba8c,radar_chirp
@@ -7766,7 +7766,7 @@ SX6a69311d,rfi_intermittent
 SX46e7a820,rfi_persistent
 SX83126955,rfi_intermittent
 SXcae50fc9,rfi_intermittent
-SX588f99df,pulsar
+SX588f99df,frb
 SXf33a1218,rfi_intermittent
 SXec5c2a77,noise
 SXe1f3daed,scintillating_star
@@ -7800,7 +7800,7 @@ SX5d1de9d3,rfi_intermittent
 SX1785ba25,rfi_intermittent
 SXb9866387,scintillating_star
 SXf8e5c466,rfi_intermittent
-SX521778c2,rfi_intermittent
+SX521778c2,eti_candidate
 SX46b34669,rfi_persistent
 SXe56356d9,scintillating_star
 SXa72b041f,eti_candidate
@@ -7912,7 +7912,7 @@ SX84f3b70b,radar_chirp
 SX59da8457,rfi_intermittent
 SXed28e6e6,rfi_persistent
 SXcfef4417,noise
-SXea18ac06,scintillating_star
+SXea18ac06,rfi_persistent
 SX7c9360c0,rfi_persistent
 SXe576d5ec,pulsar
 SXf48f3a8f,frb
@@ -8134,7 +8134,7 @@ SX2cb896aa,noise
 SXf50bf1e9,frb
 SX213b8967,noise
 SX3df33400,satellite_pass
-SXc7a406af,radar_chirp
+SXc7a406af,rfi_persistent
 SXf9638344,rfi_intermittent
 SX15791b83,noise
 SXa26e4cb8,radar_chirp
@@ -8294,7 +8294,7 @@ SX2f30e2b3,rfi_intermittent
 SXd0c52e9e,rfi_persistent
 SX30b09f6e,rfi_intermittent
 SX5156d6b7,pulsar
-SX2c597932,satellite_pass
+SX2c597932,noise
 SX1a766ef1,rfi_intermittent
 SXe1c973a3,noise
 SXe5f56cb6,rfi_persistent
@@ -8491,7 +8491,7 @@ SX5ca9cae8,satellite_pass
 SXf8333f35,rfi_intermittent
 SXa5031e1b,noise
 SX65cfac85,radar_chirp
-SXe601c29d,scintillating_star
+SXe601c29d,noise
 SXe899a8bd,noise
 SX1e0f64b6,eti_candidate
 SXa5c52489,noise
@@ -8784,7 +8784,7 @@ SXa7cbc898,rfi_persistent
 SXdd39e143,rfi_persistent
 SX5764abab,noise
 SX16d59abf,noise
-SX78b0fbb8,noise
+SX78b0fbb8,scintillating_star
 SXc431067f,frb
 SX88c5daf6,pulsar
 SXad8e6f4f,scintillating_star
@@ -8883,7 +8883,7 @@ SX2c8decb8,rfi_intermittent
 SXbbbad0c4,noise
 SXf6f1ad85,noise
 SX74e7963e,satellite_pass
-SXeb8d39ac,rfi_intermittent
+SXeb8d39ac,rfi_persistent
 SXf305dec2,satellite_pass
 SX7439c005,scintillating_star
 SXe6e760b2,rfi_persistent
@@ -8916,7 +8916,7 @@ SX2059881f,eti_candidate
 SXf51264ef,satellite_pass
 SXe7a0535e,scintillating_star
 SX9c35d680,rfi_intermittent
-SXe29dc234,rfi_intermittent
+SXe29dc234,eti_candidate
 SXf2bb75a2,pulsar
 SXfcca6fcd,scintillating_star
 SX80f0c174,noise
@@ -9380,7 +9380,7 @@ SX9028070e,rfi_persistent
 SX2ebbcea4,frb
 SXf92a0f7c,pulsar
 SX1548da23,rfi_persistent
-SXabd74c9b,satellite_pass
+SXabd74c9b,scintillating_star
 SX2803d24a,rfi_persistent
 SXc7498f07,frb
 SX56b21183,noise
@@ -9405,7 +9405,7 @@ SXcf909912,scintillating_star
 SXf1062439,frb
 SXa55baa3b,noise
 SX4bf6d49b,rfi_intermittent
-SX3855d572,noise
+SX3855d572,radar_chirp
 SX7991cd81,rfi_persistent
 SXf9baafbb,noise
 SXf65e9b27,noise
@@ -9695,7 +9695,7 @@ SXb83507e3,noise
 SXbdf6d937,frb
 SX77b0544a,noise
 SX1b45f4e9,rfi_persistent
-SX86e9d314,frb
+SX86e9d314,noise
 SX384be2b6,eti_candidate
 SX6247613f,satellite_pass
 SX6364cb85,noise
@@ -9801,7 +9801,7 @@ SX1aa4883d,rfi_intermittent
 SX9a8f0d36,scintillating_star
 SXaf072d45,noise
 SXce0b8354,frb
-SX19cb56ae,rfi_persistent
+SX19cb56ae,rfi_intermittent
 SX869fd380,rfi_intermittent
 SX32628913,scintillating_star
 SX876f7e74,rfi_intermittent
@@ -9918,7 +9918,7 @@ SX3da1c1aa,noise
 SXcbf8d33a,noise
 SXff0ca8a9,noise
 SX4ed6b400,noise
-SX6dc0e11f,scintillating_star
+SX6dc0e11f,rfi_persistent
 SXfa114e89,scintillating_star
 SX817048c9,scintillating_star
 SX6bc292bb,eti_candidate
