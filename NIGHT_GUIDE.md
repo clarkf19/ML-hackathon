@@ -21,10 +21,10 @@ For EACH new account:
 
 | Account | `CFGS = ...` | what it trains (all pretrained, fp16, ~4-6 h for 5 folds) |
 |---|---|---|
-| Clark #1 | `CFGS = ['P4']` | ResNet-34 + round-4 labels (the proven P1 recipe) |
-| Clark #2 | `CFGS = ['E3']` | EfficientNet-B0 + round-4 labels |
-| Teammate #1 | `CFGS = ['P6']` | ResNet-34 + mixup |
-| Teammate #2 | `CFGS = ['E2']` | EfficientNet-B2 (bigger, slowest of the four) |
+| Clark #1 | `CFGS = ['E3']` | EfficientNet-B0 + round-4 labels (E1 recipe = best model so far) |
+| Clark #2 | `CFGS = ['E4']` | EfficientNet-B1 + round-4 labels |
+| Teammate #1 | `CFGS = ['P4']` | ResNet-34 + round-4 labels (different family = ensemble diversity) |
+| Teammate #2 | already running `['E2']` | EfficientNet-B2 (started in the evening) |
 
    ONE config per account: only runs that finish all 5 folds can be used in the final blend.
 

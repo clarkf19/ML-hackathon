@@ -20,8 +20,11 @@ CS = [cnn(t) for t in TAGS]
 C = np.mean([c[0] for c in CS], 0); Cc = np.mean([c[1] for c in CS], 0); Ct = np.mean([c[2] for c in CS], 0)
 B, Bc, Bt = (G + C) / 2, (Gc + Cc) / 2, (Gt + Ct) / 2
 L = lambda a: np.log(a + 1e-6)
+GSEP = os.environ.get('GSEP') == '1'             # each feature model its own meta input too
+GL = [np.load(D + rf'\oofd_{t}.npy') for t in GTS] if GSEP else [G]; GLc = [np.load(D + rf'\oofc_{t}.npy') for t in GTS] if GSEP else [Gc]
+GLt = [np.load(D + rf'\pte_{t}.npy') for t in GTT] if GSEP else [Gt]
 if SEP and len(CS) > 1:
-    X = np.hstack([L(G)] + [L(c[0]) for c in CS]); Xc = np.hstack([L(Gc)] + [L(c[1]) for c in CS]); Xt = np.hstack([L(Gt)] + [L(c[2]) for c in CS])
+    X = np.hstack([L(g) for g in GL] + [L(c[0]) for c in CS]); Xc = np.hstack([L(g) for g in GLc] + [L(c[1]) for c in CS]); Xt = np.hstack([L(g) for g in GLt] + [L(c[2]) for c in CS])
 else:
     X, Xc, Xt = np.hstack([L(G), L(C)]), np.hstack([L(Gc), L(Cc)]), np.hstack([L(Gt), L(Ct)])
 mk = lambda: lgb.LGBMClassifier(n_estimators=300, learning_rate=0.03, num_leaves=int(os.environ.get('META_LEAVES', 31)), min_child_samples=30, colsample_bytree=0.6, class_weight='balanced', verbose=-1, num_threads=8)
