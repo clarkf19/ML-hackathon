@@ -1,0 +1,249 @@
+{
+ "test_mix": {
+  "eti": 0.028553205811403585,
+  "frb": 0.06734743565854356,
+  "pulsar": 0.09687518942453585,
+  "scint": 0.06698775951655137,
+  "sat": 0.0842027666127884,
+  "radar": 0.08439488109351126,
+  "rfi_int": 0.18763533597326804,
+  "rfi_pers": 0.14459650231749374,
+  "noise": 0.23940692359189988
+ },
+ "rows": [
+  {
+   "name": "H argmax (harness baseline)",
+   "fpks": 0.8930753817167935,
+   "d_fpks": 0.0,
+   "ci90": [
+    0.0,
+    0.0
+   ],
+   "p_better": 0.0,
+   "fpks_testmix": 0.8910886016469907,
+   "d_fpks_testmix": 0.0,
+   "test_scint_share": 0.0583
+  },
+  {
+   "name": "H + bias",
+   "fpks": 0.8946447424633275,
+   "d_fpks": 0.001569360746534021,
+   "ci90": [
+    -0.0003,
+    0.0034
+   ],
+   "p_better": 0.916,
+   "fpks_testmix": 0.8922925097912597,
+   "d_fpks_testmix": 0.0012039081442690724,
+   "test_scint_share": 0.0676
+  },
+  {
+   "name": "H cond-prob cascade (pure)",
+   "fpks": 0.8931204219535841,
+   "d_fpks": 4.5040236790638843e-05,
+   "ci90": [
+    -0.0019,
+    0.0017
+   ],
+   "p_better": 0.481,
+   "fpks_testmix": 0.8908299466045071,
+   "d_fpks_testmix": -0.00025865504248356874,
+   "test_scint_share": 0.0594
+  },
+  {
+   "name": "H cond-prob cascade (upward overrides of argmax)",
+   "fpks": 0.8935940766739328,
+   "d_fpks": 0.0005186949571392985,
+   "ci90": [
+    -0.0013,
+    0.0022
+   ],
+   "p_better": 0.678,
+   "fpks_testmix": 0.8914310792221856,
+   "d_fpks_testmix": 0.0003424775751948994,
+   "test_scint_share": 0.0595
+  },
+  {
+   "name": "H + bias -> cond-prob upward overrides",
+   "fpks": 0.8950114140155431,
+   "d_fpks": 0.0019360322987496126,
+   "ci90": [
+    -0.0001,
+    0.0039
+   ],
+   "p_better": 0.942,
+   "fpks_testmix": 0.8925395135160312,
+   "d_fpks_testmix": 0.001450911869040561,
+   "test_scint_share": 0.0679
+  },
+  {
+   "name": "cond detectors: pure cascade",
+   "fpks": 0.8903388089678449,
+   "d_fpks": -0.0027365727489485625,
+   "ci90": [
+    -0.0054,
+    -0.0003
+   ],
+   "p_better": 0.032,
+   "fpks_testmix": 0.8881870506331552,
+   "d_fpks_testmix": -0.0029015510138354905,
+   "test_scint_share": 0.0661
+  },
+  {
+   "name": "cond detectors: chain-rule joint argmax",
+   "fpks": 0.8869318204538812,
+   "d_fpks": -0.006143561262912267,
+   "ci90": [
+    -0.0085,
+    -0.0037
+   ],
+   "p_better": 0.0,
+   "fpks_testmix": 0.8857191443552609,
+   "d_fpks_testmix": -0.005369457291729773,
+   "test_scint_share": 0.0526
+  },
+  {
+   "name": "cond detectors: chain-rule joint + bias",
+   "fpks": 0.8911783397669465,
+   "d_fpks": -0.001897041949846967,
+   "ci90": [
+    -0.0044,
+    0.0005
+   ],
+   "p_better": 0.087,
+   "fpks_testmix": 0.8886774130286965,
+   "d_fpks_testmix": -0.0024111886182941467,
+   "test_scint_share": 0.068
+  },
+  {
+   "name": "H argmax + cond-detector upward overrides",
+   "fpks": 0.8952973778617859,
+   "d_fpks": 0.002221996144992411,
+   "ci90": [
+    0.0004,
+    0.0039
+   ],
+   "p_better": 0.983,
+   "fpks_testmix": 0.8928247537178622,
+   "d_fpks_testmix": 0.0017361520708715217,
+   "test_scint_share": 0.069
+  },
+  {
+   "name": "H + bias + cond-detector upward overrides",
+   "fpks": 0.8954361310956901,
+   "d_fpks": 0.0023607493788966316,
+   "ci90": [
+    0.0003,
+    0.0043
+   ],
+   "p_better": 0.97,
+   "fpks_testmix": 0.8930853679936784,
+   "d_fpks_testmix": 0.0019967663466877728,
+   "test_scint_share": 0.0685
+  },
+  {
+   "name": "avg(H, cond joint) + bias",
+   "fpks": 0.8946137046874512,
+   "d_fpks": 0.0015383229706577017,
+   "ci90": [
+    -0.0005,
+    0.0034
+   ],
+   "p_better": 0.882,
+   "fpks_testmix": 0.8923576556786439,
+   "d_fpks_testmix": 0.0012690540316532273,
+   "test_scint_share": 0.0683
+  },
+  {
+   "name": "meta argmax (submission2 model)",
+   "fpks": 0.8972135777749859,
+   "d_fpks": 0.004138196058192434,
+   "ci90": [
+    0.0021,
+    0.0062
+   ],
+   "p_better": 1.0,
+   "fpks_testmix": 0.895174342784129,
+   "d_fpks_testmix": 0.004085741137138332,
+   "test_scint_share": 0.0602
+  },
+  {
+   "name": "meta + bias",
+   "fpks": 0.89804882175761,
+   "d_fpks": 0.004973440040816568,
+   "ci90": [
+    0.0025,
+    0.0072
+   ],
+   "p_better": 1.0,
+   "fpks_testmix": 0.8955902289027828,
+   "d_fpks_testmix": 0.004501627255792173,
+   "test_scint_share": 0.0675
+  },
+  {
+   "name": "meta cond-prob cascade (pure)",
+   "fpks": 0.8998649843765647,
+   "d_fpks": 0.006789602659771243,
+   "ci90": [
+    0.0044,
+    0.0092
+   ],
+   "p_better": 1.0,
+   "fpks_testmix": 0.8972658928006898,
+   "d_fpks_testmix": 0.006177291153699138,
+   "test_scint_share": 0.068
+  },
+  {
+   "name": "meta + bias -> cond-prob upward overrides",
+   "fpks": 0.8990075272187101,
+   "d_fpks": 0.005932145501916675,
+   "ci90": [
+    0.0035,
+    0.0082
+   ],
+   "p_better": 1.0,
+   "fpks_testmix": 0.8964777217665786,
+   "d_fpks_testmix": 0.00538912011958792,
+   "test_scint_share": 0.0676
+  },
+  {
+   "name": "meta argmax + cond-detector upward overrides",
+   "fpks": 0.8982635081019669,
+   "d_fpks": 0.005188126385173408,
+   "ci90": [
+    0.0029,
+    0.0072
+   ],
+   "p_better": 1.0,
+   "fpks_testmix": 0.8960350216793427,
+   "d_fpks_testmix": 0.004946420032352017,
+   "test_scint_share": 0.0618
+  },
+  {
+   "name": "meta + bias + cond-detector upward overrides",
+   "fpks": 0.898118117040102,
+   "d_fpks": 0.005042735323308567,
+   "ci90": [
+    0.0026,
+    0.0072
+   ],
+   "p_better": 1.0,
+   "fpks_testmix": 0.895629107536269,
+   "d_fpks_testmix": 0.004540505889278346,
+   "test_scint_share": 0.0693
+  },
+  {
+   "name": "avg(meta, H) + bias",
+   "fpks": 0.8966328929270337,
+   "d_fpks": 0.003557511210240283,
+   "ci90": [
+    0.0015,
+    0.0055
+   ],
+   "p_better": 0.999,
+   "fpks_testmix": 0.8940780588868164,
+   "d_fpks_testmix": 0.002989457239825688,
+   "test_scint_share": 0.0686
+  }
+ ]
+}
