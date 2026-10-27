@@ -1,5 +1,5 @@
 #!/bin/bash
-# Reproduces submissions/submissions/submission2.csv from the raw competition data (CV 0.9292 clean / 0.8972 fake-PKS).
+# Reproduces submissions/submission2.csv from the raw competition data (CV 0.9292 clean / 0.8972 fake-PKS).
 # Data: unzip signal-hunters-round2.zip into data/  -> data/signal-hunters-round2/*.npy|csv
 # All randomness is seeded (folds seed 42, simulator seeds below, LightGBM default seeds).
 set -e

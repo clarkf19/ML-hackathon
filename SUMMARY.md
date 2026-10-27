@@ -2,7 +2,7 @@
 
 **Task:** 9-class cadence classification (6 panels ON/OFF/ON/OFF/ON/OFF × 16 time × 128 freq, uint8 log-power), macro-F1.
 **Train = GBT telescope, test = PKS** (1.3× noisier, different noise *shape*, 1.8× more glitch rows, 2.5× more dropped rows,
-different bandpass / channel width / tsamp / freq range, different label mix). **Uploads used: 0 / 5.** Code goes in as a GitHub link (not an upload).
+different bandpass / channel width / tsamp / freq range, different label mix). **Uploads: 10 per day (resets midnight), round ends 28 Oct 10:00 IST. submission1 public = 0.8779** (proxy said 0.887 → proxy ≈0.01 optimistic). Code goes in as a GitHub link (not an upload).
 
 Because test is a different telescope, every model is scored twice with the **same 5 folds**:
 **clean val** (GBT) and **fake-PKS val** — the val fold re-rendered as PKS-like data (my simulator, see P-rows). The fake-PKS
@@ -16,7 +16,8 @@ number should predict the leaderboard better; adversarial AUC fake-PKS-vs-test 0
 | C4 features, clean + fake-PKS v3 | 0.9145 | 0.874 | submissions/old_A_deg2.csv | ok |
 | C4 features, clean + fake-PKS v3 + v4 | 0.9168 | 0.8814 | submissions/cand_A_deg2_deg4.csv | superseded |
 | C4 features, clean + 4 fake-PKS copies | 0.9168 | 0.8866 | submissions/cand_A_d2468.csv | superseded |
-| **C4 + trk2 features, clean + 4 fake-PKS copies** | **0.9195** | **0.8873** | **submissions/submission1.csv** (= cand_A_d2468_trk2.csv) | **recommended FIRST upload** (reproduced by pipeline.sh) |
+| C4 + trk2 features, clean + 4 fake-PKS copies | 0.9195 | 0.8873 | submissions/submission1.csv | **uploaded: public 0.8779** |
+| **+ panel-level features from RAW data (lvl)** | **0.9292** | **0.8972** | **submissions/submission2.csv** | **upload next** (pipeline.sh reproduces it) |
 | (fold-0 only) best GBDT + CNN B2 blend | 0.9253 (fold0) | 0.8950 (fold0) | needs 5-fold CNN B2 (Colab) | upload #2 after Colab |
 
 ## (b) Every idea / experiment (all numbers = macro-F1, 5-fold unless "fold0")
@@ -33,6 +34,9 @@ number should predict the leaderboard better; adversarial AUC fake-PKS-vs-test 0
 | A_deg2_deg4 | + 2nd fake-PKS copy (v4: stronger glitches) | med | **0.9168** | **0.8814** | +0.002 / +0.007 | more noise realisations help |
 | A_d2468 | 4 fake-PKS copies (varied noise 0.43–0.47, glitch rate/amp) | med | 0.9168 | **0.8866** | +0.000 / +0.005 | scint fPKS 0.609→0.624 |
 | trk2 | In-band-aware global tracks through all 6 panels (persistent line drifting out of band ≠ intermittent) | med | **0.9195** | **0.8873** (v4-val 0.8851) | **win +0.003 / +0.001 (+0.004 v4)** | rfi_int 0.923→0.929, fPKS 0.905→0.914 |
+| freq | RFI at repeated absolute frequencies ("different local interference frequencies") | high if true | – | – | **rejected** | 8 of 4,773 strong lines share a 200 Hz bin; not label-predictive |
+| snr | Are test signals really fainter? (signal-tail quantiles) | high if false | – | – | test tails ≈ fake-PKS (slightly stronger), far below clean | simulator SNR assumption confirmed |
+| **lvl** | **Panel power LEVEL from raw bytes** (prep.py's per-panel median subtraction erased ON-panel brightening: scint +3.67 bytes ON−OFF, pulsar +5.33, noise 0.00; AUC scint-vs-noise 0.903, missed-scint 0.833). Fake copies re-rendered with test-matched gain jitter (σ 1.9; OFF-spread median 3.45 vs test 3.55) | **high** | **0.9292** | **0.8972** | **WIN +0.010 / +0.010** | scint 0.707→**0.776** clean, 0.62→**0.698** fPKS |
 | tex3 | Source-aware scint texture (mask all detected lines + glitch rows) | med | – | – | weaker single-feature AUC (0.673 vs 0.74) | over-masks scint patches; not trained |
 | B | CNN on global-time canvas (6 panels placed at real time → ETI = one straight line), SNR/zoom/flip aug | high | 0.875 fold0 | 0.826 fold0 | **complementary** | radar 0.966, rfi_pers 0.943 (> GBDT), ETI 0.52 |
 | B2 | B + 2000 injected ETI/trap cadences + 50% fake-PKS mixing | high | **0.886 fold0** | **0.854 fold0** | +0.011 / +0.028 over B | ETI 0.52→0.64 |
