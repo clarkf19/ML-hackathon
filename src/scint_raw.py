@@ -16,11 +16,16 @@ Detector (per cadence, raw uint8 = log power, ~24 bytes per doubling of power as
   * additive-source test: a sky source adds LINEAR power S, so its log-domain brightening 24*log2(1+S/N(f)) follows
     the inverse bandpass 1/N(f); multiplicative gain jitter is flat in frequency. Slope / t of the ON-OFF channel
     level on h(f)=2^(-(ref(f)-median)/24) separates the two (when the bandpass varies enough: sraw_h_spread).
+    (Bundle evidence, src/scint_tail.py: the brightening is a pure log/byte-domain shift, no lower-tail compression, so
+    this test is expected to be weak; kept as a cheap check.)
   * gain-free multi-scale texture: per-panel level removed, masked block means of z at 8 scales, variance excess
     and positive-tail excess, ON-OFF, ON-min-minus-OFF-max, pair count; log and linear domains.
+  * overlapping matched filter at the measured scintle scale (bundle texture effect peaks at 8 rows x 16-32 channels):
+    masked box-smoothed z (all offsets, not one block grid) -> mean square excess and 95th percentile, per panel.
   * ON-ON spectral/temporal consistency (same scintillation pattern across the 3 ON panels or independent)."""
 import sys, os, numpy as np
 from pathlib import Path
+from scipy.ndimage import uniform_filter
 R = Path(__file__).resolve().parent.parent
 D = Path(os.environ.get('H4H_DATA', R / 'data')); SRC = D / 'signal-hunters-round2'
 SC = [(2, 8), (4, 8), (4, 16), (8, 16), (8, 32), (16, 16), (16, 32), (16, 64)]
@@ -127,6 +132,14 @@ def feats(X, bs=500):
                 nb = np.maximum(w.sum((2, 3)), 1)
                 v = (zb ** 2).sum((2, 3)) / nb - 1; pos = (np.clip(zb, 0, None) ** 2).sum((2, 3)) / nb - 0.5
                 onoff(f, f'sraw_{dom}{a}x{c}_v', v, 0.01); f[f'sraw_{dom}{a}x{c}_pos_d'] = pos[:, 0::2].mean(1) - pos[:, 1::2].mean(1)
+        # --- overlapping matched filter (box kernel at scintle scale), masked: sum(z)/sqrt(n) over every window position
+        kc = keep.astype(np.float32)
+        for (a, c) in ((8, 16), (8, 32), (4, 16)):
+            sz = uniform_filter(zl, (1, 1, a, c), mode='constant') * a * c; sn = uniform_filter(kc, (1, 1, a, c), mode='constant') * a * c
+            ok = sn >= a * c * 0.5; zs = np.where(ok, sz / np.sqrt(np.maximum(sn, 1)), 0); no = np.maximum(ok.sum((2, 3)), 1)
+            ms = (zs ** 2).sum((2, 3)) / no - 1
+            p95 = np.percentile(np.where(ok, zs, np.nan).reshape(b, 6, -1), 95, axis=-1); p95 = np.nan_to_num(p95)
+            onoff(f, f'sraw_mf{a}x{c}_ms', ms, 0.01); onoff(f, f'sraw_mf{a}x{c}_p95', p95, 0.01)
         # --- ON-panel pattern consistency: spectra (4-ch bins) and time profiles
         spec = zl.reshape(b, 6, 16, 32, 4).sum((2, 4)); sm = keep.reshape(b, 6, 16, 32, 4).sum((2, 4)) > 16
         tp = zl.sum(3); tm = keep.sum(3) > 32
