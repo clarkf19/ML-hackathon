@@ -62,7 +62,7 @@ def fit_predict(name, Xtr, ytr, Xs):
         return [m.predict_proba(X) for X in Xs]
     if name == 'cat':
         from catboost import CatBoostClassifier
-        m = CatBoostClassifier(iterations=1500, learning_rate=0.1, depth=6, loss_function='MultiClass',
+        m = CatBoostClassifier(iterations=1000, learning_rate=0.12, depth=6, border_count=64, loss_function='MultiClass',
                                auto_class_weights='Balanced', thread_count=4, random_seed=0, verbose=0)
         m.fit(Xtr, ytr)
         return [m.predict_proba(X) for X in Xs]
@@ -77,7 +77,7 @@ def fit_predict(name, Xtr, ytr, Xs):
         rng = np.random.default_rng(0); n = len(ytr) // K
         idx = np.concatenate([rng.choice(np.flatnonzero(ytr == k), n, replace=True) for k in range(K)])
         ps = []
-        for seed in range(3):
+        for seed in range(2):
             m = MLPClassifier(hidden_layer_sizes=(512, 256), alpha=1e-3, batch_size=256, learning_rate_init=1e-3,
                               max_iter=60, early_stopping=True, validation_fraction=0.1, n_iter_no_change=8,
                               random_state=seed).fit(Z[idx], ytr[idx])

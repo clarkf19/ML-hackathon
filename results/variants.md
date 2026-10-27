@@ -24,3 +24,6 @@
 | meta + bias + cond-detector upward overrides | meta+a+d | 0.9322 | +0.0043 | 0.8981 | +0.0050 | 5/5 |
 | meta + bias + cond-detector overrides + pair overrides | meta+a+c+d | 0.9325 | +0.0045 | 0.8981 | +0.0051 | 5/5 |
 | avg(meta, H) + bias | meta+e+d | 0.9292 | +0.0013 | 0.8966 | +0.0036 | 5/5 |
+| H + bias + cond-detector upward overrides [fPKS-tuned] | a+d | 0.9296 | +0.0017 | 0.8947 | +0.0016 | 4/5 |
+| meta cond-prob cascade (pure) [fPKS-tuned] | meta+a | 0.9312 | +0.0032 | 0.9000 | +0.0069 | 5/5 |
+| meta + bias [fPKS-tuned] | meta+d | 0.9302 | +0.0023 | 0.8987 | +0.0056 | 5/5 |

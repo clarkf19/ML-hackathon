@@ -62,6 +62,13 @@ class Stack:
         q = r.stack_proba(p, S); return with_(S, p=q, base=q.argmax(1))
 
 
+class OnD:
+    """tune the wrapped step on the fakePKS-val rows only (ablation of the clean+fakePKS tuning objective)"""
+    def __init__(self, st): self.st = st; self.name = st.name + '{fPKS-tuned}'
+    def fit(self, Ss, ys): return self.st.fit(Ss[1:], ys[1:])
+    def tr(self, p, S): return self.st.tr(p, S)
+
+
 def run_chain(steps, Sc, Sd, St):
     """nested over folds; returns labels/probs for c, d (OOF) and t (params fit on all rows), per-fold params"""
     def fit(Ss, ys):
@@ -183,6 +190,12 @@ def variants(M):
     add('meta + bias + cond-detector overrides + pair overrides', 'meta+a+c+d', ['meta', 'cond', 'pairs'],
         lambda w: {'p': Mt(w), 's': C(w), 'q': Q(w)}, [Bias(), Cascade('argmax'), Pairs()])
     add('avg(meta, H) + bias', 'meta+e+d', ['meta', 'baseline'], lambda w: {'p': avg(Mt(w), H(w))}, [Bias()])
+    # --- ablation: tune on fakePKS-val rows only instead of clean + fakePKS
+    add('H + bias + cond-detector upward overrides [fPKS-tuned]', 'a+d', ['baseline', 'cond'],
+        lambda w: {'p': H(w), 's': C(w)}, [OnD(Bias()), OnD(Cascade('argmax'))])
+    add('meta cond-prob cascade (pure) [fPKS-tuned]', 'meta+a', ['meta'],
+        lambda w: {'p': Mt(w), 's': cond_s(Mt(w))}, [OnD(Cascade('noise'))])
+    add('meta + bias [fPKS-tuned]', 'meta+d', ['meta'], lambda w: {'p': Mt(w)}, [OnD(Bias())])
     MB = ['meta', 'xgb', 'cat', 'mlp']
     add('avg(meta, xgb, cat, mlp) + bias', 'meta+e+d', MB, lambda w: {'p': avg(*[M[n][w] for n in MB])}, [Bias()])
     add('avg(meta, H, xgb, cat, mlp) + bias', 'meta+e+d', MB + ['baseline'],
