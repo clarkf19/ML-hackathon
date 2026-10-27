@@ -79,6 +79,9 @@ number should predict the leaderboard better; adversarial AUC fake-PKS-vs-test 0
 | A_trk3_PL5t6 (ETI slope set, p>0.6) | 0.9011 (p>0.8: 0.9002) | small + |
 | A_rs_PL5t6 (no sweep set, p>0.6) | 0.9032, clean 0.9374 | +0.001 over p>0.8 |
 | base_b9a / base_b9b = round-5 feature models in the base, + 6 pretrained mix (cand_b9amix / cand_b9bmix.csv) | FINAL 0.9241; mixed 0.9293 / 0.9294 (sub10 recipe 0.9293) | flat on proxy (expected for pseudo-labels); LB test candidate |
+| base_n1 = 7 round-5 feature models (3 seeds, t6, w3, rs_t6, trk3_t6) | FINAL 0.9241; + pretrained mix 0.9294 (cand_n1mix.csv, 62 test labels differ from sub10) | = sub10 recipe |
+| base_n2 = n1 + A_rsswp_PL4, A_rs_PL4, A_rs_PL3 | FINAL 0.9247; + pretrained mix **0.9302** (cand_n2mix.csv, 57 differ) | +0.0009 vs sub10 recipe |
+| GSEP=1 (each feature model its own meta input), 4 round-5 models | FINAL **0.9255** (vs 0.9241 averaged) | +0.0014 → use GSEP |
 | **Pretrained CNNs as meta inputs vs mixing** (folds 0-1, meta trained on 1 fold) | **0.9298 vs 0.9269** | **+0.003 → morning: complete folds go into the meta** |
 
 ## Error analysis (best GBDT A_deg2_deg4)
