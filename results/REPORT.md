@@ -44,6 +44,12 @@ weight 0.5 fixed in advance):
 | 0.5 A_lvl + 0.5 rs_robust harness model | 0.9329 | 0.8991 |
 | 0.5 A_lvl + 0.5 rs_robust_noq harness model | 0.9330 | 0.8994 |
 | **0.5 A_lvl + 0.5 rs_pruned harness model** (`submissions/cand_rs_blend.csv`) | **0.9334** | **0.8992** |
+| same, second harness run of the same features (float16 file) | 0.9327 | 0.8982 |
+
+**Noise caveat.** Two harness runs of the same features differ by up to ~0.001 (LightGBM multithreading is not
+bit-reproducible: baseline 0.9275 here vs 0.9279 in the brief; rs_pruned float32 vs float16 0.8974 vs 0.8966). The harness-level
+gain (+0.0043 fPKS, CI excludes 0 in every run: f16 rerun +0.0035 [+0.0014, +0.0057]) is well above that. The blend's gain over
+A_lvl (+0.0010…+0.0020 fPKS) is only 1–2× the noise, so treat it as small. The two blends agree on 99.7% of test rows.
 
 ## What was computed (src/rawstats.py, 281 statistics per cadence)
 Log domain D = bytes − OFF-panel per-channel median (bandpass flattened, **panel level kept**). Linear domain R = power /
@@ -112,7 +118,8 @@ and the levels are kept (`raw_d2q`, `raw_d4q`).
   (per-line, per-panel presence) reasoning, not global statistics.
 
 ## Verdict
-**WIN, moderate: +0.0055 clean / +0.0043 fake-PKS (harness), +0.0042 / +0.0020 as a 50/50 blend with A_lvl.**
+**WIN, moderate: +0.0055 clean / +0.0043 fake-PKS in the harness (rerun +0.0057 / +0.0035), but only +0.0035…+0.0042 clean /
++0.0010…+0.0020 fake-PKS as a 50/50 blend with the 4-copy A_lvl.** The full value needs a 4-copy retrain with the new feature set.
 Recommendation for the final pipeline:
 1. Add the 226 statistics in `feats/rs_pruned.txt` as a feature set. Compute them for train, test and all 4 fake copies:
    `COPIES=d2,d4,d6,d8 QMAP=1 python src/rawsim.py && python src/rawstats.py train test d2q d4q d6q d8q` (~30 min CPU on
@@ -120,7 +127,7 @@ Recommendation for the final pipeline:
    (gbdt_aug.py with SETS += rs; it reads CSVs on Windows paths, so it needs a small loader change). Expected gain over A_lvl
    about +0.004 fPKS. Not done here: the bundle has no deg6/deg8 copies of the 427 base features.
 2. Without a 4-copy retrain, upload `submissions/cand_rs_blend.csv`: argmax of 0.5 × A_lvl pte + 0.5 × harness rs_pruned pte,
-   fPKS-val 0.8992 vs 0.8972, clean 0.9334 vs 0.9292. It agrees with submission2 on 98.8% of test rows; format checked
+   fPKS-val 0.8992 (rerun 0.8982) vs 0.8972, clean 0.9334 (0.9327) vs 0.9292. It agrees with submission2 on 98.8% of test rows; format checked
    against sample_submission (10,000 rows, same ID order, valid labels).
 3. Do not add a subset selected by importance (top-60 / top-120 lose 35–55% of the fake-PKS gain; top-60 regresses scint),
    nor the shifted noise-level / bandpass statistics.
@@ -132,8 +139,8 @@ Recommendation for the final pipeline:
   paired bootstrap comparison.
 - `feats/rs_pruned.txt` (226, recommended), `feats/rs_robust.txt`, `feats/rs_top60.txt`, `feats/rs_ftop120.txt` feature lists;
   `results/rs_pruned_f16.npz` = X_clean / X_test / X_deg2 / X_deg4 (float16, max rel. error 5e-4; raw-qmap fake copies) for
-  `python src/bundle_eval.py results/rs_pruned_f16.npz`. (The float32 version gave 0.9331 / 0.8974; the float16 file
-  was not re-run through the harness.)
+  `python src/bundle_eval.py results/rs_pruned_f16.npz` → 0.9332 / 0.8966 (results/eval_rs_pruned_f16.txt; float32 run
+  0.9331 / 0.8974; difference −0.0008 fPKS, CI [−0.0024, +0.0007], i.e. run-to-run noise).
 - `submissions/cand_rs_blend.csv` candidate upload; `src/make_blend_sub.py` builds it from `results/probs_rs_pruned.npz`
   (a harness output, not committed; `python src/bundle_eval.py results/rs_pruned_f16.npz` writes the equivalent
   `results/probs_rs_pruned_f16.npz`).
