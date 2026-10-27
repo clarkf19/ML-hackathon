@@ -1,0 +1,191 @@
+[
+ {
+  "name": "H argmax (harness baseline)",
+  "group": "ref",
+  "clean": 0.9279465276690839,
+  "fpks": 0.8930753817167935,
+  "d_clean": 0.0,
+  "d_fpks": 0.0,
+  "folds_up": 0,
+  "per_class_fpks": {
+   "eti": 0.861,
+   "frb": 0.955,
+   "pulsar": 0.989,
+   "scint": 0.691,
+   "sat": 0.914,
+   "radar": 0.894,
+   "rfi_int": 0.906,
+   "rfi_pers": 0.907,
+   "noise": 0.922
+  },
+  "steps": "argmax"
+ },
+ {
+  "name": "H + bias",
+  "group": "d",
+  "clean": 0.9288989803464253,
+  "fpks": 0.8946447424633275,
+  "d_clean": 0.0009524526773413422,
+  "d_fpks": 0.001569360746534021,
+  "folds_up": 3,
+  "per_class_fpks": {
+   "eti": 0.867,
+   "frb": 0.958,
+   "pulsar": 0.991,
+   "scint": 0.692,
+   "sat": 0.912,
+   "radar": 0.898,
+   "rfi_int": 0.906,
+   "rfi_pers": 0.905,
+   "noise": 0.923
+  },
+  "steps": "bias"
+ },
+ {
+  "name": "H cond-prob cascade (pure)",
+  "group": "a",
+  "clean": 0.9287904938685033,
+  "fpks": 0.8931204219535841,
+  "d_clean": 0.0008439661994193992,
+  "d_fpks": 4.5040236790638843e-05,
+  "folds_up": 4,
+  "per_class_fpks": {
+   "eti": 0.861,
+   "frb": 0.953,
+   "pulsar": 0.989,
+   "scint": 0.688,
+   "sat": 0.912,
+   "radar": 0.897,
+   "rfi_int": 0.909,
+   "rfi_pers": 0.906,
+   "noise": 0.924
+  },
+  "steps": "cascade[noise]"
+ },
+ {
+  "name": "H cond-prob cascade (upward overrides of argmax)",
+  "group": "a",
+  "clean": 0.9293703701055082,
+  "fpks": 0.8935940766739328,
+  "d_clean": 0.0014238424364242386,
+  "d_fpks": 0.0005186949571392985,
+  "folds_up": 4,
+  "per_class_fpks": {
+   "eti": 0.861,
+   "frb": 0.955,
+   "pulsar": 0.989,
+   "scint": 0.688,
+   "sat": 0.913,
+   "radar": 0.896,
+   "rfi_int": 0.909,
+   "rfi_pers": 0.907,
+   "noise": 0.924
+  },
+  "steps": "cascade[argmax]"
+ },
+ {
+  "name": "H + bias -> cond-prob upward overrides",
+  "group": "a+d",
+  "clean": 0.9291445059667459,
+  "fpks": 0.8950114140155431,
+  "d_clean": 0.0011979782976619946,
+  "d_fpks": 0.0019360322987496126,
+  "folds_up": 3,
+  "per_class_fpks": {
+   "eti": 0.867,
+   "frb": 0.958,
+   "pulsar": 0.991,
+   "scint": 0.692,
+   "sat": 0.913,
+   "radar": 0.897,
+   "rfi_int": 0.907,
+   "rfi_pers": 0.906,
+   "noise": 0.923
+  },
+  "steps": "bias -> cascade[argmax]"
+ },
+ {
+  "name": "meta argmax (submission2 model)",
+  "group": "meta",
+  "clean": 0.9291774119269041,
+  "fpks": 0.8972135777749859,
+  "d_clean": 0.0012308842578201418,
+  "d_fpks": 0.004138196058192434,
+  "folds_up": 4,
+  "per_class_fpks": {
+   "eti": 0.869,
+   "frb": 0.962,
+   "pulsar": 0.989,
+   "scint": 0.698,
+   "sat": 0.911,
+   "radar": 0.897,
+   "rfi_int": 0.913,
+   "rfi_pers": 0.909,
+   "noise": 0.926
+  },
+  "steps": "argmax"
+ },
+ {
+  "name": "meta + bias",
+  "group": "meta+d",
+  "clean": 0.9312728691690147,
+  "fpks": 0.89804882175761,
+  "d_clean": 0.0033263414999308294,
+  "d_fpks": 0.004973440040816568,
+  "folds_up": 5,
+  "per_class_fpks": {
+   "eti": 0.872,
+   "frb": 0.964,
+   "pulsar": 0.99,
+   "scint": 0.699,
+   "sat": 0.912,
+   "radar": 0.9,
+   "rfi_int": 0.912,
+   "rfi_pers": 0.908,
+   "noise": 0.925
+  },
+  "steps": "bias"
+ },
+ {
+  "name": "meta cond-prob cascade (pure)",
+  "group": "meta+a",
+  "clean": 0.9305414050218188,
+  "fpks": 0.8998649843765647,
+  "d_clean": 0.0025948773527348923,
+  "d_fpks": 0.006789602659771243,
+  "folds_up": 5,
+  "per_class_fpks": {
+   "eti": 0.874,
+   "frb": 0.965,
+   "pulsar": 0.99,
+   "scint": 0.707,
+   "sat": 0.914,
+   "radar": 0.902,
+   "rfi_int": 0.914,
+   "rfi_pers": 0.909,
+   "noise": 0.924
+  },
+  "steps": "cascade[noise]"
+ },
+ {
+  "name": "meta + bias -> cond-prob upward overrides",
+  "group": "meta+a+d",
+  "clean": 0.9310309289439205,
+  "fpks": 0.8990075272187101,
+  "d_clean": 0.003084401274836557,
+  "d_fpks": 0.005932145501916675,
+  "folds_up": 5,
+  "per_class_fpks": {
+   "eti": 0.872,
+   "frb": 0.964,
+   "pulsar": 0.99,
+   "scint": 0.7,
+   "sat": 0.914,
+   "radar": 0.903,
+   "rfi_int": 0.913,
+   "rfi_pers": 0.91,
+   "noise": 0.925
+  },
+  "steps": "bias -> cascade[argmax]"
+ }
+]
