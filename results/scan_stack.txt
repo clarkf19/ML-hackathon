@@ -1,0 +1,16 @@
+stack [oofc only]           mF1 0.9280  logloss 0.2128  err-AUC 0.8916   (raw oofc argmax mF1 0.9292)
+stack [oofc + ALL raw 281]  mF1 0.9354  logloss 0.2005  err-AUC 0.8886
+stack [oofc + G1px       53]  mF1 0.9302 (+0.0022)  logloss 0.2087 (-0.0040)  err-AUC 0.8904 (-0.0013)
+stack [oofc + G2lin      20]  mF1 0.9289 (+0.0010)  logloss 0.2093 (-0.0035)  err-AUC 0.8915 (-0.0002)
+stack [oofc + G3row      40]  mF1 0.9301 (+0.0021)  logloss 0.2103 (-0.0024)  err-AUC 0.8859 (-0.0058)
+stack [oofc + G4ch       40]  mF1 0.9310 (+0.0031)  logloss 0.2074 (-0.0054)  err-AUC 0.8885 (-0.0032)
+stack [oofc + G5dch      14]  mF1 0.9289 (+0.0010)  logloss 0.2112 (-0.0016)  err-AUC 0.8916 (-0.0001)
+stack [oofc + G6blk      24]  mF1 0.9291 (+0.0012)  logloss 0.2101 (-0.0026)  err-AUC 0.8904 (-0.0012)
+stack [oofc + G7glitch   18]  mF1 0.9294 (+0.0015)  logloss 0.2108 (-0.0020)  err-AUC 0.8891 (-0.0025)
+stack [oofc + G8corr     21]  mF1 0.9283 (+0.0003)  logloss 0.2122 (-0.0006)  err-AUC 0.8865 (-0.0051)
+stack [oofc + G9edge      5]  mF1 0.9293 (+0.0013)  logloss 0.2100 (-0.0027)  err-AUC 0.8933 (+0.0017)
+stack [oofc + G10quant    8]  mF1 0.9282 (+0.0002)  logloss 0.2122 (-0.0006)  err-AUC 0.8874 (-0.0043)
+stack [oofc + G11sk      19]  mF1 0.9304 (+0.0024)  logloss 0.2062 (-0.0065)  err-AUC 0.8898 (-0.0019)
+stack [oofc + G12pac      8]  mF1 0.9298 (+0.0019)  logloss 0.2072 (-0.0056)  err-AUC 0.8891 (-0.0026)
+stack [oofc + G13tail    11]  mF1 0.9289 (+0.0010)  logloss 0.2113 (-0.0014)  err-AUC 0.8916 (-0.0000)
+top-40 raw features by stacking gain: cc2d_onon, pac_f1_on, pac_f1_mm, pac_f1_d, pac_f1_off, pac_t1_d, chP_std_d, chP_kurt_off, chP_ac1_on, pac_t1_on, blk2x32_mmmax, chP_kurt_on, px_q25_on, chP_kurt_d, rowP_slope_on, skr_med_on, chP_max_on, skr_med_off, rowP_ac1_on, rowP_rng_on, px_q05_on, chL_std_d, chP_std_on, dchP_skew, chP_std_mm, px_q25_d, rowP_std_on, chL_max_on, chL_std_off, blk2x32_dmin, chL_kurt_off, skc_med_on, q_distinct_on, blk4x16_mmmax, blk8x8_std_on, q_entropy_on, skc_med_off, blk2x32_std_on, chP_ac1_d, skr_med_d
