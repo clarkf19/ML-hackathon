@@ -28,6 +28,9 @@ for k in range(5):
     for a in AUGS:
         if a in ('deg6', 'deg8'): XS.append(XX[a][tri]); YS.append(y[tri])
     for nm, (Xe, ye, fe) in extra.items(): XS.append(Xe[fe != k]); YS.append(ye[fe != k])
+    if os.environ.get('PL'):
+        pp = np.load(D + rf"\pte_{os.environ['PL']}.npy"); cf = pp.max(1) > float(os.environ.get('PLTH', 0.9))
+        XS.append(Xt[cf]); YS.append(pp.argmax(1)[cf])
     m = lgb.LGBMClassifier(**prm).fit(pd.concat(XS), np.concatenate(YS))
     oc[vai] = m.predict_proba(Xc[vai]); od[vai] = m.predict_proba(Xd[vai]); o4[vai] = m.predict_proba(X4[vai]); pt += m.predict_proba(Xt) / 5
 for nm, a in [('oofc', oc), ('oofd', od), ('oof4', o4), ('pte', pt)]: np.save(D + rf'\{nm}_{TAG}.npy', a)
