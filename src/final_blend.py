@@ -7,7 +7,9 @@ OUT, TAGS = sys.argv[1], sys.argv[2:]
 y = y_train(); fo = folds()
 GT = os.environ.get('GBDT', 'A_lvl')            # feature-model version for OOF/test
 GTEST = os.environ.get('GBDT_TEST', GT)          # e.g. a pseudo-label variant used only for test predictions
-G, Gc, Gt = np.load(D + rf'\oofd_{GT}.npy'), np.load(D + rf'\oofc_{GT}.npy'), np.load(D + rf'\pte_{GTEST}.npy')
+GTS = GT.split(','); GTT = GTEST.split(',')        # several feature models -> averaged
+G = np.mean([np.load(D + rf'\oofd_{t}.npy') for t in GTS], 0); Gc = np.mean([np.load(D + rf'\oofc_{t}.npy') for t in GTS], 0)
+Gt = np.mean([np.load(D + rf'\pte_{t}.npy') for t in GTT], 0)
 SEP = bool(os.environ.get('SEP', '1') == '1')    # each CNN its own meta input
 def cnn(tag):
     od, oc = np.zeros((len(y), 9)), np.zeros((len(y), 9))
