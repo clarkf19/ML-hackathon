@@ -184,7 +184,13 @@ if __name__ == '__main__':
                 if USEF: fb[md_] = Fdall[b][md_]
             if USEF: fb = fb * (torch.rand_like(fb) > 0.15)
             xb = canvas(augment(zb), gtr[b])
-            loss = F.cross_entropy(net(xb, fb), torch.from_numpy(ylab[b]), weight=cw, label_smoothing=0.05)
+            MIX = float(os.environ.get('MIXUP', 0))
+            if MIX > 0 and np.random.rand() < 0.5:
+                lam = float(np.random.beta(MIX, MIX)); pm = torch.randperm(len(b)); xb = lam * xb + (1 - lam) * xb[pm]
+            else:
+                lam, pm = 1.0, torch.arange(len(b))
+            out = net(xb, fb); yt = torch.from_numpy(ylab[b])
+            loss = lam * F.cross_entropy(out, yt, weight=cw, label_smoothing=0.05) + (1 - lam) * F.cross_entropy(out, yt[pm], weight=cw, label_smoothing=0.05)
             opt.zero_grad(); loss.backward(); opt.step(); sched.step(); tl += loss.item()
         msg = f'ep {ep} loss {tl / (len(perm) // BS):.4f} {time.time() - t:.0f}s'
         if vai is not None and (ep % 4 == 3 or ep == EP - 1):
