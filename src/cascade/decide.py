@@ -142,6 +142,8 @@ def variants(M):
     add('H + bias + pair overrides', 'c+d', ['baseline', 'pairs'], lambda w: {'p': H(w), 'q': Q(w)}, [Bias(), Pairs()])
     add('H + bias + cond-prob overrides + pair overrides', 'a+c+d', ['baseline', 'pairs'],
         lambda w: {'p': H(w), 's': cond_s(H(w)), 'q': Q(w)}, [Bias(), Cascade('argmax'), Pairs()])
+    add('H + bias + cond-detector overrides + pair overrides', 'a+c+d', ['baseline', 'cond', 'pairs'],
+        lambda w: {'p': H(w), 's': C(w), 'q': Q(w)}, [Bias(), Cascade('argmax'), Pairs()])
     # --- (e) other learners and averages
     for n in ['xgb', 'cat', 'mlp', 'lgbx']:
         add(f'{n} argmax', 'e', [n], lambda w, n=n: {'p': M[n][w]}, [])
@@ -174,6 +176,13 @@ def variants(M):
     add('meta + bias -> cond-prob upward overrides', 'meta+a+d', ['meta'],
         lambda w: {'p': Mt(w), 's': cond_s(Mt(w))}, [Bias(), Cascade('argmax')])
     add('meta + bias + pair overrides', 'meta+c+d', ['meta', 'pairs'], lambda w: {'p': Mt(w), 'q': Q(w)}, [Bias(), Pairs()])
+    add('meta argmax + cond-detector upward overrides', 'meta+a', ['meta', 'cond'],
+        lambda w: {'p': Mt(w), 's': C(w)}, [Cascade('argmax')])
+    add('meta + bias + cond-detector upward overrides', 'meta+a+d', ['meta', 'cond'],
+        lambda w: {'p': Mt(w), 's': C(w)}, [Bias(), Cascade('argmax')])
+    add('meta + bias + cond-detector overrides + pair overrides', 'meta+a+c+d', ['meta', 'cond', 'pairs'],
+        lambda w: {'p': Mt(w), 's': C(w), 'q': Q(w)}, [Bias(), Cascade('argmax'), Pairs()])
+    add('avg(meta, H) + bias', 'meta+e+d', ['meta', 'baseline'], lambda w: {'p': avg(Mt(w), H(w))}, [Bias()])
     MB = ['meta', 'xgb', 'cat', 'mlp']
     add('avg(meta, xgb, cat, mlp) + bias', 'meta+e+d', MB, lambda w: {'p': avg(*[M[n][w] for n in MB])}, [Bias()])
     add('avg(meta, H, xgb, cat, mlp) + bias', 'meta+e+d', MB + ['baseline'],
