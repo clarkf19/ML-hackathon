@@ -42,3 +42,25 @@ phys_bb0_max
 
 mean KS over 337 computed features per class, and worst features:
   noise                meanKS 0.078  worst {np.str_('phys_pers_min5'): np.float32(0.36), np.str_('phys_pers_min6'): np.float32(0.35), np.str_('phys_pers_min4'): np.float32(0.32), np.str_('phys_gt_all'): np.float32(0.24), np.str_('lvl_lv_on_spread'): np.float32(0.24), np.str_('phys_bbD_minus_bb0'): np.float32(0.24)}
+=== {"TEL.GBT.dof": 18}
+phys_best_p0
+   noise                real 1.66/1.90/2.22           gen 1.63/1.91/2.15
+phys_pers_min4
+   noise                real 0.40/0.59/0.89           gen 0.32/0.49/0.67
+phys_spec_max
+   noise                real 1.49/1.75/2.16           gen 1.45/1.68/2.00
+rep_rep_k1
+   noise                real 1.98/2.18/2.48           gen 1.99/2.16/2.45
+tex_v2x4_p0
+   noise                real 0.88/1.01/1.16           gen 0.88/0.99/1.12
+phys_tex_max_p0
+   noise                real 1.56/2.12/3.25           gen 1.54/2.08/3.28
+lvl_lv_off_spread
+   noise                real 0.77/2.06/3.78           gen 1.10/2.53/4.61
+lvl_lv_tblk_std_off
+   noise                real 0.64/1.32/2.96           gen 0.74/1.52/2.57
+phys_bb0_max
+   noise                real 1.46/2.42/40.81          gen 1.44/2.31/35.58
+
+mean KS over 337 computed features per class, and worst features:
+  noise                meanKS 0.069  worst {np.str_('phys_pers_min5'): np.float32(0.27), np.str_('phys_pers_min4'): np.float32(0.26), np.str_('phys_pers_min6'): np.float32(0.23), np.str_('tex_v2x4_onmin'): np.float32(0.2), np.str_('phys_spec_max'): np.float32(0.18), np.str_('tex_v2x4_on'): np.float32(0.18)}
