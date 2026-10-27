@@ -41,12 +41,14 @@ code("# patch cnn.py for GPU + checkpoints in Drive\n"
      "assert s.count('.to(dev)') >= 6, 'GPU patch failed'\n"
      "open('/content/work/src/cnn.py', 'w').write(s); print('patched')")
 code("# copy the pseudo-label file if it is in Drive (needed only for CFG='B3pl')\nimport os, shutil\n"
-     "if os.path.exists(DRV + '/pl_test.npy'): shutil.copy(DRV + '/pl_test.npy', '/content/work/data/pl_test.npy'); print('pl_test.npy copied')")
+     "for f in ['pl_test.npy', 'pl_test2.npy', 'qmap_zr.npz', 'sig_train.npy']:\n"
+     "    if os.path.exists(DRV + '/' + f): shutil.copy(DRV + '/' + f, '/content/work/data/' + f); print(f, 'copied')")
 code("CFG = 'B3'      # 'B3' first run | 'B3w' second run (other seed, wider) | 'B3pl' (+ test pseudo-labels, needs pl_test.npy in h4h_r2)\nEPOCHS = 30\n"
      "FOLDS = [0, 1, 2, 3, 4]   # split between two people, e.g. [0, 1, 2] and [3, 4]\n"
      "ENV = {'B2': 'EXTRA=inj1 DEGMIX=0.5', 'B3': 'ZPFX=zr EXTRA=inj1 DEGMIX=0.5', 'B3w': 'ZPFX=zr EXTRA=inj1 DEGMIX=0.5 SEED=1 WIDTH=48',\n"
      "       'B3pl': 'ZPFX=zr EXTRA=inj1 DEGMIX=0.5 SEED=2 PL=pl_test.npy', 'B4': 'ZPFX=zr EXTRA=inj1 DEGMIX=0.5 ONLINE=1 SEED=3',\n"
-     "       'B3plw': 'ZPFX=zr EXTRA=inj1 DEGMIX=0.5 SEED=4 WIDTH=48 PL=pl_test.npy'}[CFG]; TAG = CFG + 'g'\n"
+     "       'B3plw': 'ZPFX=zr EXTRA=inj1 DEGMIX=0.5 SEED=4 WIDTH=48 PL=pl_test.npy',\n"
+     "       'B3pl2': 'ZPFX=zr EXTRA=inj1 DEGMIX=0.5 SEED=5 PL=pl_test2.npy'}[CFG]; TAG = CFG + 'g'\n"
      "for fold in FOLDS:\n"
      "    !cd /content/work && {ENV} NT=4 python src/cnn.py {fold} {EPOCHS} {TAG}\n"
      "    !cp /content/work/data/*part_{TAG}_f{fold}.npy $DRV/out/ ; tail -2 /content/work/logs/cnn_{TAG}_f{fold}.log")
