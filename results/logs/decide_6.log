@@ -1,0 +1,30 @@
+H argmax (harness baseline)                                    clean 0.9279 (+0.0000)  fPKS 0.8931 (+0.0000)  folds+ 0/5
+H + bias                                                       clean 0.9289 (+0.0010)  fPKS 0.8946 (+0.0016)  folds+ 3/5
+H cond-prob cascade (pure)                                     clean 0.9288 (+0.0008)  fPKS 0.8931 (+0.0000)  folds+ 4/5
+H cond-prob cascade (upward overrides of argmax)               clean 0.9294 (+0.0014)  fPKS 0.8936 (+0.0005)  folds+ 4/5
+H + bias -> cond-prob upward overrides                         clean 0.9291 (+0.0012)  fPKS 0.8950 (+0.0019)  folds+ 3/5
+cond detectors: pure cascade                                   clean 0.9283 (+0.0004)  fPKS 0.8903 (-0.0027)  folds+ 1/5
+cond detectors: chain-rule joint argmax                        clean 0.9229 (-0.0050)  fPKS 0.8869 (-0.0061)  folds+ 0/5
+cond detectors: chain-rule joint + bias                        clean 0.9272 (-0.0008)  fPKS 0.8912 (-0.0019)  folds+ 2/5
+H argmax + cond-detector upward overrides                      clean 0.9300 (+0.0021)  fPKS 0.8953 (+0.0022)  folds+ 4/5
+H + bias + cond-detector upward overrides                      clean 0.9303 (+0.0024)  fPKS 0.8954 (+0.0024)  folds+ 4/5
+avg(H, cond joint) + bias                                      clean 0.9305 (+0.0025)  fPKS 0.8946 (+0.0015)  folds+ 3/5
+H argmax + pair overrides                                      clean 0.9282 (+0.0003)  fPKS 0.8930 (-0.0000)  folds+ 4/5
+H + bias + pair overrides                                      clean 0.9289 (+0.0010)  fPKS 0.8936 (+0.0005)  folds+ 3/5
+H + bias + cond-prob overrides + pair overrides                clean 0.9292 (+0.0012)  fPKS 0.8938 (+0.0007)  folds+ 3/5
+H + bias + cond-detector overrides + pair overrides            clean 0.9301 (+0.0021)  fPKS 0.8949 (+0.0018)  folds+ 3/5
+xgb argmax                                                     clean 0.9267 (-0.0012)  fPKS 0.8923 (-0.0008)  folds+ 1/5
+avg(H, xgb)                                                    clean 0.9273 (-0.0006)  fPKS 0.8936 (+0.0006)  folds+ 3/5
+avg(H, xgb) + bias                                             clean 0.9289 (+0.0010)  fPKS 0.8931 (+0.0001)  folds+ 3/5
+meta argmax (submission2 model)                                clean 0.9292 (+0.0012)  fPKS 0.8972 (+0.0041)  folds+ 4/5
+meta + bias                                                    clean 0.9313 (+0.0033)  fPKS 0.8980 (+0.0050)  folds+ 5/5
+meta cond-prob cascade (pure)                                  clean 0.9305 (+0.0026)  fPKS 0.8999 (+0.0068)  folds+ 5/5
+meta + bias -> cond-prob upward overrides                      clean 0.9310 (+0.0031)  fPKS 0.8990 (+0.0059)  folds+ 5/5
+meta + bias + pair overrides                                   clean 0.9315 (+0.0036)  fPKS 0.8984 (+0.0054)  folds+ 5/5
+meta argmax + cond-detector upward overrides                   clean 0.9306 (+0.0027)  fPKS 0.8983 (+0.0052)  folds+ 5/5
+meta + bias + cond-detector upward overrides                   clean 0.9322 (+0.0043)  fPKS 0.8981 (+0.0050)  folds+ 5/5
+meta + bias + cond-detector overrides + pair overrides         clean 0.9325 (+0.0045)  fPKS 0.8981 (+0.0051)  folds+ 5/5
+avg(meta, H) + bias                                            clean 0.9292 (+0.0013)  fPKS 0.8966 (+0.0036)  folds+ 5/5
+H + bias + cond-detector upward overrides [fPKS-tuned]         clean 0.9296 (+0.0017)  fPKS 0.8947 (+0.0016)  folds+ 4/5
+meta cond-prob cascade (pure) [fPKS-tuned]                     clean 0.9312 (+0.0032)  fPKS 0.9000 (+0.0069)  folds+ 5/5
+meta + bias [fPKS-tuned]                                       clean 0.9302 (+0.0023)  fPKS 0.8987 (+0.0056)  folds+ 5/5

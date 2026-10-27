@@ -315,6 +315,69 @@
   "steps": "bias -> cascade[argmax] -> pairs"
  },
  {
+  "name": "xgb argmax",
+  "group": "e",
+  "clean": 0.926698508614237,
+  "fpks": 0.8922883438633522,
+  "d_clean": -0.0012480190548469494,
+  "d_fpks": -0.0007870378534412525,
+  "folds_up": 1,
+  "per_class_fpks": {
+   "eti": 0.863,
+   "frb": 0.957,
+   "pulsar": 0.988,
+   "scint": 0.695,
+   "sat": 0.91,
+   "radar": 0.89,
+   "rfi_int": 0.902,
+   "rfi_pers": 0.904,
+   "noise": 0.922
+  },
+  "steps": "argmax"
+ },
+ {
+  "name": "avg(H, xgb)",
+  "group": "e",
+  "clean": 0.9273075291414971,
+  "fpks": 0.893638808004575,
+  "d_clean": -0.0006389985275868648,
+  "d_fpks": 0.0005634262877814988,
+  "folds_up": 3,
+  "per_class_fpks": {
+   "eti": 0.862,
+   "frb": 0.957,
+   "pulsar": 0.989,
+   "scint": 0.695,
+   "sat": 0.912,
+   "radar": 0.892,
+   "rfi_int": 0.907,
+   "rfi_pers": 0.907,
+   "noise": 0.923
+  },
+  "steps": "argmax"
+ },
+ {
+  "name": "avg(H, xgb) + bias",
+  "group": "e+d",
+  "clean": 0.928910682520221,
+  "fpks": 0.8931485914371515,
+  "d_clean": 0.0009641548511371001,
+  "d_fpks": 7.32097203580695e-05,
+  "folds_up": 3,
+  "per_class_fpks": {
+   "eti": 0.857,
+   "frb": 0.959,
+   "pulsar": 0.99,
+   "scint": 0.695,
+   "sat": 0.913,
+   "radar": 0.893,
+   "rfi_int": 0.904,
+   "rfi_pers": 0.905,
+   "noise": 0.923
+  },
+  "steps": "bias"
+ },
+ {
   "name": "meta argmax (submission2 model)",
   "group": "meta",
   "clean": 0.9291774119269041,
