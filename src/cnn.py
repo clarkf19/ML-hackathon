@@ -5,7 +5,7 @@ Usage: cnn.py FOLD [EPOCHS] [TAG]   (FOLD=-1 -> train on all, predict test)"""
 import numpy as np, pandas as pd, torch, torch.nn as nn, torch.nn.functional as F, sys, time, os
 sys.path.insert(0, r'C:\Users\clark\hack4hack-r2\src')
 from common import *
-torch.set_num_threads(int(os.environ.get('NT', 8))); torch.manual_seed(0); np.random.seed(0)
+torch.set_num_threads(int(os.environ.get('NT', 8))); SEED = int(os.environ.get('SEED', 0)); torch.manual_seed(SEED); np.random.seed(SEED)
 FOLD = int(sys.argv[1]); EP = int(sys.argv[2]) if len(sys.argv) > 2 else 24; TAG = sys.argv[3] if len(sys.argv) > 3 else 'B'
 AUG = os.environ.get('AUG', 'full'); ZP = os.environ.get('ZPFX', 'z')
 
@@ -76,6 +76,12 @@ if __name__ == '__main__':
         Zall = torch.cat([Zall, Zi]); gtr = np.r_[gtr, info.slew_gap_rows.values]; ylab = np.r_[y, info.y.values]
         tri = np.r_[tri, len(y) + keep]
         if Zdall is not None: Zdall = torch.cat([Zdall, Zi])
+    if os.environ.get('PL'):   # confident pseudo-labelled REAL test cadences (labels -1 = unused); never in any val fold
+        pl = np.load(D + rf"\{os.environ['PL']}"); ip = np.where(pl >= 0)[0]
+        Zp = torch.from_numpy(np.asarray(np.load(D + rf'\{ZP}_test.npy', mmap_mode='r')[ip], dtype=np.float32))
+        n0 = len(Zall); Zall = torch.cat([Zall, Zp]); gtr = np.r_[gtr, te.slew_gap_rows.values[ip]]; ylab = np.r_[ylab, pl[ip]]
+        tri = np.r_[tri, n0 + np.arange(len(ip))]
+        if Zdall is not None: Zdall = torch.cat([Zdall, Zp])
     USEF = bool(os.environ.get('FEATS'))
     Fall = Fdall = Fv = Fdv = Ft = None
     if USEF:
@@ -83,7 +89,7 @@ if __name__ == '__main__':
         nrm = lambda a: torch.from_numpy(np.clip(np.nan_to_num((a - med) / iqr), -10, 10).astype(np.float32))
         Fall = nrm(Fc); Fdall = nrm(featmat('deg2')); Ft = nrm(featmat('test')); Fv, Fdv = Fall, Fdall
         if EXTRA: Fi = nrm(featmat(EXTRA)); Fall = torch.cat([Fall, Fi]); Fdall = torch.cat([Fdall, Fi])
-    net = Net(nf=Fall.shape[1] if USEF else 0); opt = torch.optim.AdamW(net.parameters(), 2e-3, weight_decay=1e-4)
+    net = Net(w=int(os.environ.get('WIDTH', 32)), nf=Fall.shape[1] if USEF else 0); opt = torch.optim.AdamW(net.parameters(), 2e-3, weight_decay=1e-4)
     BS = 64; steps = EP * (len(tri) // BS); sched = torch.optim.lr_scheduler.OneCycleLR(opt, 3e-3, total_steps=steps)
     cw = torch.tensor(len(y) / (9 * np.bincount(y[fo != FOLD] if FOLD >= 0 else y, minlength=9)), dtype=torch.float32) ** 0.5
     ck = D + rf'\ck_{TAG}_f{FOLD}.pt'; ep0 = 0
