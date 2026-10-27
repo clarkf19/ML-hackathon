@@ -17,7 +17,7 @@ number should predict the leaderboard better; adversarial AUC fake-PKS-vs-test 0
 | C4 features, clean + fake-PKS v3 + v4 | 0.9168 | 0.8814 | submissions/cand_A_deg2_deg4.csv | superseded |
 | C4 features, clean + 4 fake-PKS copies | 0.9168 | 0.8866 | submissions/cand_A_d2468.csv | superseded |
 | **C4 + trk2 features, clean + 4 fake-PKS copies** | **0.9195** | **0.8873** | **submissions/cand_A_d2468_trk2.csv** | **recommended FIRST upload** (reproduced by pipeline.sh) |
-| (fold-0 only) GBDT + CNN B2 blend | 0.9205 (fold0) | 0.8895 (fold0) | needs 5-fold CNN (Colab) | after Colab |
+| (fold-0 only) best GBDT + CNN B2 blend | 0.9253 (fold0) | 0.8950 (fold0) | needs 5-fold CNN B2 (Colab) | upload #2 after Colab |
 
 ## (b) Every idea / experiment (all numbers = macro-F1, 5-fold unless "fold0")
 | # | Idea | Potential | clean | fake-PKS | Verdict | Notes |
@@ -37,7 +37,8 @@ number should predict the leaderboard better; adversarial AUC fake-PKS-vs-test 0
 | B | CNN on global-time canvas (6 panels placed at real time → ETI = one straight line), SNR/zoom/flip aug | high | 0.875 fold0 | 0.826 fold0 | **complementary** | radar 0.966, rfi_pers 0.943 (> GBDT), ETI 0.52 |
 | B2 | B + 2000 injected ETI/trap cadences + 50% fake-PKS mixing | high | **0.886 fold0** | **0.854 fold0** | +0.011 / +0.028 over B | ETI 0.52→0.64 |
 | blend | GBDT(A_deg2_deg4) + CNN 50/50, fold0 | – | 0.9205–0.9233 | 0.887–0.890 | +0.008–0.010 | oracle "either right" acc 0.9575 vs GBDT 0.925 → lots of complementarity left |
-| H | Hybrid: B2 + 392 physics features into CNN head | high | ep15 fold0 **0.883** (B2 ep15 0.853) | ep15 0.836 (B2 0.807) | **ahead of B2 at every checkpoint** | finishing ~13:30 (20 ep) → if final > 0.886 / 0.854, use CFG='H' on Colab |
+| H | Hybrid: B2 + 392 physics features into CNN head | high | final fold0 0.8817 (B2 0.8863) | 0.8372 (B2 0.8537) | **rejected** | led early, ended below B2; blend with GBDT 0.918 / 0.879 is *worse* than GBDT alone on fake-PKS (redundant with the features) |
+| blend2 | best GBDT (trk2) + CNN B2, 50/50, fold0 | – | **0.9253** (GBDT 0.9193) | **0.8950** (GBDT 0.8817) | **+0.006 / +0.013** | → Colab CFG='B2' for all 5 folds |
 | G | Injection (ETI + 3 stated traps) for GBDT | high for ETI | 0.9121 | 0.8744 | **neutral** for GBDT | helps CNN (B2) |
 | F | EM prior-shift correction | med | 0.868 (vs 0.874) | resampled mixes 0.8376 vs 0.8386 | **rejected** | balanced argmax already robust |
 | K | Pseudo-labels (proxy: unlabeled = fake-PKS fold) | med | – | 0.8421→0.8447 across a domain gap; 0.8744→0.8740 without gap | small (+0.003) | |
@@ -63,7 +64,7 @@ number should predict the leaderboard better; adversarial AUC fake-PKS-vs-test 0
 ## Recommendation
 1. **Direction to commit to:** physics-feature GBDT trained on clean + simulated-PKS copies (the backbone, 0.9195 / 0.887) **plus** a CNN trained with injection + fake-PKS mixing (B2, or H if it wins), blended. The two are strongly complementary (oracle 0.958 acc vs 0.925).
 2. **First upload now:** `cand_A_d2468_trk2.csv` — calibrates the public LB against our fake-PKS proxy (expect public ≈ 0.86–0.89 if the proxy is right).
-3. **Colab (Clark):** upload `colab/h4h_bundle.zip` (858 MB) to `MyDrive/h4h_r2/`, run `colab/signal_hunters_gpu.ipynb` with CFG='B2' (and 'H' if fold-0 H beats B2) → 5-fold CNN probs → blend with GBDT → second upload.
+3. **Colab (Clark):** upload `colab/h4h_bundle.zip` (858 MB) to `MyDrive/h4h_r2/`, run `colab/signal_hunters_gpu.ipynb` with CFG='B2' (H rejected) → 5-fold CNN probs → blend with GBDT → second upload.
 4. Keep ~70% on new information: scintillation under contamination, int-vs-pers multi-source decomposition, simulator realism.
 
 ## (c) Next 3 planned experiments
@@ -73,7 +74,7 @@ number should predict the leaderboard better; adversarial AUC fake-PKS-vs-test 0
 
 ## When Clark is back (needs you)
 1. **Upload #1:** `submissions/cand_A_d2468_trk2.csv` (format verified: 10,000 rows, sample-submission ID order, valid labels).
-2. **Colab:** upload `colab/h4h_bundle.zip` (858 MB) to `MyDrive/h4h_r2/`, open `colab/signal_hunters_gpu.ipynb`, T4 runtime, run all (CFG='B2' first; 'H' if fold-0 H wins locally). ~5 folds × 30 epochs. Copy `out/*part_*.npy` into `data/`.
+2. **Colab:** upload `colab/h4h_bundle.zip` (858 MB) to `MyDrive/h4h_r2/`, open `colab/signal_hunters_gpu.ipynb`, T4 runtime, run all with CFG='B2' (H was tested and rejected). ~5 folds × 30 epochs. Copy `out/*part_*.npy` into `data/`.
 3. **GitHub:** code is committed locally (2 commits, no AI attribution); `git push` to clarkf19/ML-hackathon when you're ready (data excluded by .gitignore). That repo link is also the code submission.
 4. **Cloud sessions ($100):** the raw data can't go into GitHub (npy files > 100 MB), so each session would have to download the dataset from the organisers' Drive link and run `pipeline.sh` (~30 min CPU) first. Best uses: (a) scintillation specialist, (b) curved-sweep satellite features, (c) stacking/blending once Colab CNN outputs exist.
 
