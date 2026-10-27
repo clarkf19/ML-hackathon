@@ -21,7 +21,8 @@ number should predict the leaderboard better; adversarial AUC fake-PKS-vs-test 0
 | submission5 = submission4 + CNN B3pl (real-test pseudo-labels) as 2nd meta input | 0.9481 | 0.9196 (all 5 folds up) | submissions/submission5.csv | **uploaded: public 0.9170** (pseudo-label gain bigger on real test than on proxy) |
 | submission6 = avg of 3 feature models (A_rs raw stats, A_lvl_PL pseudo-labels, A_trk3 ETI slope) + CNNs B3, B3pl, B3w + meta | 0.9505 | 0.9226 | submissions/submission6.csv | **uploaded: public 0.9189** |
 | submission7 = 4 feature models (incl. round-3 pseudo-label A_rs_PL3) + CNNs B3pl2, B3w + larger meta | 0.9519 | 0.9230 | submissions/submission7.csv | **uploaded: public 0.9219** |
-| submission8 = base (5 feature models + B3pl2, B3w, B3plw, meta) mixed 0.7/0.3 with pretrained CNNs P1 (3 folds) + E1 (2 folds); weight chosen on folds 0-1, fold 2 independent check +0.004 | — | 0.9218→0.9257 (folds 0-1) | submissions/submission8.csv | upload |
+| submission8 = base (5 feature models + B3pl2, B3w, B3plw, meta) mixed 0.7/0.3 with pretrained CNNs P1 (3 folds) + E1 (2 folds); weight chosen on folds 0-1, fold 2 independent check +0.004 | — | 0.9218→0.9257 (folds 0-1) | submissions/submission8.csv | **uploaded: public 0.9216** (within noise of 0.9219) |
+| submission9 = same base mixed 0.5/0.5 with 6 pretrained CNNs (P1 f0-2, E1 f0-2, E3 f0-1, E2/E4/P3 f0) | — | pooled folds 0-2: 0.9249→0.9291 | submissions/submission9.csv | upload |
 | submission3 = lvl GBDT + CNN B3 (4 folds) 50/50 | 0.9381 (4 folds) | 0.9089 (4 folds) | submissions/submission3.csv | **uploaded: public 0.8991** |
 | **+ panel-level features from RAW data (lvl)** | **0.9292** | **0.8972** | **submissions/submission2.csv** | **uploaded: public 0.8910** (pipeline.sh reproduces it) |
 | (fold-0 only) best GBDT + CNN B2 blend | 0.9253 (fold0) | 0.8950 (fold0) | needs 5-fold CNN B2 (Colab) | upload #2 after Colab |

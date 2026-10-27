@@ -17,10 +17,10 @@ W = np.linspace(0, 0.7, 15); res = {k: [] for k in ks}
 for k in ks:
     v = fo == k; c = cnn_fold(k)
     for w in W: res[k].append(mf1(y[v], ((1 - w) * F[v] + w * c).argmax(1)))
-full = [k for k in ks if all(k in have[t] for t in TAGS)]
+full = ks if os.environ.get('ANYFOLD') == '1' else [k for k in ks if all(k in have[t] for t in TAGS)]
 idx = np.concatenate([np.where(fo == k)[0] for k in full]); cf = np.concatenate([cnn_fold(k) for k in full])
 pooled = [mf1(y[idx], ((1 - w) * F[idx] + w * cf).argmax(1)) for w in W]
-wb = W[int(np.argmax(pooled))]
+wb = float(os.environ['WMIX']) if os.environ.get('WMIX') else W[int(np.argmax(pooled))]
 print(f'pooled folds {full} (all of {TAGS}): base {pooled[0]:.4f} -> best w={wb:.2f}: {max(pooled):.4f}')
 for k in ks: print(f'  fold{k}: base {res[k][0]:.4f} | w={wb:.2f}: {res[k][list(W).index(wb)]:.4f} | best in fold {max(res[k]):.4f} at w={W[int(np.argmax(res[k]))]:.2f}')
 Ct = np.mean([np.mean([np.load(os.path.join(D, f'ptepart_{t}_f{k}.npy')) for k in have[t]], 0) for t in TAGS], 0)
