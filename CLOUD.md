@@ -2,13 +2,13 @@
 Read `SUMMARY.md` first (problem, what was tried, numbers).
 
 ## Data
-Raw data is NOT in git (too big). Download it once:
+Raw data is NOT on main (too big) but IS on the `data` branch of this repo (Google Drive is blocked in the cloud network):
 ```
-pip install gdown lightgbm scikit-learn pandas numpy scipy torch --quiet
-mkdir -p data && gdown 1ugmJhTtjGfyhkjuU4oe8NFtQJ4dxUFG6 -O data/sh.zip && cd data && unzip -q sh.zip && cd ..
+pip install lightgbm scikit-learn pandas numpy scipy --quiet
+git fetch origin data && git worktree add /tmp/h4hdata origin/data && bash /tmp/h4hdata/get_data.sh "$PWD/data/signal-hunters-round2"
 ```
--> `data/signal-hunters-round2/{train,test}_cadences.npy` (uint8, N x 6 x 16 x 128), `{train,test}_meta.csv`.
-If gdown is blocked, work only from `bundle/` (features) and say so in your report.
+-> `data/signal-hunters-round2/{train,test}_cadences.npy` (uint8, N x 6 x 16 x 128), `{train,test}_meta.csv`, `PROBLEM_STATEMENT.md`.
+torch may not be installable (download.pytorch.org blocked): use numpy/scipy/LightGBM, or sklearn MLPs.
 
 ## Bundle (in git)
 `bundle/feats_{clean,test,deg2,deg4}.npz` -> X (rows x 427 features; column names in `bundle/meta.npz['cols']`).
