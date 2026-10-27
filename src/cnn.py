@@ -41,6 +41,32 @@ def augment(z):  # z: (b,6,16,128) float tensor
         if sh[i] != 0: z[i] = torch.roll(z[i], int(sh[i]), -1)
     return z
 
+def online_pks(z, sd):
+    """Fresh fake-PKS rendering in the normalised (zr) domain. z: (b,6,16,128) clean, sd: (b,) GBT noise scale in bytes."""
+    b = len(z); miss = (z == 0).all(-1, keepdim=True)
+    x = z * sd[:, None, None, None]                                                    # bytes relative to bandpass/level
+    K = torch.empty(b).uniform_(10.0, 15.5)[:, None, None, None]
+    x = x + 24 * torch.log2(torch.distributions.Gamma(K.expand_as(x), K.expand_as(x)).sample())
+    x = x + torch.randn(b, 6, 1, 1) * 1.9                                              # panel gain jitter (test-matched)
+    gl = torch.rand(b, 6, 16, 1) < torch.empty(b, 1, 1, 1).uniform_(0.0057, 0.009)    # glitch rows
+    amp = torch.empty(b, 6, 16, 1).uniform_(18, 60)
+    lo = torch.randint(0, 64, (b, 6, 16, 1)); part = torch.rand(b, 6, 16, 1) < 0.3
+    ch = torch.arange(128)[None, None, None, :]
+    band = torch.where(part, (ch >= lo) & (ch < lo + torch.randint(40, 64, (b, 6, 16, 1))), torch.ones_like(ch, dtype=torch.bool))
+    x = x + (gl & band).float() * amp
+    drop = miss | (torch.rand(b, 6, 16, 1) < 0.0023)
+    v = x.masked_fill(drop, float('nan')).reshape(b, -1)
+    med = v.nanmedian(1).values; sd2 = 1.4826 * (v - med[:, None]).abs().nanmedian(1).values
+    zz = (x - med[:, None, None, None]) / sd2[:, None, None, None]
+    zz = interp(zz, QA, QB).clamp(-20, 40)
+    return zz.masked_fill(drop.expand_as(zz), 0.0)
+
+def interp(x, xp, fp):
+    i = torch.bucketize(x.contiguous(), xp).clamp(1, len(xp) - 1)
+    x0, x1, y0, y1 = xp[i - 1], xp[i], fp[i - 1], fp[i]
+    out = y0 + (x - x0) * (y1 - y0) / (x1 - x0)
+    return torch.where(x > xp[-1], fp[-1] + (x - xp[-1]), torch.where(x < xp[0], fp[0] + (x - xp[0]), out))
+
 class Net(nn.Module):
     def __init__(s, w=32, nf=0):
         super().__init__(); s.nf = nf
@@ -66,6 +92,11 @@ if __name__ == '__main__':
     if FOLD >= 0: tri, vai = np.where(fo != FOLD)[0], np.where(fo == FOLD)[0]
     else: tri, vai = np.arange(len(y)), None
     Zall = torch.from_numpy(np.asarray(Z, dtype=np.float32))
+    ONLINE = bool(os.environ.get('ONLINE'))
+    if ONLINE:
+        qz = np.load(D + r'\qmap_zr.npz'); global QA, QB
+        QA, QB = torch.tensor(qz['q_deg'], dtype=torch.float32), torch.tensor(qz['q_test'], dtype=torch.float32)
+        SD = torch.from_numpy(np.load(D + r'\sig_train.npy').astype(np.float32))
     EXTRA = os.environ.get('EXTRA', ''); DEGMIX = float(os.environ.get('DEGMIX', 0))
     Zd = np.load(D + rf'\{ZP}_train_deg2.npy', mmap_mode='r') if (DEGMIX > 0 or EXTRA) else None
     Zdall = torch.from_numpy(np.asarray(Zd, dtype=np.float32)) if DEGMIX > 0 else None
@@ -76,12 +107,14 @@ if __name__ == '__main__':
         Zall = torch.cat([Zall, Zi]); gtr = np.r_[gtr, info.slew_gap_rows.values]; ylab = np.r_[y, info.y.values]
         tri = np.r_[tri, len(y) + keep]
         if Zdall is not None: Zdall = torch.cat([Zdall, Zi])
+        if ONLINE: SD = torch.cat([SD, torch.full((len(Zi),), float(SD.median()))])
     if os.environ.get('PL'):   # confident pseudo-labelled REAL test cadences (labels -1 = unused); never in any val fold
         pl = np.load(D + rf"\{os.environ['PL']}"); ip = np.where(pl >= 0)[0]
         Zp = torch.from_numpy(np.asarray(np.load(D + rf'\{ZP}_test.npy', mmap_mode='r')[ip], dtype=np.float32))
         n0 = len(Zall); Zall = torch.cat([Zall, Zp]); gtr = np.r_[gtr, te.slew_gap_rows.values[ip]]; ylab = np.r_[ylab, pl[ip]]
         tri = np.r_[tri, n0 + np.arange(len(ip))]
         if Zdall is not None: Zdall = torch.cat([Zdall, Zp])
+        if ONLINE: SD = torch.cat([SD, torch.zeros(len(Zp))])   # sd 0 marks real PKS rows: never re-degraded
     USEF = bool(os.environ.get('FEATS'))
     Fall = Fdall = Fv = Fdv = Ft = None
     if USEF:
@@ -108,7 +141,10 @@ if __name__ == '__main__':
         net.train(); t = time.time(); perm = np.random.permutation(tri); tl = 0
         for s in range(0, len(perm) - BS + 1, BS):
             b = perm[s:s + BS]; zb = Zall[b].clone(); fb = Fall[b].clone() if USEF else None
-            if Zdall is not None:
+            if ONLINE:
+                md_ = (torch.rand(len(b)) < DEGMIX) & (SD[b] > 0)
+                if md_.any(): zb[md_] = online_pks(zb[md_], SD[b][md_])
+            elif Zdall is not None:
                 md_ = torch.rand(len(b)) < DEGMIX; zb[md_] = Zdall[b][md_]
                 if USEF: fb[md_] = Fdall[b][md_]
             if USEF: fb = fb * (torch.rand_like(fb) > 0.15)
