@@ -87,6 +87,7 @@ number should predict the leaderboard better; adversarial AUC fake-PKS-vs-test 0
 | base_g1 = GSEP over the 4 round-5 models only + mix | 0.9302 (76 differ) | second choice |
 | A_rsswp_PL6t6 (round-6 pseudo-labels from submission11, p>0.6) | 0.9048 (v4 0.9038; round 5: 0.9056) | same within noise |
 | A_rs_PL6t6 / A_trk3_PL6t6 (round 6) | 0.9025 / 0.9003 (round 5: 0.9032 / 0.9011) | pseudo-label rounds saturated on the proxy |
+| base_g3 = g2 + the 3 round-6 models (9 separate meta inputs) + mix | 0.9305 (g2 0.9310) | no gain → keep submission11 |
 | **Pretrained CNNs as meta inputs vs mixing** (folds 0-1, meta trained on 1 fold) | **0.9298 vs 0.9269** | **+0.003 → morning: complete folds go into the meta** |
 
 ## Error analysis (best GBDT A_deg2_deg4)
