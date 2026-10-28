@@ -29,12 +29,19 @@ PL=submission10 PLTH=0.6 SETS=$B,trk3   GSEED=33           python src/gbdt_aug.p
 ## 3. CNNs (Colab T4, `colab/signal_hunters_gpu.ipynb`, built by `colab/build_colab.py`)
 Upload `colab/h4h_bundle.zip` + `repro/pl_test*.npy` to `MyDrive/h4h_r2/`, set `CFGS` / `FOLDS` in the last cell, run all.
 Configs used: `B3pl2`, `B3w`, `B3plw` (from scratch) and ImageNet-pretrained `P1` (ResNet-34), `E1`, `E3` (EfficientNet-B0),
-`E2` (B2), `E4` (B1), `P3` (ResNet-34). Copy `out/oofpart_*`, `out/oofdpart_*`, `out/ptepart_*` into `data/`.
+`E2` (B2), `E7` (B3), `E8` (B2, 3x upsampling), `E1p6` (B0, round-6 pseudo-labels `pl_test6.npy`), `R18p6` (ResNet-18, same),
+`E4` (B1), `P3` (ResNet-34). Copy `out/oofpart_*`, `out/oofdpart_*`, `out/ptepart_*` into `data/`.
+Folds can also be trained on a local CUDA GPU: `python src/make_cnn_gpu.py` writes `src/cnn_gpu.py` (same patch as the
+notebook), then e.g. `BS=32 <same env as the notebook config> python src/cnn_gpu.py 4 20 E7g` (E7 fold 4 and E1p6 folds 3-4
+were trained this way on an 8 GB RTX 5060 with batch 32).
 
 ## 4. Final blend
 ```
-GSEP=1 GBDT=A_rsswp_PL5,A_rsswp_PL5t6,A_rs_PL5t6,A_trk3_PL5t6,A_rsswp_PL4,A_rs_PL3 python -X utf8 src/morning.py <name>
+EXCL=E4g,P3g GSEP=1 GBDT=A_rsswp_PL5,A_rsswp_PL5t6,A_rs_PL5t6,A_trk3_PL5t6,A_rsswp_PL4,A_rs_PL3 META_NEST=600 META_LR=0.02 \
+  python -X utf8 src/final_build.py <name>
 ```
+`src/final_build.py` runs `src/morning.py` (below) and then averages in a logistic-regression stacker on the same inputs
+(`src/meta_lr.py`, weight 0.2).
 `src/morning.py`: every CNN with all 5 folds becomes its own input of a stacked LightGBM meta-model (`src/final_blend.py`,
 trained on clean + fake-PKS out-of-fold probabilities); CNNs with only some folds are mixed on top with one weight chosen on
 the folds where they exist (`src/mix_partial.py`). Output: `submissions/<name>.csv`.

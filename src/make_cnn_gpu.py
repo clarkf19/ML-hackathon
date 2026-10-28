@@ -12,5 +12,6 @@ s = s.replace('weight=cw,', 'weight=cw.to(dev),')
 s = s.replace('F.softmax(net(canvas(zb, gaps[b]), fb), 1)', 'F.softmax(net(canvas(zb, gaps[b]).to(dev), fb.to(dev) if fb is not None else None), 1).cpu()')
 s = s.replace('F.softmax(net(canvas(zb.flip(-1), gaps[b]), fb), 1)', 'F.softmax(net(canvas(zb.flip(-1), gaps[b]).to(dev), fb.to(dev) if fb is not None else None), 1).cpu()')
 s = s.replace('torch.load(ck)', 'torch.load(ck, map_location=dev)')
+s = s.replace('BS = 64;', "BS = int(os.environ.get('BS', 64));")   # 8 GB laptop GPU: BS=32 avoids spilling into shared memory
 assert s.count('.to(dev)') >= 6, 'GPU patch failed'
 open(os.path.join(SRC, 'cnn_gpu.py'), 'w', encoding='utf-8').write(head + s); print('written src/cnn_gpu.py')
