@@ -7,7 +7,7 @@ from common import *
 PY = [r'C:\Users\clark\AppData\Local\Programs\Python\Python311\python.exe', '-X', 'utf8']
 OUT = sys.argv[1]; OLD = ['B3pl2g', 'B3wg', 'B3plwg']; EXCL = set(os.environ.get('EXCL', '').split(','))
 have = lambda t, k: all(os.path.exists(os.path.join(D, f'{p}_{t}_f{k}.npy')) for p in ('oofpart', 'oofdpart', 'ptepart'))
-tags = sorted({m.group(1) for f in os.listdir(D) for m in [re.match(r'oofdpart_([PE]\w*g)_f\d\.npy$', f)] if m} - EXCL)
+tags = sorted({m.group(1) for f in os.listdir(D) for m in [re.match(r'oofdpart_([PER]\w*g)_f\d\.npy$', f)] if m} - EXCL)
 full = [t for t in tags if all(have(t, k) for k in range(5))]; part = [t for t in tags if t not in full and any(have(t, k) for k in range(5))]
 print('complete (into meta):', full, '| partial (mixed):', {t: [k for k in range(5) if have(t, k)] for t in part}, flush=True)
 run = lambda args, env: subprocess.run(PY + args, capture_output=True, text=True, env={**os.environ, **env}).stdout
