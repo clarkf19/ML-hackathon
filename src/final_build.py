@@ -10,7 +10,9 @@ run = lambda args, env={}: subprocess.run(PY + args, capture_output=True, text=T
 o = run([os.path.join(S, 'morning.py'), f'{NAME}_m']); print(o, flush=True)
 full = eval(re.search(r'complete \(into meta\): (\[.*?\])', o).group(1))
 o = run([os.path.join(S, 'meta_lr.py'), f'{NAME}_m_base', 'B3pl2g', 'B3wg', 'B3plwg'] + full, {'SAVE': '1', 'LRC': '0.05'}); print(o, flush=True)
-P = (1 - LRW) * np.load(os.path.join(D, f'pte_{NAME}_m.npy')) + LRW * np.load(os.path.join(D, f'pte_lr_{NAME}_m_base.npy'))
+pm = os.path.join(D, f'pte_{NAME}_m.npy')
+if not os.path.exists(pm): pm = os.path.join(D, f'pte_{NAME}_m_base.npy')   # no partial CNNs: the meta base is the blend
+P = (1 - LRW) * np.load(pm) + LRW * np.load(os.path.join(D, f'pte_lr_{NAME}_m_base.npy'))
 np.save(os.path.join(D, f'pte_{NAME}.npy'), P); print(f'LR stacker at {LRW}:', write_sub(P.argmax(1), f'{NAME}.csv'))
 if os.environ.get('BIAS') == '1':   # bias tuned on the same mixture of OOF predictions
     F = (1 - LRW) * np.load(os.path.join(D, f'oofd_final_{NAME}_m_base.npy')) + LRW * np.load(os.path.join(D, f'oofd_lr_{NAME}_m_base.npy'))
