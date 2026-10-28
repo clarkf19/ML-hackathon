@@ -27,17 +27,21 @@ if SEP and len(CS) > 1:
     X = np.hstack([L(g) for g in GL] + [L(c[0]) for c in CS]); Xc = np.hstack([L(g) for g in GLc] + [L(c[1]) for c in CS]); Xt = np.hstack([L(g) for g in GLt] + [L(c[2]) for c in CS])
 else:
     X, Xc, Xt = np.hstack([L(G), L(C)]), np.hstack([L(Gc), L(Cc)]), np.hstack([L(Gt), L(Ct)])
-mk = lambda: lgb.LGBMClassifier(n_estimators=300, learning_rate=0.03, num_leaves=int(os.environ.get('META_LEAVES', 31)), min_child_samples=30, colsample_bytree=0.6, class_weight='balanced', verbose=-1, num_threads=8)
+MSEEDS = int(os.environ.get('MSEEDS', 1)); MA = float(os.environ.get('MALPHA', 0.5))   # meta seeds averaged; FINAL = MA*meta + (1-MA)*blend50
+mk1 = lambda s: lgb.LGBMClassifier(n_estimators=int(os.environ.get('META_NEST', 300)), learning_rate=float(os.environ.get('META_LR', 0.03)), num_leaves=int(os.environ.get('META_LEAVES', 31)), min_child_samples=30, colsample_bytree=0.6, class_weight='balanced', verbose=-1, num_threads=8, random_state=s or None)
+class mk:
+    def fit(self, Xf, yf): self.ms = [mk1(s).fit(Xf, yf) for s in range(MSEEDS)]; return self
+    def predict_proba(self, Xp): return np.mean([m.predict_proba(Xp) for m in self.ms], 0)
 pm, pmc = np.zeros((len(y), 9)), np.zeros((len(y), 9))
 for k in range(5):
     t, v = fo != k, fo == k
     m = mk().fit(np.vstack([X[t], Xc[t]]), np.r_[y[t], y[t]]); pm[v] = m.predict_proba(X[v]); pmc[v] = m.predict_proba(Xc[v])
-F, Fc = (pm + B) / 2, (pmc + Bc) / 2
+F, Fc = MA * pm + (1 - MA) * B, MA * pmc + (1 - MA) * Bc
 np.save(os.path.join(D, f'oofd_final_{OUT[:-4]}.npy'), F); np.save(os.path.join(D, f'oofc_final_{OUT[:-4]}.npy'), Fc)
 for t, c in zip(TAGS, CS): print(f'  CNN {t}: fPKS {mf1(y, c[0].argmax(1)):.4f} clean {mf1(y, c[1].argmax(1)):.4f} | blend50 with GBDT fPKS {mf1(y, ((G + c[0]) / 2).argmax(1)):.4f}')
 print(f'GBDT={GT} (test: {GTEST}) SEP={SEP} CNN {TAGS}: GBDT fPKS {mf1(y, G.argmax(1)):.4f} | CNN {mf1(y, C.argmax(1)):.4f} | blend50 {mf1(y, B.argmax(1)):.4f} | meta {mf1(y, pm.argmax(1)):.4f} | FINAL avg(meta,blend) fPKS {mf1(y, F.argmax(1)):.4f}  clean {mf1(y, Fc.argmax(1)):.4f}')
 print('per-class final fPKS', per_class(y, F.argmax(1)))
 for k in range(5): print(f'  fold{k}: blend50 {mf1(y[fo == k], B[fo == k].argmax(1)):.4f} -> final {mf1(y[fo == k], F[fo == k].argmax(1)):.4f}')
-m = mk().fit(np.vstack([X, Xc]), np.r_[y, y]); Ft = (m.predict_proba(Xt) + Bt) / 2
+m = mk().fit(np.vstack([X, Xc]), np.r_[y, y]); Ft = MA * m.predict_proba(Xt) + (1 - MA) * Bt
 np.save(D + rf'\pte_{OUT[:-4]}.npy', Ft)
 if OUT != 'none.csv': print(write_sub(Ft.argmax(1), OUT))

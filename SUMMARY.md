@@ -89,6 +89,8 @@ number should predict the leaderboard better; adversarial AUC fake-PKS-vs-test 0
 | A_rsswp_PL6t6 (round-6 pseudo-labels from submission11, p>0.6) | 0.9048 (v4 0.9038; round 5: 0.9056) | same within noise |
 | A_rs_PL6t6 / A_trk3_PL6t6 (round 6) | 0.9025 / 0.9003 (round 5: 0.9032 / 0.9011) | pseudo-label rounds saturated on the proxy |
 | base_g3 = g2 + the 3 round-6 models (9 separate meta inputs) + mix | 0.9305 (g2 0.9310) | no gain → keep submission11 |
+| Meta variants with 4 complete pretrained CNNs (5-fold): current 0.9349; only pretrained inputs 0.9353; fPKS rows only 0.9353; 15 leaves 0.9355 (a .7); 600 trees lr .02 0.9357; GBDTs averaged 0.9337 | 0.9337–0.9357 | meta saturated; GSEP matters (+0.0012); gains must come from new complete CNNs |
+| Test vs train drift rates per class (t_drift, gtm_drift, on_absdrift) | median ratio ≈1.0 | no telescope time/channel-scale shift in pixel units |
 | **Pretrained CNNs as meta inputs vs mixing** (folds 0-1, meta trained on 1 fold) | **0.9298 vs 0.9269** | **+0.003 → morning: complete folds go into the meta** |
 
 ## Error analysis (best GBDT A_deg2_deg4)
