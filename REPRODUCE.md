@@ -4,6 +4,10 @@ Everything is trained only on the provided data. Real-test pseudo-labels are pro
 (self-training); the exact pseudo-label / teacher files used are shipped in `repro/` so every model can be retrained
 deterministically without replaying the whole chain. Python 3.11, LightGBM, PyTorch (+ torchvision on the GPU).
 
+**Shortcut:** the final step alone (section 4) can be re-run from the committed model predictions in `data/`, with no
+retraining; see README.md. **Paths:** scripts use the absolute root `C:\Users\clark\hack4hack-r2`; clone there or replace
+that string in `src/*.py`, `run_*.sh` and `pipeline.sh`. The final upload is `submissions/submission17.csv`.
+
 ## 1. Data and features (CPU, ~3 h)
 Unzip the competition data into `data/signal-hunters-round2/`, then:
 ```
